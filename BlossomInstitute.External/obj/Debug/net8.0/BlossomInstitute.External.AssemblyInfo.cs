@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BlossomInstitute.External")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+19a46646bb49a0ee9e4c941312b5ad0519bc9930")]
 [assembly: System.Reflection.AssemblyProductAttribute("BlossomInstitute.External")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BlossomInstitute.External")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

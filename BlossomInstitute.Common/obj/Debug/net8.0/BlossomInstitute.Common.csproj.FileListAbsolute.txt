@@ -1,0 +1,15 @@
+C:\Users\ulipv\source\repos\BlossomInstitute\BlossomInstitute.Common\bin\Debug\net8.0\BlossomInstitute.Common.deps.json
+C:\Users\ulipv\source\repos\BlossomInstitute\BlossomInstitute.Common\bin\Debug\net8.0\BlossomInstitute.Common.runtimeconfig.json
+C:\Users\ulipv\source\repos\BlossomInstitute\BlossomInstitute.Common\bin\Debug\net8.0\BlossomInstitute.Common.dll
+C:\Users\ulipv\source\repos\BlossomInstitute\BlossomInstitute.Common\bin\Debug\net8.0\BlossomInstitute.Common.pdb
+C:\Users\ulipv\source\repos\BlossomInstitute\BlossomInstitute.Common\obj\Debug\net8.0\BlossomInstitute.Common.csproj.AssemblyReference.cache
+C:\Users\ulipv\source\repos\BlossomInstitute\BlossomInstitute.Common\obj\Debug\net8.0\BlossomInstitute.Common.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ulipv\source\repos\BlossomInstitute\BlossomInstitute.Common\obj\Debug\net8.0\BlossomInstitute.Common.AssemblyInfoInputs.cache
+C:\Users\ulipv\source\repos\BlossomInstitute\BlossomInstitute.Common\obj\Debug\net8.0\BlossomInstitute.Common.AssemblyInfo.cs
+C:\Users\ulipv\source\repos\BlossomInstitute\BlossomInstitute.Common\obj\Debug\net8.0\BlossomInstitute.Common.csproj.CoreCompileInputs.cache
+C:\Users\ulipv\source\repos\BlossomInstitute\BlossomInstitute.Common\obj\Debug\net8.0\BlossomInstitute.Common.sourcelink.json
+C:\Users\ulipv\source\repos\BlossomInstitute\BlossomInstitute.Common\obj\Debug\net8.0\BlossomInstitute.Common.dll
+C:\Users\ulipv\source\repos\BlossomInstitute\BlossomInstitute.Common\obj\Debug\net8.0\refint\BlossomInstitute.Common.dll
+C:\Users\ulipv\source\repos\BlossomInstitute\BlossomInstitute.Common\obj\Debug\net8.0\BlossomInstitute.Common.pdb
+C:\Users\ulipv\source\repos\BlossomInstitute\BlossomInstitute.Common\obj\Debug\net8.0\BlossomInstitute.Common.genruntimeconfig.cache
+C:\Users\ulipv\source\repos\BlossomInstitute\BlossomInstitute.Common\obj\Debug\net8.0\ref\BlossomInstitute.Common.dll
