@@ -51,7 +51,9 @@ namespace BlossomInstitute.Persistence.Seed
                 {
                     Email = adminEmail,
                     UserName = adminEmail,
-                    Nombre = "Instituto Blossom",
+                    Nombre = "Admin",
+                    Apellido = "Instituto Blossom",
+                    Dni = 9999999,
                     Activo = true
                 };
 
