@@ -1,0 +1,6 @@
+@BlossomInstitute_HostAddress = http://localhost:5047
+
+GET {{BlossomInstitute_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
