@@ -1,6 +1,6 @@
 ﻿using BlossomInstitute.Application.DataBase.Login.Command;
-using BlossomInstitute.Application.DataBase.Password.ForgotPassword;
-using BlossomInstitute.Application.DataBase.Password.ResetPassword;
+using BlossomInstitute.Application.DataBase.Password.Command.ForgotPassword;
+using BlossomInstitute.Application.DataBase.Password.Command.ResetPassword;
 using BlossomInstitute.Common.Features;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;

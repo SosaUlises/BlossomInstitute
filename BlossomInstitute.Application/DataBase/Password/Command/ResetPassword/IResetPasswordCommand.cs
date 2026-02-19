@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlossomInstitute.Application.DataBase.Password.ResetPassword
+namespace BlossomInstitute.Application.DataBase.Password.Command.ResetPassword
 {
     public interface IResetPasswordCommand
     {

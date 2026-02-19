@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlossomInstitute.Application.DataBase.Password.ForgotPassword
+namespace BlossomInstitute.Application.DataBase.Password.Command.ForgotPassword
 {
     public class ForgotPasswordModel
     {

@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Password.ResetPassword;
+﻿using BlossomInstitute.Application.DataBase.Password.Command.ResetPassword;
 using FluentValidation;
 
 namespace BlossomInstitute.Application.Validator.Password

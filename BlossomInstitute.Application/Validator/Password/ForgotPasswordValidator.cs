@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Password.ForgotPassword;
+﻿using BlossomInstitute.Application.DataBase.Password.Command.ForgotPassword;
 using FluentValidation;
 
 namespace BlossomInstitute.Application.Validator.Password

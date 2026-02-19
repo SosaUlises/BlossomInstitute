@@ -1,6 +1,7 @@
 ﻿using BlossomInstitute.Application.DataBase.Login.Command;
-using BlossomInstitute.Application.DataBase.Password.ForgotPassword;
-using BlossomInstitute.Application.DataBase.Password.ResetPassword;
+using BlossomInstitute.Application.DataBase.Password.Command.ForgotPassword;
+using BlossomInstitute.Application.DataBase.Password.Command.ResetPassword;
+using BlossomInstitute.Application.DataBase.Profesor.Command.CreateProfesor;
 using BlossomInstitute.Application.Validator.Login;
 using BlossomInstitute.Application.Validator.Password;
 using FluentValidation;
@@ -18,6 +19,9 @@ namespace BlossomInstitute.Application
             // Password
             services.AddTransient<IForgotPasswordCommand, ForgotPasswordCommand>();
             services.AddTransient<IResetPasswordCommand, ResetPasswordCommand>();
+
+            // Profesor
+            services.AddTransient<ICreateProfesorCommand, CreateProfesorCommand>();
 
             // Validators
             services.AddScoped<IValidator<LoginModel>, LoginValidator>();

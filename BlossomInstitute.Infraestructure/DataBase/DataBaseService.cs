@@ -5,6 +5,7 @@ using BlossomInstitute.Infraestructure.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace BlossomInstitute.Infraestructure.DataBase
 {
@@ -30,5 +31,8 @@ namespace BlossomInstitute.Infraestructure.DataBase
         {
             new ProfesorConfiguration(modelBuilder.Entity<ProfesorEntity>());
         }
+
+        public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken ct = default)
+        => Database.BeginTransactionAsync(ct);
     }
 }

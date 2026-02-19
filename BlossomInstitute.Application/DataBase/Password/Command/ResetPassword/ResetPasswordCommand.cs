@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System.Net;
 
-namespace BlossomInstitute.Application.DataBase.Password.ResetPassword
+namespace BlossomInstitute.Application.DataBase.Password.Command.ResetPassword
 {
     public class ResetPasswordCommand : IResetPasswordCommand
     {

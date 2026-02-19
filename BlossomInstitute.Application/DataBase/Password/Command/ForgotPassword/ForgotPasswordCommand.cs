@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Hosting;
 using System.Net;
 
-namespace BlossomInstitute.Application.DataBase.Password.ForgotPassword
+namespace BlossomInstitute.Application.DataBase.Password.Command.ForgotPassword
 {
     public class ForgotPasswordCommand : IForgotPasswordCommand
     {
