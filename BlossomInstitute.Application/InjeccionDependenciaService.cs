@@ -4,6 +4,7 @@ using BlossomInstitute.Application.DataBase.Password.Command.ResetPassword;
 using BlossomInstitute.Application.DataBase.Profesor.Command.CreateProfesor;
 using BlossomInstitute.Application.Validator.Login;
 using BlossomInstitute.Application.Validator.Password;
+using BlossomInstitute.Application.Validator.Profesor;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -27,6 +28,7 @@ namespace BlossomInstitute.Application
             services.AddScoped<IValidator<LoginModel>, LoginValidator>();
             services.AddScoped<IValidator<ForgotPasswordModel>, ForgotPasswordValidator>();
             services.AddScoped<IValidator<ResetPasswordModel>, ResetPasswordValidator>();
+            services.AddScoped<IValidator<CreateProfesorModel>, CreateProfesorValidator>();
 
 
             return services;

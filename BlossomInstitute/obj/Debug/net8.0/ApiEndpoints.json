@@ -9,7 +9,7 @@
     "Parameters": [
       {
         "Name": "model",
-        "Type": "BlossomInstitute.Application.DataBase.Password.ForgotPassword.ForgotPasswordModel",
+        "Type": "BlossomInstitute.Application.DataBase.Password.Command.ForgotPassword.ForgotPasswordModel",
         "IsRequired": true
       }
     ],
@@ -41,7 +41,23 @@
     "Parameters": [
       {
         "Name": "model",
-        "Type": "BlossomInstitute.Application.DataBase.Password.ResetPassword.ResetPasswordModel",
+        "Type": "BlossomInstitute.Application.DataBase.Password.Command.ResetPassword.ResetPasswordModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlossomInstitute.Controllers.ProfesorController",
+    "Method": "Create",
+    "RelativePath": "api/v1/profesores",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "BlossomInstitute.Application.DataBase.Profesor.Command.CreateProfesor.CreateProfesorModel",
         "IsRequired": true
       }
     ],
