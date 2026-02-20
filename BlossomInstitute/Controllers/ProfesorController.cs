@@ -1,4 +1,5 @@
 ﻿using BlossomInstitute.Application.DataBase.Profesor.Command.CreateProfesor;
+using BlossomInstitute.Application.DataBase.Profesor.Command.DeleteProfesor;
 using BlossomInstitute.Application.DataBase.Profesor.Command.UpdateProfesor;
 using BlossomInstitute.Common.Features;
 using FluentValidation;
@@ -43,6 +44,18 @@ namespace BlossomInstitute.Controllers
             if (!vr.IsValid) return BadRequest(ResponseApiService.Response(400, vr.Errors));
 
             var result = await command.Execute(userId, model);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPatch("{userId:int}/desactivar")]
+        public async Task<IActionResult> Deactivate(
+            int userId,
+            [FromServices] IDesactivarProfesorCommand command)
+        {
+            if (userId <= 0)
+                return BadRequest(ResponseApiService.Response(StatusCodes.Status400BadRequest, "Id inválido"));
+
+            var result = await command.Execute(userId);
             return StatusCode(result.StatusCode, result);
         }
     }

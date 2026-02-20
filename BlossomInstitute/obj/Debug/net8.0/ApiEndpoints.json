@@ -62,5 +62,42 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlossomInstitute.Controllers.ProfesorController",
+    "Method": "Update",
+    "RelativePath": "api/v1/profesores/{userId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "model",
+        "Type": "BlossomInstitute.Application.DataBase.Profesor.Command.UpdateProfesor.UpdateProfesorModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlossomInstitute.Controllers.ProfesorController",
+    "Method": "Deactivate",
+    "RelativePath": "api/v1/profesores/{userId}/desactivar",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]
