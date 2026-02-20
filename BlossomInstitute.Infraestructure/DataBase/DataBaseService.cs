@@ -18,6 +18,14 @@ namespace BlossomInstitute.Infraestructure.DataBase
 
         public DbSet<ProfesorEntity> Profesores { get; set; }
 
+        // Identity (solo lectura para queries)
+        public IQueryable<UsuarioEntity> Usuarios => Users.AsNoTracking();
+        public IQueryable<IdentityRole<int>> Roles => base.Roles.AsNoTracking();
+        public IQueryable<IdentityUserRole<int>> UserRoles => base.UserRoles.AsNoTracking();
+
+        public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken ct = default)
+        => Database.BeginTransactionAsync(ct);
+
         public async Task<bool> SaveAsync(CancellationToken ct = default)
             => await base.SaveChangesAsync(ct) > 0;
 
@@ -32,7 +40,5 @@ namespace BlossomInstitute.Infraestructure.DataBase
             new ProfesorConfiguration(modelBuilder.Entity<ProfesorEntity>());
         }
 
-        public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken ct = default)
-        => Database.BeginTransactionAsync(ct);
     }
 }

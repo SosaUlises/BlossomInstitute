@@ -1,9 +1,11 @@
-﻿using BlossomInstitute.Application.DataBase.Login.Command;
+﻿using BlossomInstitute.Application.Configuration;
+using BlossomInstitute.Application.DataBase.Login.Command;
 using BlossomInstitute.Application.DataBase.Password.Command.ForgotPassword;
 using BlossomInstitute.Application.DataBase.Password.Command.ResetPassword;
 using BlossomInstitute.Application.DataBase.Profesor.Command.CreateProfesor;
 using BlossomInstitute.Application.DataBase.Profesor.Command.DeleteProfesor;
 using BlossomInstitute.Application.DataBase.Profesor.Command.UpdateProfesor;
+using BlossomInstitute.Application.DataBase.Profesor.Queries.GetAllProfesores;
 using BlossomInstitute.Application.Validator.Login;
 using BlossomInstitute.Application.Validator.Password;
 using BlossomInstitute.Application.Validator.Profesor;
@@ -16,6 +18,8 @@ namespace BlossomInstitute.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(MapperProfile).Assembly);
+
             // Login
             services.AddTransient<ILoginCommand, LoginCommand>();
 
@@ -27,6 +31,7 @@ namespace BlossomInstitute.Application
             services.AddTransient<ICreateProfesorCommand, CreateProfesorCommand>();
             services.AddTransient<IUpdateProfesorCommand, UpdateProfesorCommand>();
             services.AddTransient<IDesactivarProfesorCommand, DesactivarProfesorCommand>();
+            services.AddTransient<IGetAllProfesoresQuery, GetAllProfesoresQuery>();
 
             // Validators
             services.AddScoped<IValidator<LoginModel>, LoginValidator>();
