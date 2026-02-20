@@ -65,6 +65,27 @@
   },
   {
     "ContainingType": "BlossomInstitute.Controllers.ProfesorController",
+    "Method": "GetAll",
+    "RelativePath": "api/v1/profesores",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlossomInstitute.Controllers.ProfesorController",
     "Method": "Update",
     "RelativePath": "api/v1/profesores/{userId}",
     "HttpMethod": "PUT",

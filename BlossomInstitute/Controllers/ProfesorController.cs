@@ -1,6 +1,7 @@
 ﻿using BlossomInstitute.Application.DataBase.Profesor.Command.CreateProfesor;
 using BlossomInstitute.Application.DataBase.Profesor.Command.DeleteProfesor;
 using BlossomInstitute.Application.DataBase.Profesor.Command.UpdateProfesor;
+using BlossomInstitute.Application.DataBase.Profesor.Queries.GetAllProfesores;
 using BlossomInstitute.Common.Features;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
@@ -56,6 +57,20 @@ namespace BlossomInstitute.Controllers
                 return BadRequest(ResponseApiService.Response(StatusCodes.Status400BadRequest, "Id inválido"));
 
             var result = await command.Execute(userId);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll(
+           [FromServices] IGetAllProfesoresQuery query,
+           [FromQuery] int pageNumber = 1,
+           [FromQuery] int pageSize = 10)
+        {
+            if (pageNumber <= 0) pageNumber = 1;
+            if (pageSize <= 0) pageSize = 10;
+            if (pageSize > 100) pageSize = 100;
+
+            var result = await query.Execute(pageNumber, pageSize);
             return StatusCode(result.StatusCode, result);
         }
     }

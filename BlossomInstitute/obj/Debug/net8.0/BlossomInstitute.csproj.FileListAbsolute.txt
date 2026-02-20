@@ -194,3 +194,7 @@ C:\Users\ulipv\source\repos\BlossomInstitute\BlossomInstitute\obj\Debug\net8.0\B
 C:\Users\ulipv\source\repos\BlossomInstitute\BlossomInstitute\obj\Debug\net8.0\BlossomInstitute.genruntimeconfig.cache
 C:\Users\ulipv\source\repos\BlossomInstitute\BlossomInstitute\obj\Debug\net8.0\ref\BlossomInstitute.dll
 C:\Users\ulipv\source\repos\BlossomInstitute\BlossomInstitute\bin\Debug\net8.0\FluentValidation.dll
+C:\Users\ulipv\source\repos\BlossomInstitute\BlossomInstitute\bin\Debug\net8.0\AutoMapper.dll
+C:\Users\ulipv\source\repos\BlossomInstitute\BlossomInstitute\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\ulipv\source\repos\BlossomInstitute\BlossomInstitute\bin\Debug\net8.0\X.PagedList.dll
+C:\Users\ulipv\source\repos\BlossomInstitute\BlossomInstitute\bin\Debug\net8.0\X.PagedList.EF.dll

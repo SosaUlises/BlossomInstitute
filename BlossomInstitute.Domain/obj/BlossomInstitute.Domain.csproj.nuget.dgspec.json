@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ulipv\\Source\\Repos\\BlossomInstitute\\BlossomInstitute.Domain\\BlossomInstitute.Domain.csproj": {}
+    "C:\\Users\\ulipv\\source\\repos\\BlossomInstitute\\BlossomInstitute.Domain\\BlossomInstitute.Domain.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ulipv\\Source\\Repos\\BlossomInstitute\\BlossomInstitute.Domain\\BlossomInstitute.Domain.csproj": {
+    "C:\\Users\\ulipv\\source\\repos\\BlossomInstitute\\BlossomInstitute.Domain\\BlossomInstitute.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ulipv\\Source\\Repos\\BlossomInstitute\\BlossomInstitute.Domain\\BlossomInstitute.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\ulipv\\source\\repos\\BlossomInstitute\\BlossomInstitute.Domain\\BlossomInstitute.Domain.csproj",
         "projectName": "BlossomInstitute.Domain",
-        "projectPath": "C:\\Users\\ulipv\\Source\\Repos\\BlossomInstitute\\BlossomInstitute.Domain\\BlossomInstitute.Domain.csproj",
+        "projectPath": "C:\\Users\\ulipv\\source\\repos\\BlossomInstitute\\BlossomInstitute.Domain\\BlossomInstitute.Domain.csproj",
         "packagesPath": "C:\\Users\\ulipv\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ulipv\\Source\\Repos\\BlossomInstitute\\BlossomInstitute.Domain\\obj\\",
+        "outputPath": "C:\\Users\\ulipv\\source\\repos\\BlossomInstitute\\BlossomInstitute.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -52,11 +52,11 @@
           "dependencies": {
             "AutoMapper": {
               "target": "Package",
-              "version": "[16.0.0, )"
+              "version": "[12.0.0, )"
             },
             "AutoMapper.Extensions.Microsoft.DependencyInjection": {
               "target": "Package",
-              "version": "[12.0.1, )"
+              "version": "[12.0.0, )"
             },
             "FluentValidation": {
               "target": "Package",
