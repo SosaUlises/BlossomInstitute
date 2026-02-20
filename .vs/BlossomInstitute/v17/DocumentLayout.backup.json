@@ -63,8 +63,7 @@
               "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Profesor\\Command\\CreateProfesor\\CreateProfesorModel.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-19T19:26:21.413Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-19T19:26:21.413Z"
             },
             {
               "$type": "Document",
@@ -76,8 +75,7 @@
               "RelativeToolTip": "BlossomInstitute\\Controllers\\AuthController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-19T19:21:32.995Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-19T19:21:32.995Z"
             },
             {
               "$type": "Document",
@@ -89,8 +87,7 @@
               "RelativeToolTip": "BlossomInstitute\\Controllers\\ProfesorController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-19T19:19:34.954Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-19T19:19:34.954Z"
             },
             {
               "$type": "Document",
@@ -102,8 +99,7 @@
               "RelativeToolTip": "BlossomInstitute.Application\\InjeccionDependenciaService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-19T19:18:42.854Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-19T19:18:42.854Z"
             },
             {
               "$type": "Document",
@@ -115,8 +111,7 @@
               "RelativeToolTip": "BlossomInstitute.Application\\Validator\\Profesor\\CreateProfesorValidator.cs",
               "ViewState": "AgIAABMAAAAAAAAAAAAgwCoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-19T19:16:12.847Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-19T19:16:12.847Z"
             }
           ]
         },
