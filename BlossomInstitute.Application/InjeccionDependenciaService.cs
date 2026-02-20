@@ -2,6 +2,7 @@
 using BlossomInstitute.Application.DataBase.Password.Command.ForgotPassword;
 using BlossomInstitute.Application.DataBase.Password.Command.ResetPassword;
 using BlossomInstitute.Application.DataBase.Profesor.Command.CreateProfesor;
+using BlossomInstitute.Application.DataBase.Profesor.Command.DeleteProfesor;
 using BlossomInstitute.Application.DataBase.Profesor.Command.UpdateProfesor;
 using BlossomInstitute.Application.Validator.Login;
 using BlossomInstitute.Application.Validator.Password;
@@ -25,6 +26,7 @@ namespace BlossomInstitute.Application
             // Profesor
             services.AddTransient<ICreateProfesorCommand, CreateProfesorCommand>();
             services.AddTransient<IUpdateProfesorCommand, UpdateProfesorCommand>();
+            services.AddTransient<IDesactivarProfesorCommand, DesactivarProfesorCommand>();
 
             // Validators
             services.AddScoped<IValidator<LoginModel>, LoginValidator>();
