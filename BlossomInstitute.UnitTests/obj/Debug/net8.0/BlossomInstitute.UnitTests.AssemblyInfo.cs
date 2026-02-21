@@ -11,12 +11,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("BlossomInstitute.Application")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("BlossomInstitute.UnitTests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bad7c46f6472d22c28f26998b9354e1fb075278a")]
-[assembly: System.Reflection.AssemblyProductAttribute("BlossomInstitute.Application")]
-[assembly: System.Reflection.AssemblyTitleAttribute("BlossomInstitute.Application")]
+[assembly: System.Reflection.AssemblyProductAttribute("BlossomInstitute.UnitTests")]
+[assembly: System.Reflection.AssemblyTitleAttribute("BlossomInstitute.UnitTests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
 // Generado por la clase WriteCodeFragment de MSBuild.
