@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BlossomInstitute.Application.DataBase.Profesor.Queries.GetAllProfesores
 {
-    public class GetAllProfesoresModel
+    public class GetProfesorModel
     {
         public int Id { get; set; }
         public string Email { get; set; } = default!;

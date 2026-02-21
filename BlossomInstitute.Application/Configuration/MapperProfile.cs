@@ -9,7 +9,7 @@ namespace BlossomInstitute.Application.Configuration
         public MapperProfile()
         {
             // Profesor
-            CreateMap<UsuarioEntity, GetAllProfesoresModel>()
+            CreateMap<UsuarioEntity, GetProfesorModel>()
               .ForMember(d => d.Telefono, opt => opt.MapFrom(s => s.PhoneNumber));
         }
     }

@@ -1,7 +1,24 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\ulipv\\source\\repos\\BlossomInstitute\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossominstitute\\blossominstitute.application\\injecciondependenciaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\injecciondependenciaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossominstitute\\blossominstitute.application\\database\\profesor\\queries\\getbyid\\getprofesorbyidquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\profesor\\queries\\getbyid\\getprofesorbyidquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossominstitute\\blossominstitute.application\\database\\profesor\\queries\\getbyid\\igetprofesorbyidquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\profesor\\queries\\getbyid\\igetprofesorbyidquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossominstitute\\blossominstitute.application\\configuration\\mapperprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\configuration\\mapperprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 1,
@@ -9,11 +26,63 @@
       "DocumentGroups": [
         {
           "DockedHeight": 422,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "InjeccionDependenciaService.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\BlossomInstitute\\BlossomInstitute.Application\\InjeccionDependenciaService.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\InjeccionDependenciaService.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\BlossomInstitute\\BlossomInstitute.Application\\InjeccionDependenciaService.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\InjeccionDependenciaService.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAAACIAAABTAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-21T18:00:36.982Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MapperProfile.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\BlossomInstitute\\BlossomInstitute.Application\\Configuration\\MapperProfile.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\Configuration\\MapperProfile.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\BlossomInstitute\\BlossomInstitute.Application\\Configuration\\MapperProfile.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\Configuration\\MapperProfile.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-21T17:59:52.541Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "IGetProfesorByIdQuery.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\BlossomInstitute\\BlossomInstitute.Application\\DataBase\\Profesor\\Queries\\GetById\\IGetProfesorByIdQuery.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Profesor\\Queries\\GetById\\IGetProfesorByIdQuery.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\BlossomInstitute\\BlossomInstitute.Application\\DataBase\\Profesor\\Queries\\GetById\\IGetProfesorByIdQuery.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Profesor\\Queries\\GetById\\IGetProfesorByIdQuery.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-21T17:57:23.1Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "GetProfesorByIdQuery.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\BlossomInstitute\\BlossomInstitute.Application\\DataBase\\Profesor\\Queries\\GetById\\GetProfesorByIdQuery.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Profesor\\Queries\\GetById\\GetProfesorByIdQuery.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\BlossomInstitute\\BlossomInstitute.Application\\DataBase\\Profesor\\Queries\\GetById\\GetProfesorByIdQuery.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Profesor\\Queries\\GetById\\GetProfesorByIdQuery.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAwAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-21T17:57:13.217Z",
+              "EditorCaption": ""
             }
           ]
         },

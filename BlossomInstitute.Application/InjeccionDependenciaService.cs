@@ -6,6 +6,7 @@ using BlossomInstitute.Application.DataBase.Profesor.Command.CreateProfesor;
 using BlossomInstitute.Application.DataBase.Profesor.Command.DeleteProfesor;
 using BlossomInstitute.Application.DataBase.Profesor.Command.UpdateProfesor;
 using BlossomInstitute.Application.DataBase.Profesor.Queries.GetAllProfesores;
+using BlossomInstitute.Application.DataBase.Profesor.Queries.GetById;
 using BlossomInstitute.Application.Validator.Login;
 using BlossomInstitute.Application.Validator.Password;
 using BlossomInstitute.Application.Validator.Profesor;
@@ -32,6 +33,7 @@ namespace BlossomInstitute.Application
             services.AddTransient<IUpdateProfesorCommand, UpdateProfesorCommand>();
             services.AddTransient<IDesactivarProfesorCommand, DesactivarProfesorCommand>();
             services.AddTransient<IGetAllProfesoresQuery, GetAllProfesoresQuery>();
+            services.AddTransient<IGetProfesorByIdQuery, GetProfesorByIdQuery>();
 
             // Validators
             services.AddScoped<IValidator<LoginModel>, LoginValidator>();

@@ -47,7 +47,7 @@ namespace BlossomInstitute.Application.DataBase.Profesor.Queries.GetAllProfesore
                 .ThenBy(u => u.Nombre)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .ProjectTo<GetAllProfesoresModel>(_mapperConfig)
+                .ProjectTo<GetProfesorModel>(_mapperConfig)
                 .ToListAsync();
 
             return ResponseApiService.Response(StatusCodes.Status200OK, new
