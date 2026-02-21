@@ -2,6 +2,7 @@
 using BlossomInstitute.Application.DataBase.Profesor.Command.DeleteProfesor;
 using BlossomInstitute.Application.DataBase.Profesor.Command.UpdateProfesor;
 using BlossomInstitute.Application.DataBase.Profesor.Queries.GetAllProfesores;
+using BlossomInstitute.Application.DataBase.Profesor.Queries.GetById;
 using BlossomInstitute.Common.Features;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
@@ -62,15 +63,26 @@ namespace BlossomInstitute.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetAll(
-           [FromServices] IGetAllProfesoresQuery query,
-           [FromQuery] int pageNumber = 1,
-           [FromQuery] int pageSize = 10)
+             [FromServices] IGetAllProfesoresQuery query,
+             [FromQuery] int pageNumber = 1,
+             [FromQuery] int pageSize = 10,
+             [FromQuery] string? search = null)
         {
             if (pageNumber <= 0) pageNumber = 1;
             if (pageSize <= 0) pageSize = 10;
             if (pageSize > 100) pageSize = 100;
 
-            var result = await query.Execute(pageNumber, pageSize);
+            var result = await query.Execute(pageNumber, pageSize, search);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpGet("{userId:int}")]
+        public async Task<IActionResult> GetById(
+            [FromRoute] int userId,
+            [FromServices] IGetProfesorByIdQuery query)
+        {
+            if (userId <= 0) return BadRequest(ResponseApiService.Response(400, "Id inválido"));
+            var result = await query.Execute(userId);
             return StatusCode(result.StatusCode, result);
         }
     }

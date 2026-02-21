@@ -3,12 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\ulipv\\source\\repos\\BlossomInstitute\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{54AB5A08-71D4-47E9-99BD-81CC2EB47D38}|BlossomInstitute.UnitTests\\BlossomInstitute.UnitTests.csproj|c:\\users\\ulipv\\source\\repos\\blossominstitute\\blossominstitute.unittests\\auth\\resetpasswordcommandtests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{54AB5A08-71D4-47E9-99BD-81CC2EB47D38}|BlossomInstitute.UnitTests\\BlossomInstitute.UnitTests.csproj|solutionrelative:blossominstitute.unittests\\auth\\resetpasswordcommandtests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|c:\\users\\ulipv\\source\\repos\\blossominstitute\\blossominstitute\\controllers\\profesorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|solutionrelative:blossominstitute\\controllers\\profesorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{54AB5A08-71D4-47E9-99BD-81CC2EB47D38}|BlossomInstitute.UnitTests\\BlossomInstitute.UnitTests.csproj|c:\\users\\ulipv\\source\\repos\\blossominstitute\\blossominstitute.unittests\\auth\\forgotpasswordcommandtests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{54AB5A08-71D4-47E9-99BD-81CC2EB47D38}|BlossomInstitute.UnitTests\\BlossomInstitute.UnitTests.csproj|solutionrelative:blossominstitute.unittests\\auth\\forgotpasswordcommandtests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossominstitute\\blossominstitute.application\\database\\profesor\\queries\\getall\\getallprofesoresquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\profesor\\queries\\getall\\getallprofesoresquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossominstitute\\blossominstitute.application\\database\\profesor\\queries\\getall\\igetallprofesoresquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\profesor\\queries\\getall\\igetallprofesoresquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -27,27 +31,39 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "ResetPasswordCommandTests.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\BlossomInstitute\\BlossomInstitute.UnitTests\\Auth\\ResetPasswordCommandTests.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute.UnitTests\\Auth\\ResetPasswordCommandTests.cs",
-              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\BlossomInstitute\\BlossomInstitute.UnitTests\\Auth\\ResetPasswordCommandTests.cs",
-              "RelativeToolTip": "BlossomInstitute.UnitTests\\Auth\\ResetPasswordCommandTests.cs",
-              "ViewState": "AgIAACoAAAAAAAAAAAAowBQAAAANAAAAAAAAAA==",
+              "Title": "ProfesorController.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\BlossomInstitute\\BlossomInstitute\\Controllers\\ProfesorController.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute\\Controllers\\ProfesorController.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\BlossomInstitute\\BlossomInstitute\\Controllers\\ProfesorController.cs",
+              "RelativeToolTip": "BlossomInstitute\\Controllers\\ProfesorController.cs",
+              "ViewState": "AgIAADUAAAAAAAAAAAAwwEMAAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-21T17:49:41.845Z",
+              "WhenOpened": "2026-02-21T18:13:54.928Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ForgotPasswordCommandTests.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\BlossomInstitute\\BlossomInstitute.UnitTests\\Auth\\ForgotPasswordCommandTests.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute.UnitTests\\Auth\\ForgotPasswordCommandTests.cs",
-              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\BlossomInstitute\\BlossomInstitute.UnitTests\\Auth\\ForgotPasswordCommandTests.cs",
-              "RelativeToolTip": "BlossomInstitute.UnitTests\\Auth\\ForgotPasswordCommandTests.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGkAAAAIAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "IGetAllProfesoresQuery.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\BlossomInstitute\\BlossomInstitute.Application\\DataBase\\Profesor\\Queries\\GetAll\\IGetAllProfesoresQuery.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Profesor\\Queries\\GetAll\\IGetAllProfesoresQuery.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\BlossomInstitute\\BlossomInstitute.Application\\DataBase\\Profesor\\Queries\\GetAll\\IGetAllProfesoresQuery.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Profesor\\Queries\\GetAll\\IGetAllProfesoresQuery.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-21T17:43:07.652Z",
+              "WhenOpened": "2026-02-21T18:11:53.64Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "GetAllProfesoresQuery.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\BlossomInstitute\\BlossomInstitute.Application\\DataBase\\Profesor\\Queries\\GetAll\\GetAllProfesoresQuery.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Profesor\\Queries\\GetAll\\GetAllProfesoresQuery.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\BlossomInstitute\\BlossomInstitute.Application\\DataBase\\Profesor\\Queries\\GetAll\\GetAllProfesoresQuery.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Profesor\\Queries\\GetAll\\GetAllProfesoresQuery.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAABcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-21T18:10:58.681Z",
               "EditorCaption": ""
             }
           ]

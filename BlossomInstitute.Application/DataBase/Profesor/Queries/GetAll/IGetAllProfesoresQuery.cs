@@ -9,6 +9,6 @@ namespace BlossomInstitute.Application.DataBase.Profesor.Queries.GetAllProfesore
 {
     public interface IGetAllProfesoresQuery
     {
-        Task<BaseResponseModel> Execute(int pageNumber, int pageSize);
+        Task<BaseResponseModel> Execute(int pageNumber, int pageSize, string? search);
     }
 }
