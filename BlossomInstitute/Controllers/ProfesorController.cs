@@ -63,15 +63,16 @@ namespace BlossomInstitute.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetAll(
-           [FromServices] IGetAllProfesoresQuery query,
-           [FromQuery] int pageNumber = 1,
-           [FromQuery] int pageSize = 10)
+             [FromServices] IGetAllProfesoresQuery query,
+             [FromQuery] int pageNumber = 1,
+             [FromQuery] int pageSize = 10,
+             [FromQuery] string? search = null)
         {
             if (pageNumber <= 0) pageNumber = 1;
             if (pageSize <= 0) pageSize = 10;
             if (pageSize > 100) pageSize = 100;
 
-            var result = await query.Execute(pageNumber, pageSize);
+            var result = await query.Execute(pageNumber, pageSize, search);
             return StatusCode(result.StatusCode, result);
         }
 
