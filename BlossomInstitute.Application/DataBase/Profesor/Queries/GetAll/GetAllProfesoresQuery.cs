@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using BlossomInstitute.Common.Features;
+﻿using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -10,44 +8,61 @@ namespace BlossomInstitute.Application.DataBase.Profesor.Queries.GetAllProfesore
     public class GetAllProfesoresQuery : IGetAllProfesoresQuery
     {
         private readonly IDataBaseService _db;
-        private readonly IConfigurationProvider _mapperConfig;
 
-        public GetAllProfesoresQuery(IDataBaseService db, IMapper mapper)
+        public GetAllProfesoresQuery(IDataBaseService db)
         {
             _db = db;
-            _mapperConfig = mapper.ConfigurationProvider;
         }
 
-        public async Task<BaseResponseModel> Execute(int pageNumber, int pageSize)
+        public async Task<BaseResponseModel> Execute(int pageNumber, int pageSize, string? search)
         {
             if (pageNumber <= 0) pageNumber = 1;
             if (pageSize <= 0) pageSize = 10;
             if (pageSize > 100) pageSize = 100;
 
-            var roleId = await _db.Roles
+            search = search?.Trim();
+
+            var rolProfesorId = await _db.Roles
                 .Where(r => r.Name == "Profesor")
                 .Select(r => r.Id)
-                .SingleOrDefaultAsync();
+                .FirstOrDefaultAsync();
 
-            if (roleId == 0)
+            if (rolProfesorId == 0)
                 return ResponseApiService.Response(StatusCodes.Status500InternalServerError, "Rol Profesor no existe");
 
-            var query =
-                from u in _db.Usuarios
-                join ur in _db.UserRoles on u.Id equals ur.UserId
-                where ur.RoleId == roleId
-                select u;
+            // Usuarios que son Profesor
+            var query = from u in _db.Usuarios.AsNoTracking()
+                        join ur in _db.UserRoles.AsNoTracking() on u.Id equals ur.UserId
+                        where ur.RoleId == rolProfesorId
+                        select u;
 
-            query = query.Where(u => u.Activo);
+            // Search (Nombre/Apellido/Email)
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                var s = search.ToLowerInvariant();
+                query = query.Where(u =>
+                    (u.Nombre ?? "").ToLower().Contains(s) ||
+                    (u.Apellido ?? "").ToLower().Contains(s) ||
+                    (u.Email ?? "").ToLower().Contains(s));
+            }
 
             var total = await query.CountAsync();
 
-            var items = await query
+            var data = await query
                 .OrderBy(u => u.Apellido)
                 .ThenBy(u => u.Nombre)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .ProjectTo<GetProfesorModel>(_mapperConfig)
+                .Select(u => new GetProfesorModel
+                {
+                    Id = u.Id,
+                    Email = u.Email!,
+                    Nombre = u.Nombre!,
+                    Apellido = u.Apellido!,
+                    Dni = u.Dni,
+                    Telefono = u.PhoneNumber ?? "",
+                    Activo = u.Activo
+                })
                 .ToListAsync();
 
             return ResponseApiService.Response(StatusCodes.Status200OK, new
@@ -55,7 +70,7 @@ namespace BlossomInstitute.Application.DataBase.Profesor.Queries.GetAllProfesore
                 pageNumber,
                 pageSize,
                 total,
-                items
+                items = data
             });
         }
     }
