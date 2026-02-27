@@ -2,6 +2,7 @@
 using BlossomInstitute.Domain.Entidades.Clase;
 using BlossomInstitute.Domain.Entidades.Curso;
 using BlossomInstitute.Domain.Entidades.Profesor;
+using BlossomInstitute.Domain.Entidades.Tarea;
 using BlossomInstitute.Domain.Entidades.Usuario;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,8 @@ namespace BlossomInstitute.Application.DataBase
         DbSet<MatriculaEntity> Matriculas { get; set; }
         DbSet<ClaseEntity> Clases { get; set; }
         DbSet<AsistenciaEntity> Asistencias { get; set; }
+        DbSet<TareaEntity> Tareas { get; set; }
+        DbSet<TareaRecursoEntity> TareaRecursos { get; set; }
 
 
         // Identity (solo lectura para queries)

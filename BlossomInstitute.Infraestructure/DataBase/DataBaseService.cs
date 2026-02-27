@@ -3,6 +3,7 @@ using BlossomInstitute.Domain.Entidades.Alumno;
 using BlossomInstitute.Domain.Entidades.Clase;
 using BlossomInstitute.Domain.Entidades.Curso;
 using BlossomInstitute.Domain.Entidades.Profesor;
+using BlossomInstitute.Domain.Entidades.Tarea;
 using BlossomInstitute.Domain.Entidades.Usuario;
 using BlossomInstitute.Infraestructure.Configuration;
 using Microsoft.AspNetCore.Identity;
@@ -27,6 +28,8 @@ namespace BlossomInstitute.Infraestructure.DataBase
         public DbSet<CursoHorarioEntity> CursoHorarios { get; set; }
         public DbSet<CursoProfesorEntity> CursoProfesores { get; set; }
         public DbSet<MatriculaEntity> Matriculas { get; set; }
+        public DbSet<TareaConfiguration> Tareas { get; set; }
+        public DbSet<TareaRecursoEntity> TareaRecursos { get; set; }
 
         // Identity (solo lectura para queries)
         public IQueryable<UsuarioEntity> Usuarios => Users.AsNoTracking();
@@ -53,6 +56,8 @@ namespace BlossomInstitute.Infraestructure.DataBase
             new MatriculaConfiguration(modelBuilder.Entity<MatriculaEntity>());
             new CursoHorarioConfiguration(modelBuilder.Entity<CursoHorarioEntity>());
             new CursoProfesorConfiguration(modelBuilder.Entity<CursoProfesorEntity>());
+            new TareaConfiguration(modelBuilder.Entity<TareaEntity>());
+            new TareaRecursoConfiguration(modelBuilder.Entity<TareaRecursoEntity>());
         }
 
     }
