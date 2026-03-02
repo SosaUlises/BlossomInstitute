@@ -431,6 +431,27 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "BlossomInstitute.Controllers.TareaController",
+    "Method": "Create",
+    "RelativePath": "api/v1/cursos/{cursoId}/tareas",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cursoId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "model",
+        "Type": "BlossomInstitute.Application.DataBase.Tarea.Commands.CreateTarea.CreateTareaModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "BlossomInstitute.Controllers.CursosController",
     "Method": "MatricularAlumnos",
     "RelativePath": "api/v1/cursos/{id}/alumnos",

@@ -27,7 +27,8 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Commands.CreateTarea
 
             var user = await _userManager.FindByIdAsync(profesorUserId.ToString());
             if (user == null || !user.Activo) return ResponseApiService.Response(403, "Usuario inválido o inactivo");
-            if (!await _userManager.IsInRoleAsync(user, "Profesor")) return ResponseApiService.Response(403, "Acceso denegado");
+            if (!await _userManager.IsInRoleAsync(user, "Profesor") && !await _userManager.IsInRoleAsync(user, "Administrador")) 
+            { return ResponseApiService.Response(403, "Acceso denegado"); };
 
             var curso = await _db.Cursos.AsNoTracking().FirstOrDefaultAsync(c => c.Id == cursoId, ct);
             if (curso == null) return ResponseApiService.Response(404, "Curso no encontrado");

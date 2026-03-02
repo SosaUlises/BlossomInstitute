@@ -183,6 +183,80 @@ namespace BlossomInstitute.Infraestructure.Migrations
                     b.ToTable("Profesores", (string)null);
                 });
 
+            modelBuilder.Entity("BlossomInstitute.Domain.Entidades.Tarea.TareaEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Consigna")
+                        .HasMaxLength(4000)
+                        .HasColumnType("character varying(4000)");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("CursoId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("FechaEntregaUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("ProfesorId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)");
+
+                    b.Property<DateTime?>("UpdatedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProfesorId");
+
+                    b.HasIndex("CursoId", "Estado");
+
+                    b.ToTable("Tareas", (string)null);
+                });
+
+            modelBuilder.Entity("BlossomInstitute.Domain.Entidades.Tarea.TareaRecursoEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Nombre")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<int>("TareaId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Tipo")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TareaId", "Tipo");
+
+                    b.ToTable("TareaRecursos", (string)null);
+                });
+
             modelBuilder.Entity("BlossomInstitute.Domain.Entidades.Usuario.UsuarioEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -497,6 +571,36 @@ namespace BlossomInstitute.Infraestructure.Migrations
                     b.Navigation("Usuario");
                 });
 
+            modelBuilder.Entity("BlossomInstitute.Domain.Entidades.Tarea.TareaEntity", b =>
+                {
+                    b.HasOne("BlossomInstitute.Domain.Entidades.Curso.CursoEntity", "Curso")
+                        .WithMany()
+                        .HasForeignKey("CursoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlossomInstitute.Domain.Entidades.Profesor.ProfesorEntity", "Profesor")
+                        .WithMany()
+                        .HasForeignKey("ProfesorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Curso");
+
+                    b.Navigation("Profesor");
+                });
+
+            modelBuilder.Entity("BlossomInstitute.Domain.Entidades.Tarea.TareaRecursoEntity", b =>
+                {
+                    b.HasOne("BlossomInstitute.Domain.Entidades.Tarea.TareaEntity", "Tarea")
+                        .WithMany("Recursos")
+                        .HasForeignKey("TareaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tarea");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
@@ -562,6 +666,11 @@ namespace BlossomInstitute.Infraestructure.Migrations
                     b.Navigation("Matriculas");
 
                     b.Navigation("Profesores");
+                });
+
+            modelBuilder.Entity("BlossomInstitute.Domain.Entidades.Tarea.TareaEntity", b =>
+                {
+                    b.Navigation("Recursos");
                 });
 
             modelBuilder.Entity("BlossomInstitute.Domain.Entidades.Usuario.UsuarioEntity", b =>

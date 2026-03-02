@@ -28,7 +28,7 @@ namespace BlossomInstitute.Infraestructure.DataBase
         public DbSet<CursoHorarioEntity> CursoHorarios { get; set; }
         public DbSet<CursoProfesorEntity> CursoProfesores { get; set; }
         public DbSet<MatriculaEntity> Matriculas { get; set; }
-        public DbSet<TareaConfiguration> Tareas { get; set; }
+        public DbSet<TareaEntity> Tareas { get; set; }
         public DbSet<TareaRecursoEntity> TareaRecursos { get; set; }
 
         // Identity (solo lectura para queries)
