@@ -33,12 +33,14 @@ using BlossomInstitute.Application.DataBase.Profesor.Command.DeleteProfesor;
 using BlossomInstitute.Application.DataBase.Profesor.Command.UpdateProfesor;
 using BlossomInstitute.Application.DataBase.Profesor.Queries.GetAllProfesores;
 using BlossomInstitute.Application.DataBase.Profesor.Queries.GetById;
+using BlossomInstitute.Application.DataBase.Tarea.Commands.CreateTarea;
 using BlossomInstitute.Application.Validator.Alumno;
 using BlossomInstitute.Application.Validator.Asistencia;
 using BlossomInstitute.Application.Validator.Curso;
 using BlossomInstitute.Application.Validator.Login;
 using BlossomInstitute.Application.Validator.Password;
 using BlossomInstitute.Application.Validator.Profesor;
+using BlossomInstitute.Application.Validator.Tarea;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -99,6 +101,9 @@ namespace BlossomInstitute.Application
             services.AddTransient<ICancelarClaseCommand, CancelarClaseCommand>();
             services.AddTransient<IGetClasesByCursoQuery, GetClasesByCursoQuery>();
 
+            // Tarea
+
+            services.AddTransient<ICreateTareaCommand, CreateTareaCommand>();
 
             // Validators
             services.AddScoped<IValidator<LoginModel>, LoginValidator>();
@@ -115,6 +120,7 @@ namespace BlossomInstitute.Application
             services.AddScoped<IValidator<AssignProfesoresToCursoModel>, AssignProfesoresValidator>();
             services.AddScoped<IValidator<MatricularAlumnosModel>, MatricularAlumnosValidator>();
             services.AddScoped<IValidator<TomarAsistenciaModel>, TomarAsistenciaValidator>();
+            services.AddScoped<IValidator<CreateTareaModel>, CreateTareaValidator>();
 
 
             return services;
