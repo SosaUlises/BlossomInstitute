@@ -3,8 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute\\controllers\\tareacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|solutionrelative:blossominstitute\\controllers\\tareacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Infraestructure\\Migrations\\20260303184328_Entregas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BlossomInstitute.Infraestructure\\Migrations\\20260303184328_Entregas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -23,14 +23,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "TareaController.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\TareaController.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute\\Controllers\\TareaController.cs",
-              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\TareaController.cs",
-              "RelativeToolTip": "BlossomInstitute\\Controllers\\TareaController.cs",
-              "ViewState": "AgIAAD0AAAAAAAAAAAAowEUAAAA4AAAAAAAAAA==",
+              "Title": "20260303184328_Entregas.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Infraestructure\\Migrations\\20260303184328_Entregas.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Infraestructure\\Migrations\\20260303184328_Entregas.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Infraestructure\\Migrations\\20260303184328_Entregas.cs",
+              "RelativeToolTip": "BlossomInstitute.Infraestructure\\Migrations\\20260303184328_Entregas.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-02T14:56:26.895Z",
+              "WhenOpened": "2026-03-03T18:43:29.254Z",
               "EditorCaption": ""
             }
           ]

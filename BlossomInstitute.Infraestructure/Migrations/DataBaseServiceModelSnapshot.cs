@@ -173,6 +173,119 @@ namespace BlossomInstitute.Infraestructure.Migrations
                     b.ToTable("Matriculas", (string)null);
                 });
 
+            modelBuilder.Entity("BlossomInstitute.Domain.Entidades.Entrega.EntregaAdjuntoEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("EntregaId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Nombre")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<int>("Tipo")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EntregaId", "Tipo");
+
+                    b.ToTable("EntregaAdjuntos", (string)null);
+                });
+
+            modelBuilder.Entity("BlossomInstitute.Domain.Entidades.Entrega.EntregaEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AlumnoId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("FechaEntregaUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("TareaId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Texto")
+                        .HasMaxLength(8000)
+                        .HasColumnType("character varying(8000)");
+
+                    b.Property<DateTime?>("UpdatedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AlumnoId");
+
+                    b.HasIndex("TareaId", "AlumnoId")
+                        .IsUnique();
+
+                    b.HasIndex("TareaId", "Estado");
+
+                    b.ToTable("Entregas", (string)null);
+                });
+
+            modelBuilder.Entity("BlossomInstitute.Domain.Entidades.Entrega.FeedbackEntregaEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ArchivoCorregidoNombre")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("ArchivoCorregidoUrl")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<string>("Comentario")
+                        .HasMaxLength(8000)
+                        .HasColumnType("character varying(8000)");
+
+                    b.Property<int>("EntregaId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("FechaCorreccionUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal?>("Nota")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("numeric(5,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EntregaId")
+                        .IsUnique();
+
+                    b.ToTable("EntregaFeedbacks", (string)null);
+                });
+
             modelBuilder.Entity("BlossomInstitute.Domain.Entidades.Profesor.ProfesorEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -560,6 +673,47 @@ namespace BlossomInstitute.Infraestructure.Migrations
                     b.Navigation("Curso");
                 });
 
+            modelBuilder.Entity("BlossomInstitute.Domain.Entidades.Entrega.EntregaAdjuntoEntity", b =>
+                {
+                    b.HasOne("BlossomInstitute.Domain.Entidades.Entrega.EntregaEntity", "Entrega")
+                        .WithMany("Adjuntos")
+                        .HasForeignKey("EntregaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Entrega");
+                });
+
+            modelBuilder.Entity("BlossomInstitute.Domain.Entidades.Entrega.EntregaEntity", b =>
+                {
+                    b.HasOne("BlossomInstitute.Domain.Entidades.Alumno.AlumnoEntity", "Alumno")
+                        .WithMany()
+                        .HasForeignKey("AlumnoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BlossomInstitute.Domain.Entidades.Tarea.TareaEntity", "Tarea")
+                        .WithMany()
+                        .HasForeignKey("TareaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Alumno");
+
+                    b.Navigation("Tarea");
+                });
+
+            modelBuilder.Entity("BlossomInstitute.Domain.Entidades.Entrega.FeedbackEntregaEntity", b =>
+                {
+                    b.HasOne("BlossomInstitute.Domain.Entidades.Entrega.EntregaEntity", "Entrega")
+                        .WithOne("Feedback")
+                        .HasForeignKey("BlossomInstitute.Domain.Entidades.Entrega.FeedbackEntregaEntity", "EntregaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Entrega");
+                });
+
             modelBuilder.Entity("BlossomInstitute.Domain.Entidades.Profesor.ProfesorEntity", b =>
                 {
                     b.HasOne("BlossomInstitute.Domain.Entidades.Usuario.UsuarioEntity", "Usuario")
@@ -666,6 +820,13 @@ namespace BlossomInstitute.Infraestructure.Migrations
                     b.Navigation("Matriculas");
 
                     b.Navigation("Profesores");
+                });
+
+            modelBuilder.Entity("BlossomInstitute.Domain.Entidades.Entrega.EntregaEntity", b =>
+                {
+                    b.Navigation("Adjuntos");
+
+                    b.Navigation("Feedback");
                 });
 
             modelBuilder.Entity("BlossomInstitute.Domain.Entidades.Tarea.TareaEntity", b =>
