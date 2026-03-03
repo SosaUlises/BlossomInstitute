@@ -851,6 +851,48 @@
         }
       }
     },
+    "/api/v1/tareas/{tareaId}/mi-entrega": {
+      "put": {
+        "tags": [
+          "EntregasAlumno"
+        ],
+        "parameters": [
+          {
+            "name": "tareaId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpsertEntregaAlumnoModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpsertEntregaAlumnoModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpsertEntregaAlumnoModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1/me/cursos/profesor": {
       "get": {
         "tags": [
@@ -1644,6 +1686,14 @@
         },
         "additionalProperties": false
       },
+      "TipoAdjunto": {
+        "enum": [
+          1,
+          2
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
       "TipoRecursoTarea": {
         "enum": [
           1,
@@ -1830,6 +1880,40 @@
           },
           "nombre": {
             "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpsertEntregaAdjuntoModel": {
+        "type": "object",
+        "properties": {
+          "tipo": {
+            "$ref": "#/components/schemas/TipoAdjunto"
+          },
+          "url": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpsertEntregaAlumnoModel": {
+        "type": "object",
+        "properties": {
+          "texto": {
+            "type": "string",
+            "nullable": true
+          },
+          "adjuntos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UpsertEntregaAdjuntoModel"
+            },
             "nullable": true
           }
         },

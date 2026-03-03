@@ -3,8 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute\\controllers\\tareacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|solutionrelative:blossominstitute\\controllers\\tareacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Infraestructure\\Migrations\\20260303193216_Feedbacks.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BlossomInstitute.Infraestructure\\Migrations\\20260303193216_Feedbacks.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{689E9456-2E8D-488F-A402-A034A4957B45}|BlossomInstitute.Infraestructure\\BlossomInstitute.Infraestructure.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.infraestructure\\configuration\\entregaconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{689E9456-2E8D-488F-A402-A034A4957B45}|BlossomInstitute.Infraestructure\\BlossomInstitute.Infraestructure.csproj|solutionrelative:blossominstitute.infraestructure\\configuration\\entregaconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{689E9456-2E8D-488F-A402-A034A4957B45}|BlossomInstitute.Infraestructure\\BlossomInstitute.Infraestructure.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.infraestructure\\configuration\\feedbackentregaconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{689E9456-2E8D-488F-A402-A034A4957B45}|BlossomInstitute.Infraestructure\\BlossomInstitute.Infraestructure.csproj|solutionrelative:blossominstitute.infraestructure\\configuration\\feedbackentregaconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{004BB8D1-4AA1-4217-B83D-127265CE479E}|BlossomInstitute.Domain\\BlossomInstitute.Domain.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.domain\\entidades\\entrega\\entregaentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{004BB8D1-4AA1-4217-B83D-127265CE479E}|BlossomInstitute.Domain\\BlossomInstitute.Domain.csproj|solutionrelative:blossominstitute.domain\\entidades\\entrega\\entregaentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{004BB8D1-4AA1-4217-B83D-127265CE479E}|BlossomInstitute.Domain\\BlossomInstitute.Domain.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.domain\\entidades\\entrega\\feedbackentregaentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{004BB8D1-4AA1-4217-B83D-127265CE479E}|BlossomInstitute.Domain\\BlossomInstitute.Domain.csproj|solutionrelative:blossominstitute.domain\\entidades\\entrega\\feedbackentregaentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -23,14 +39,70 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "TareaController.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\TareaController.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute\\Controllers\\TareaController.cs",
-              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\TareaController.cs",
-              "RelativeToolTip": "BlossomInstitute\\Controllers\\TareaController.cs",
-              "ViewState": "AgIAAD0AAAAAAAAAAAAowEUAAAA4AAAAAAAAAA==",
+              "Title": "20260303193216_Feedbacks.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Infraestructure\\Migrations\\20260303193216_Feedbacks.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Infraestructure\\Migrations\\20260303193216_Feedbacks.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Infraestructure\\Migrations\\20260303193216_Feedbacks.cs",
+              "RelativeToolTip": "BlossomInstitute.Infraestructure\\Migrations\\20260303193216_Feedbacks.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-02T14:56:26.895Z",
+              "WhenOpened": "2026-03-03T19:32:16.583Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "EntregaConfiguration.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Infraestructure\\Configuration\\EntregaConfiguration.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Infraestructure\\Configuration\\EntregaConfiguration.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Infraestructure\\Configuration\\EntregaConfiguration.cs",
+              "RelativeToolTip": "BlossomInstitute.Infraestructure\\Configuration\\EntregaConfiguration.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAtwC4AAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-03T19:29:02.842Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "FeedBackEntregaConfiguration.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Infraestructure\\Configuration\\FeedBackEntregaConfiguration.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Infraestructure\\Configuration\\FeedBackEntregaConfiguration.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Infraestructure\\Configuration\\FeedBackEntregaConfiguration.cs",
+              "RelativeToolTip": "BlossomInstitute.Infraestructure\\Configuration\\FeedBackEntregaConfiguration.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAgwBsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-03T19:27:18.945Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "EntregaEntity.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Domain\\Entidades\\Entrega\\EntregaEntity.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Domain\\Entidades\\Entrega\\EntregaEntity.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Domain\\Entidades\\Entrega\\EntregaEntity.cs",
+              "RelativeToolTip": "BlossomInstitute.Domain\\Entidades\\Entrega\\EntregaEntity.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAA1wBcAAABJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-03T19:26:49.289Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "FeedbackEntregaEntity.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Domain\\Entidades\\Entrega\\FeedbackEntregaEntity.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Domain\\Entidades\\Entrega\\FeedbackEntregaEntity.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Domain\\Entidades\\Entrega\\FeedbackEntregaEntity.cs",
+              "RelativeToolTip": "BlossomInstitute.Domain\\Entidades\\Entrega\\FeedbackEntregaEntity.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-03T19:26:14.211Z",
               "EditorCaption": ""
             }
           ]

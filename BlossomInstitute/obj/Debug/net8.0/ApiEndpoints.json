@@ -852,5 +852,26 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlossomInstitute.Controllers.EntregasAlumnoController",
+    "Method": "Upsert",
+    "RelativePath": "api/v1/tareas/{tareaId}/mi-entrega",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tareaId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "model",
+        "Type": "BlossomInstitute.Application.DataBase.Entregas.Commands.UpsertEntregaAlumno.UpsertEntregaAlumnoModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]

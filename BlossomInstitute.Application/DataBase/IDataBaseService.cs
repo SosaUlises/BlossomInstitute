@@ -1,6 +1,7 @@
 ﻿using BlossomInstitute.Domain.Entidades.Alumno;
 using BlossomInstitute.Domain.Entidades.Clase;
 using BlossomInstitute.Domain.Entidades.Curso;
+using BlossomInstitute.Domain.Entidades.Entrega;
 using BlossomInstitute.Domain.Entidades.Profesor;
 using BlossomInstitute.Domain.Entidades.Tarea;
 using BlossomInstitute.Domain.Entidades.Usuario;
@@ -22,6 +23,9 @@ namespace BlossomInstitute.Application.DataBase
         DbSet<AsistenciaEntity> Asistencias { get; set; }
         DbSet<TareaEntity> Tareas { get; set; }
         DbSet<TareaRecursoEntity> TareaRecursos { get; set; }
+        DbSet<EntregaEntity> Entregas { get; set; }
+        DbSet<EntregaAdjuntoEntity> EntregaAdjuntos { get; set; }
+        DbSet<FeedbackEntregaEntity> EntregaFeedbacks { get; set; }
 
 
         // Identity (solo lectura para queries)

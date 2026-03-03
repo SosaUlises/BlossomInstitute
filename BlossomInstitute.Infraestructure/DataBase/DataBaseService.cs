@@ -2,6 +2,7 @@
 using BlossomInstitute.Domain.Entidades.Alumno;
 using BlossomInstitute.Domain.Entidades.Clase;
 using BlossomInstitute.Domain.Entidades.Curso;
+using BlossomInstitute.Domain.Entidades.Entrega;
 using BlossomInstitute.Domain.Entidades.Profesor;
 using BlossomInstitute.Domain.Entidades.Tarea;
 using BlossomInstitute.Domain.Entidades.Usuario;
@@ -30,6 +31,9 @@ namespace BlossomInstitute.Infraestructure.DataBase
         public DbSet<MatriculaEntity> Matriculas { get; set; }
         public DbSet<TareaEntity> Tareas { get; set; }
         public DbSet<TareaRecursoEntity> TareaRecursos { get; set; }
+        public DbSet<EntregaEntity> Entregas { get; set; }
+        public DbSet<EntregaAdjuntoEntity> EntregaAdjuntos { get; set; }
+        public DbSet<FeedbackEntregaEntity> EntregaFeedbacks { get; set; }
 
         // Identity (solo lectura para queries)
         public IQueryable<UsuarioEntity> Usuarios => Users.AsNoTracking();
@@ -58,6 +62,10 @@ namespace BlossomInstitute.Infraestructure.DataBase
             new CursoProfesorConfiguration(modelBuilder.Entity<CursoProfesorEntity>());
             new TareaConfiguration(modelBuilder.Entity<TareaEntity>());
             new TareaRecursoConfiguration(modelBuilder.Entity<TareaRecursoEntity>());
+            new EntregaAdjuntoConfiguration(modelBuilder.Entity<EntregaAdjuntoEntity>());
+            new EntregaConfiguration(modelBuilder.Entity<EntregaEntity>());
+            new FeedbackEntregaConfiguration(modelBuilder.Entity<FeedbackEntregaEntity>());
+
         }
 
     }
