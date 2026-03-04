@@ -854,7 +854,7 @@
     "/api/v1/tareas/{tareaId}/mi-entrega": {
       "put": {
         "tags": [
-          "EntregasAlumno"
+          "Entregas"
         ],
         "parameters": [
           {
@@ -886,6 +886,105 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/cursos/{cursoId}/tareas/{tareaId}/entregas/{alumnoId}/feedbacks": {
+      "post": {
+        "tags": [
+          "Entregas"
+        ],
+        "parameters": [
+          {
+            "name": "cursoId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "tareaId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "alumnoId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFeedbackEntregaModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFeedbackEntregaModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFeedbackEntregaModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "ProfesorEntregas"
+        ],
+        "parameters": [
+          {
+            "name": "cursoId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "tareaId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "alumnoId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -1047,6 +1146,70 @@
               "type": "integer",
               "format": "int32",
               "default": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/me/tareas/{tareaId}/entrega": {
+      "get": {
+        "tags": [
+          "MeEntregas"
+        ],
+        "parameters": [
+          {
+            "name": "tareaId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/me/cursos/{cursoId}/entregas": {
+      "get": {
+        "tags": [
+          "MeEntregas"
+        ],
+        "parameters": [
+          {
+            "name": "cursoId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
             }
           }
         ],
@@ -1219,6 +1382,104 @@
         "parameters": [
           {
             "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/cursos/{cursoId}/tareas/{tareaId}/entregas": {
+      "get": {
+        "tags": [
+          "ProfesorEntregas"
+        ],
+        "parameters": [
+          {
+            "name": "cursoId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "tareaId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/cursos/{cursoId}/tareas/{tareaId}/entregas/{alumnoId}": {
+      "get": {
+        "tags": [
+          "ProfesorEntregas"
+        ],
+        "parameters": [
+          {
+            "name": "cursoId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "tareaId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "alumnoId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1529,6 +1790,32 @@
         },
         "additionalProperties": false
       },
+      "CreateFeedbackEntregaModel": {
+        "type": "object",
+        "properties": {
+          "comentario": {
+            "type": "string",
+            "nullable": true
+          },
+          "estado": {
+            "$ref": "#/components/schemas/EstadoCorreccion"
+          },
+          "nota": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "archivoCorregidoUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "archivoCorregidoNombre": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "CreateProfesorModel": {
         "type": "object",
         "properties": {
@@ -1609,6 +1896,15 @@
         "enum": [
           1,
           2
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "EstadoCorreccion": {
+        "enum": [
+          1,
+          2,
+          3
         ],
         "type": "integer",
         "format": "int32"

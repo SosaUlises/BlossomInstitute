@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BlossomInstitute.Infraestructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3cce4a718a84f0335fc34bdf6e056301be1e5c73")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c90bfd4da37c8632a1c48797ee3fa72195d59003")]
 [assembly: System.Reflection.AssemblyProductAttribute("BlossomInstitute.Infraestructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BlossomInstitute.Infraestructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

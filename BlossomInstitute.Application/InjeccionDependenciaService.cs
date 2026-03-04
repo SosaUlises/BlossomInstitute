@@ -24,7 +24,13 @@ using BlossomInstitute.Application.DataBase.Curso.Queries.GetAllCursos;
 using BlossomInstitute.Application.DataBase.Curso.Queries.GetCursoById;
 using BlossomInstitute.Application.DataBase.Curso.Queries.GetMyCursos.Alumno;
 using BlossomInstitute.Application.DataBase.Curso.Queries.GetMyCursos.Profesor;
+using BlossomInstitute.Application.DataBase.Entregas.Commands.CreateFeedbackEntrega;
 using BlossomInstitute.Application.DataBase.Entregas.Commands.UpsertEntregaAlumno;
+using BlossomInstitute.Application.DataBase.Entregas.Queries.Alumno.GetMiEntregaByTarea;
+using BlossomInstitute.Application.DataBase.Entregas.Queries.Alumno.GetMisEntregasByCurso;
+using BlossomInstitute.Application.DataBase.Entregas.Queries.GetEntregasByTarea;
+using BlossomInstitute.Application.DataBase.Entregas.Queries.GetEntregasDetail;
+using BlossomInstitute.Application.DataBase.Entregas.Queries.GetFeedbacksByEntrega;
 using BlossomInstitute.Application.DataBase.Login.Command;
 using BlossomInstitute.Application.DataBase.Password.Command.ForgotPassword;
 using BlossomInstitute.Application.DataBase.Password.Command.ResetPassword;
@@ -116,6 +122,12 @@ namespace BlossomInstitute.Application
 
             // Entrega
             services.AddTransient<IUpsertEntregaAlumnoCommand, UpsertEntregaAlumnoCommand>();
+            services.AddTransient<ICreateFeedbackEntregaCommand, CreateFeedbackEntregaCommand>();
+            services.AddTransient<IGetEntregasByTareaQuery, GetEntregasByTareaQuery>();
+            services.AddTransient<IGetEntregaDetailQuery, GetEntregaDetailQuery>();
+            services.AddTransient<IGetFeedbacksByEntregaQuery, GetFeedbacksByEntregaQuery>();
+            services.AddTransient<IGetMiEntregaByTareaQuery, GetMiEntregaByTareaQuery>();
+            services.AddTransient<IGetMisEntregasByCursoQuery, GetMisEntregasByCursoQuery>();
 
 
             // Validators
@@ -137,6 +149,7 @@ namespace BlossomInstitute.Application
             services.AddScoped<IValidator<UpdateTareaModel>, UpdateTareaValidator>();
             services.AddScoped<IValidator<UpsertEntregaAdjuntoModel>, UpsertEntregaAdjuntoValidator>();
             services.AddScoped<IValidator<UpsertEntregaAlumnoModel>, UpsertEntregaAlumnoValidator>();
+            services.AddScoped<IValidator<CreateFeedbackEntregaModel>, CreateFeedbackEntregaValidator>();
 
 
             return services;
