@@ -551,6 +551,42 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "BlossomInstitute.Controllers.ProfesorEntregasController",
+    "Method": "GetByTarea",
+    "RelativePath": "api/v1/cursos/{cursoId}/tareas/{tareaId}/entregas",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cursoId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "tareaId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "search",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "BlossomInstitute.Controllers.EntregasController",
     "Method": "CreateFeedback",
     "RelativePath": "api/v1/cursos/{cursoId}/tareas/{tareaId}/entregas/{alumnoId}/feedbacks",
