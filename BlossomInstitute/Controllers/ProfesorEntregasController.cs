@@ -1,4 +1,5 @@
 ﻿using BlossomInstitute.Application.DataBase.Entregas.Queries.GetEntregasByTarea;
+using BlossomInstitute.Application.DataBase.Entregas.Queries.GetEntregasDetail;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -27,6 +28,18 @@ namespace BlossomInstitute.Controllers
             CancellationToken ct = default)
         {
             var result = await query.Execute(cursoId, tareaId, GetUserId(), pageNumber, pageSize, search, ct);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpGet("{alumnoId:int}")]
+        public async Task<IActionResult> GetDetail(
+            [FromRoute] int cursoId,
+            [FromRoute] int tareaId,
+            [FromRoute] int alumnoId,
+            [FromServices] IGetEntregaDetailQuery query,
+            CancellationToken ct = default)
+        {
+            var result = await query.Execute(cursoId, tareaId, alumnoId, GetUserId(), ct);
             return StatusCode(result.StatusCode, result);
         }
     }
