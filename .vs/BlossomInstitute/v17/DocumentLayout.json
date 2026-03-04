@@ -7,6 +7,18 @@
       "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\injecciondependenciaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\entregas\\queries\\getentregasdetail\\getentregadetailquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\entregas\\queries\\getentregasdetail\\getentregadetailquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\entregas\\queries\\getentregasdetail\\igetentregadetailquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\entregas\\queries\\getentregasdetail\\igetentregadetailquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{004BB8D1-4AA1-4217-B83D-127265CE479E}|BlossomInstitute.Domain\\BlossomInstitute.Domain.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.domain\\entidades\\entrega\\entregaadjuntoentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{004BB8D1-4AA1-4217-B83D-127265CE479E}|BlossomInstitute.Domain\\BlossomInstitute.Domain.csproj|solutionrelative:blossominstitute.domain\\entidades\\entrega\\entregaadjuntoentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute\\controllers\\profesorentregascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|solutionrelative:blossominstitute\\controllers\\profesorentregascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -26,11 +38,50 @@
       "DocumentGroups": [
         {
           "DockedHeight": 422,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "EntregaAdjuntoEntity.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Domain\\Entidades\\Entrega\\EntregaAdjuntoEntity.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Domain\\Entidades\\Entrega\\EntregaAdjuntoEntity.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Domain\\Entidades\\Entrega\\EntregaAdjuntoEntity.cs",
+              "RelativeToolTip": "BlossomInstitute.Domain\\Entidades\\Entrega\\EntregaAdjuntoEntity.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-04T19:55:38.951Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "IGetEntregaDetailQuery.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Entregas\\Queries\\GetEntregasDetail\\IGetEntregaDetailQuery.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Entregas\\Queries\\GetEntregasDetail\\IGetEntregaDetailQuery.cs",
+              "ToolTip": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Entregas\\Queries\\GetEntregasDetail\\IGetEntregaDetailQuery.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Entregas\\Queries\\GetEntregasDetail\\IGetEntregaDetailQuery.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAB6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-04T19:51:04.744Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "GetEntregaDetailQuery.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Entregas\\Queries\\GetEntregasDetail\\GetEntregaDetailQuery.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Entregas\\Queries\\GetEntregasDetail\\GetEntregaDetailQuery.cs",
+              "ToolTip": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Entregas\\Queries\\GetEntregasDetail\\GetEntregaDetailQuery.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Entregas\\Queries\\GetEntregasDetail\\GetEntregaDetailQuery.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAACGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-04T19:50:56.442Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -40,14 +91,14 @@
               "RelativeDocumentMoniker": "BlossomInstitute.Application\\InjeccionDependenciaService.cs",
               "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\InjeccionDependenciaService.cs",
               "RelativeToolTip": "BlossomInstitute.Application\\InjeccionDependenciaService.cs",
-              "ViewState": "AgIAAGIAAAAAAAAAAAAgwHQAAABTAAAAAAAAAA==",
+              "ViewState": "AgIAAGkAAAAAAAAAAAAgwHsAAABPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-04T19:44:38.509Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "ProfesorEntregasController.cs",
               "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\ProfesorEntregasController.cs",
               "RelativeDocumentMoniker": "BlossomInstitute\\Controllers\\ProfesorEntregasController.cs",
@@ -55,12 +106,11 @@
               "RelativeToolTip": "BlossomInstitute\\Controllers\\ProfesorEntregasController.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAABQAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-04T19:43:02.005Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-04T19:43:02.005Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 6,
               "Title": "IGetEntregasByTareaQuery.cs",
               "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Entregas\\Queries\\GetEntregasByTarea\\IGetEntregasByTareaQuery.cs",
               "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Entregas\\Queries\\GetEntregasByTarea\\IGetEntregasByTareaQuery.cs",
@@ -72,7 +122,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "GetEntregasByTareaQuery.cs",
               "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Entregas\\Queries\\GetEntregasByTarea\\GetEntregasByTareaQuery.cs",
               "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Entregas\\Queries\\GetEntregasByTarea\\GetEntregasByTareaQuery.cs",
@@ -80,8 +130,7 @@
               "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Entregas\\Queries\\GetEntregasByTarea\\GetEntregasByTareaQuery.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-04T19:38:38.401Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-04T19:38:38.401Z"
             }
           ]
         },
