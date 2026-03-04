@@ -1,5 +1,6 @@
 ﻿using BlossomInstitute.Application.DataBase.Entregas.Queries.GetEntregasByTarea;
 using BlossomInstitute.Application.DataBase.Entregas.Queries.GetEntregasDetail;
+using BlossomInstitute.Application.DataBase.Entregas.Queries.GetFeedbacksByEntrega;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -37,6 +38,18 @@ namespace BlossomInstitute.Controllers
             [FromRoute] int tareaId,
             [FromRoute] int alumnoId,
             [FromServices] IGetEntregaDetailQuery query,
+            CancellationToken ct = default)
+        {
+            var result = await query.Execute(cursoId, tareaId, alumnoId, GetUserId(), ct);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpGet("{alumnoId:int}/feedbacks")]
+        public async Task<IActionResult> GetFeedbacks(
+            [FromRoute] int cursoId,
+            [FromRoute] int tareaId,
+            [FromRoute] int alumnoId,
+            [FromServices] IGetFeedbacksByEntregaQuery query,
             CancellationToken ct = default)
         {
             var result = await query.Execute(cursoId, tareaId, alumnoId, GetUserId(), ct);

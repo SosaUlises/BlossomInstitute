@@ -644,6 +644,32 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "BlossomInstitute.Controllers.ProfesorEntregasController",
+    "Method": "GetFeedbacks",
+    "RelativePath": "api/v1/cursos/{cursoId}/tareas/{tareaId}/entregas/{alumnoId}/feedbacks",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cursoId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "tareaId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "alumnoId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "BlossomInstitute.Controllers.CursosController",
     "Method": "MatricularAlumnos",
     "RelativePath": "api/v1/cursos/{id}/alumnos",
