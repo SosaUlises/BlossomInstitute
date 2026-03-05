@@ -31,7 +31,6 @@ using BlossomInstitute.Application.DataBase.Entregas.Queries.Alumno.GetMisEntreg
 using BlossomInstitute.Application.DataBase.Entregas.Queries.GetEntregasByTarea;
 using BlossomInstitute.Application.DataBase.Entregas.Queries.GetEntregasDetail;
 using BlossomInstitute.Application.DataBase.Entregas.Queries.GetFeedbacksByEntrega;
-using BlossomInstitute.Application.DataBase.Entregas.Queries.ReporteEntregaByTarea;
 using BlossomInstitute.Application.DataBase.Login.Command;
 using BlossomInstitute.Application.DataBase.Password.Command.ForgotPassword;
 using BlossomInstitute.Application.DataBase.Password.Command.ResetPassword;
@@ -41,6 +40,8 @@ using BlossomInstitute.Application.DataBase.Profesor.Command.DeleteProfesor;
 using BlossomInstitute.Application.DataBase.Profesor.Command.UpdateProfesor;
 using BlossomInstitute.Application.DataBase.Profesor.Queries.GetAllProfesores;
 using BlossomInstitute.Application.DataBase.Profesor.Queries.GetById;
+using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteAsistenciaByClase;
+using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteEntregaByTarea;
 using BlossomInstitute.Application.DataBase.Tarea.Commands.ArchivarTarea;
 using BlossomInstitute.Application.DataBase.Tarea.Commands.CreateTarea;
 using BlossomInstitute.Application.DataBase.Tarea.Commands.UpdateTarea;
@@ -129,7 +130,11 @@ namespace BlossomInstitute.Application
             services.AddTransient<IGetFeedbacksByEntregaQuery, GetFeedbacksByEntregaQuery>();
             services.AddTransient<IGetMiEntregaByTareaQuery, GetMiEntregaByTareaQuery>();
             services.AddTransient<IGetMisEntregasByCursoQuery, GetMisEntregasByCursoQuery>();
+
+
+            // Reportes
             services.AddTransient<IGetReporteEntregasByTareaQuery, GetReporteEntregasByTareaQuery>();
+            services.AddTransient<IGetReporteAsistenciasByCursoQuery, GetReporteAsistenciasByCursoQuery>();
 
 
             // Validators

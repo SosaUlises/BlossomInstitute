@@ -1525,7 +1525,7 @@
         }
       }
     },
-    "/api/v1/cursos/{cursoId}/tareas{tareaId}/reporte-entregas": {
+    "/api/v1/reportes/cursos/{cursoId}/tareas/{tareaId}/entregas": {
       "get": {
         "tags": [
           "Reporte"
@@ -1586,6 +1586,70 @@
             "in": "query",
             "schema": {
               "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/reportes/cursos/{cursoId}/asistencias": {
+      "get": {
+        "tags": [
+          "Reporte"
+        ],
+        "parameters": [
+          {
+            "name": "cursoId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string"
             }
           }
         ],
