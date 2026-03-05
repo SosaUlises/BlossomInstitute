@@ -31,6 +31,7 @@ using BlossomInstitute.Application.DataBase.Entregas.Queries.Alumno.GetMisEntreg
 using BlossomInstitute.Application.DataBase.Entregas.Queries.GetEntregasByTarea;
 using BlossomInstitute.Application.DataBase.Entregas.Queries.GetEntregasDetail;
 using BlossomInstitute.Application.DataBase.Entregas.Queries.GetFeedbacksByEntrega;
+using BlossomInstitute.Application.DataBase.Entregas.Queries.ReporteEntregaByTarea;
 using BlossomInstitute.Application.DataBase.Login.Command;
 using BlossomInstitute.Application.DataBase.Password.Command.ForgotPassword;
 using BlossomInstitute.Application.DataBase.Password.Command.ResetPassword;
@@ -128,6 +129,7 @@ namespace BlossomInstitute.Application
             services.AddTransient<IGetFeedbacksByEntregaQuery, GetFeedbacksByEntregaQuery>();
             services.AddTransient<IGetMiEntregaByTareaQuery, GetMiEntregaByTareaQuery>();
             services.AddTransient<IGetMisEntregasByCursoQuery, GetMisEntregasByCursoQuery>();
+            services.AddTransient<IGetReporteEntregasByTareaQuery, GetReporteEntregasByTareaQuery>();
 
 
             // Validators
