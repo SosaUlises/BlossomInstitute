@@ -10,6 +10,7 @@ using BlossomInstitute.Application.DataBase.Asistencia.Queries.GetAsistenciasByA
 using BlossomInstitute.Application.DataBase.Asistencia.Queries.GetAsistenciasByClase;
 using BlossomInstitute.Application.DataBase.Asistencia.Queries.GetMisAsistencias;
 using BlossomInstitute.Application.DataBase.Calificacion.Commands.CreateCalificacion;
+using BlossomInstitute.Application.DataBase.Calificacion.Commands.UpdateCalificacion;
 using BlossomInstitute.Application.DataBase.Clase.Command;
 using BlossomInstitute.Application.DataBase.Clase.Queries.GetClasesByCurso;
 using BlossomInstitute.Application.DataBase.Curso.Commands.ActivarCurso;
@@ -135,6 +136,7 @@ namespace BlossomInstitute.Application
 
             // Calificaciones
             services.AddTransient<ICreateCalificacionCommand, CreateCalificacionCommand>();
+            services.AddTransient<IUpdateCalificacionCommand, UpdateCalificacionCommand>();
 
 
             // Reportes
@@ -163,6 +165,7 @@ namespace BlossomInstitute.Application
             services.AddScoped<IValidator<UpsertEntregaAlumnoModel>, UpsertEntregaAlumnoValidator>();
             services.AddScoped<IValidator<CreateFeedbackEntregaModel>, CreateFeedbackEntregaValidator>();
             services.AddScoped<IValidator<CreateCalificacionModel>, CreateCalificacionValidator>();
+            services.AddScoped<IValidator<UpdateCalificacionModel>, UpdateCalificacionValidator>();
 
 
             return services;

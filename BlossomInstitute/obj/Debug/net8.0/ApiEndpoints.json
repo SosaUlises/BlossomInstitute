@@ -321,6 +321,37 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "BlossomInstitute.Controllers.CalificacionesController",
+    "Method": "Update",
+    "RelativePath": "api/v1/cursos/{cursoId}/alumnos/{alumnoId}/calificaciones/{calificacionId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cursoId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "alumnoId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "calificacionId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "model",
+        "Type": "BlossomInstitute.Application.DataBase.Calificacion.Commands.UpdateCalificacion.UpdateCalificacionModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "BlossomInstitute.Controllers.CursosController",
     "Method": "Archive",
     "RelativePath": "api/v1/cursos/{cursoId}/archivar",

@@ -1,4 +1,5 @@
 ﻿using BlossomInstitute.Application.DataBase.Calificacion.Commands.CreateCalificacion;
+using BlossomInstitute.Application.DataBase.Calificacion.Commands.UpdateCalificacion;
 using BlossomInstitute.Common.Features;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
@@ -32,6 +33,24 @@ namespace BlossomInstitute.Controllers
                 return BadRequest(ResponseApiService.Response(400, vr.Errors));
 
             var result = await command.Execute(cursoId, alumnoId, GetUserId(), model, ct);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPut("{calificacionId:int}")]
+        public async Task<IActionResult> Update(
+            [FromRoute] int cursoId,
+            [FromRoute] int alumnoId,
+            [FromRoute] int calificacionId,
+            [FromBody] UpdateCalificacionModel model,
+            [FromServices] IUpdateCalificacionCommand command,
+            [FromServices] IValidator<UpdateCalificacionModel> validator,
+            CancellationToken ct)
+        {
+            var vr = await validator.ValidateAsync(model, ct);
+            if (!vr.IsValid)
+                return BadRequest(ResponseApiService.Response(400, vr.Errors));
+
+            var result = await command.Execute(cursoId, alumnoId, calificacionId, GetUserId(), model, ct);
             return StatusCode(result.StatusCode, result);
         }
     }
