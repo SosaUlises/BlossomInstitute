@@ -1,6 +1,7 @@
 ﻿using BlossomInstitute.Application.DataBase.Calificacion.Commands.ArchiveCalificacion;
 using BlossomInstitute.Application.DataBase.Calificacion.Commands.CreateCalificacion;
 using BlossomInstitute.Application.DataBase.Calificacion.Commands.UpdateCalificacion;
+using BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalificacionesByAlumno;
 using BlossomInstitute.Common.Features;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
@@ -11,7 +12,7 @@ namespace BlossomInstitute.Controllers
 {
     [ApiController]
     [Route("api/v1/cursos/{cursoId:int}/alumnos/{alumnoId:int}/calificaciones")]
-    [Authorize(Roles = "Profesor")]
+    [Authorize(Roles = "Profesor,Administrador")]
     public class CalificacionesController : ControllerBase
     {
         private int GetUserId()
@@ -19,6 +20,9 @@ namespace BlossomInstitute.Controllers
             var v = User.FindFirstValue(ClaimTypes.NameIdentifier);
             return int.TryParse(v, out var id) ? id : 0;
         }
+
+        private bool IsAdmin() => User.IsInRole("Administrador");
+        private bool IsProfesor() => User.IsInRole("Profesor");
 
         [HttpPost]
         public async Task<IActionResult> Create(
@@ -64,6 +68,21 @@ namespace BlossomInstitute.Controllers
             CancellationToken ct)
         {
             var result = await command.Execute(cursoId, alumnoId, calificacionId, GetUserId(), ct);
+            return StatusCode(result.StatusCode, result);
+        }
+
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> GetByAlumno(
+            [FromRoute] int cursoId,
+            [FromRoute] int alumnoId,
+            [FromServices] IGetCalificacionesByAlumnoQuery query,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10,
+            CancellationToken ct = default)
+        {
+            var result = await query.Execute(alumnoId, GetUserId(), IsAdmin(), IsProfesor(), cursoId, pageNumber, pageSize, ct);
             return StatusCode(result.StatusCode, result);
         }
     }

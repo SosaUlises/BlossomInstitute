@@ -12,6 +12,7 @@ using BlossomInstitute.Application.DataBase.Asistencia.Queries.GetMisAsistencias
 using BlossomInstitute.Application.DataBase.Calificacion.Commands.ArchiveCalificacion;
 using BlossomInstitute.Application.DataBase.Calificacion.Commands.CreateCalificacion;
 using BlossomInstitute.Application.DataBase.Calificacion.Commands.UpdateCalificacion;
+using BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalificacionesByAlumno;
 using BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalificacionesByCurso;
 using BlossomInstitute.Application.DataBase.Clase.Command;
 using BlossomInstitute.Application.DataBase.Clase.Queries.GetClasesByCurso;
@@ -141,6 +142,7 @@ namespace BlossomInstitute.Application
             services.AddTransient<IUpdateCalificacionCommand, UpdateCalificacionCommand>();
             services.AddTransient<IArchiveCalificacionCommand, ArchiveCalificacionCommand>();
             services.AddTransient<IGetCalificacionesByCursoQuery, GetCalificacionesByCursoQuery>();
+            services.AddTransient<IGetCalificacionesByAlumnoQuery, GetCalificacionesByAlumnoQuery>();
 
 
             // Reportes
