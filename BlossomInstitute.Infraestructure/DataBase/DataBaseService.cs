@@ -1,5 +1,6 @@
 ﻿using BlossomInstitute.Application.DataBase;
 using BlossomInstitute.Domain.Entidades.Alumno;
+using BlossomInstitute.Domain.Entidades.Calificaciones;
 using BlossomInstitute.Domain.Entidades.Clase;
 using BlossomInstitute.Domain.Entidades.Curso;
 using BlossomInstitute.Domain.Entidades.Entrega;
@@ -34,6 +35,7 @@ namespace BlossomInstitute.Infraestructure.DataBase
         public DbSet<EntregaEntity> Entregas { get; set; }
         public DbSet<EntregaAdjuntoEntity> EntregaAdjuntos { get; set; }
         public DbSet<FeedbackEntregaEntity> EntregaFeedbacks { get; set; }
+        public DbSet<CalificacionEntity> Calificaciones { get; set; }
 
         // Identity (solo lectura para queries)
         public IQueryable<UsuarioEntity> Usuarios => Users.AsNoTracking();
