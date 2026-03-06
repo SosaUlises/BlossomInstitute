@@ -8,6 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DataBase\Reportes\Queries\ReporteAsistenciasByClase\**" />
+    <EmbeddedResource Remove="DataBase\Reportes\Queries\ReporteAsistenciasByClase\**" />
+    <None Remove="DataBase\Reportes\Queries\ReporteAsistenciasByClase\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
     <PackageReference Include="FluentValidation" Version="12.1.1" />

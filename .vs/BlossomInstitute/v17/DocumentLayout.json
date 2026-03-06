@@ -3,8 +3,44 @@
   "WorkspaceRootPath": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute\\controllers\\meentregascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|solutionrelative:blossominstitute\\controllers\\meentregascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\asistencia\\command\\tomarasistencia\\tomarasistenciaitemmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\asistencia\\command\\tomarasistencia\\tomarasistenciaitemmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\asistencia\\command\\tomarasistencia\\tomarasistenciamodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\asistencia\\command\\tomarasistencia\\tomarasistenciamodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\asistencia\\command\\tomarasistencia\\tomarasistenciacommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\asistencia\\command\\tomarasistencia\\tomarasistenciacommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\asistencia\\queries\\getasistenciasbyalumno\\getasistenciasbyalumnoquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\asistencia\\queries\\getasistenciasbyalumno\\getasistenciasbyalumnoquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\asistencia\\queries\\getasistenciasbyalumno\\asistenciaalumnohistorialitemmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\asistencia\\queries\\getasistenciasbyalumno\\asistenciaalumnohistorialitemmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute\\controllers\\asistenciacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|solutionrelative:blossominstitute\\controllers\\asistenciacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\asistencia\\queries\\getasistenciasbyclase\\getasistenciasbyclasequery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\asistencia\\queries\\getasistenciasbyclase\\getasistenciasbyclasequery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute\\controllers\\reportecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|solutionrelative:blossominstitute\\controllers\\reportecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\reportes\\queries\\reporteasistenciabyclase\\getreporteasistenciasbycursoquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\reportes\\queries\\reporteasistenciabyclase\\getreporteasistenciasbycursoquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\reportes\\queries\\reporteasistenciabyclase\\igetreporteasistenciasbycursoquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\reportes\\queries\\reporteasistenciabyclase\\igetreporteasistenciasbycursoquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -23,14 +59,131 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "MeEntregasController.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\MeEntregasController.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute\\Controllers\\MeEntregasController.cs",
-              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\MeEntregasController.cs",
-              "RelativeToolTip": "BlossomInstitute\\Controllers\\MeEntregasController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAAAAAAAAAAAA==",
+              "Title": "TomarAsistenciaItemModel.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Asistencia\\Command\\TomarAsistencia\\TomarAsistenciaItemModel.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Asistencia\\Command\\TomarAsistencia\\TomarAsistenciaItemModel.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Asistencia\\Command\\TomarAsistencia\\TomarAsistenciaItemModel.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Asistencia\\Command\\TomarAsistencia\\TomarAsistenciaItemModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-04T20:24:18.889Z",
+              "WhenOpened": "2026-03-05T20:01:15.987Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "TomarAsistenciaModel.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Asistencia\\Command\\TomarAsistencia\\TomarAsistenciaModel.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Asistencia\\Command\\TomarAsistencia\\TomarAsistenciaModel.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Asistencia\\Command\\TomarAsistencia\\TomarAsistenciaModel.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Asistencia\\Command\\TomarAsistencia\\TomarAsistenciaModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-05T20:01:09.843Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "TomarAsistenciaCommand.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Asistencia\\Command\\TomarAsistencia\\TomarAsistenciaCommand.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Asistencia\\Command\\TomarAsistencia\\TomarAsistenciaCommand.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Asistencia\\Command\\TomarAsistencia\\TomarAsistenciaCommand.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Asistencia\\Command\\TomarAsistencia\\TomarAsistenciaCommand.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAA1wFsAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-05T20:00:16.203Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "AsistenciaAlumnoHistorialItemModel.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Asistencia\\Queries\\GetAsistenciasByAlumno\\AsistenciaAlumnoHistorialItemModel.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Asistencia\\Queries\\GetAsistenciasByAlumno\\AsistenciaAlumnoHistorialItemModel.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Asistencia\\Queries\\GetAsistenciasByAlumno\\AsistenciaAlumnoHistorialItemModel.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Asistencia\\Queries\\GetAsistenciasByAlumno\\AsistenciaAlumnoHistorialItemModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-05T19:59:14.001Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "AsistenciaController.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\AsistenciaController.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute\\Controllers\\AsistenciaController.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\AsistenciaController.cs",
+              "RelativeToolTip": "BlossomInstitute\\Controllers\\AsistenciaController.cs",
+              "ViewState": "AgIAADMAAAAAAAAAAAAowAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-05T19:58:15.229Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "GetAsistenciasByAlumnoQuery.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Asistencia\\Queries\\GetAsistenciasByAlumno\\GetAsistenciasByAlumnoQuery.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Asistencia\\Queries\\GetAsistenciasByAlumno\\GetAsistenciasByAlumnoQuery.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Asistencia\\Queries\\GetAsistenciasByAlumno\\GetAsistenciasByAlumnoQuery.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Asistencia\\Queries\\GetAsistenciasByAlumno\\GetAsistenciasByAlumnoQuery.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAowCsAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-05T19:57:43.365Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "GetAsistenciasByClaseQuery.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Asistencia\\Queries\\GetAsistenciasByClase\\GetAsistenciasByClaseQuery.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Asistencia\\Queries\\GetAsistenciasByClase\\GetAsistenciasByClaseQuery.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Asistencia\\Queries\\GetAsistenciasByClase\\GetAsistenciasByClaseQuery.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Asistencia\\Queries\\GetAsistenciasByClase\\GetAsistenciasByClaseQuery.cs",
+              "ViewState": "AgIAADMAAAAAAAAAAAAowAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-05T19:56:27.059Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ReporteController.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\ReporteController.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute\\Controllers\\ReporteController.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\ReporteController.cs",
+              "RelativeToolTip": "BlossomInstitute\\Controllers\\ReporteController.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABMAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-05T19:45:19.422Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "GetReporteAsistenciasByCursoQuery.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteAsistenciaByClase\\GetReporteAsistenciasByCursoQuery.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteAsistenciaByClase\\GetReporteAsistenciasByCursoQuery.cs",
+              "ToolTip": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteAsistenciaByClase\\GetReporteAsistenciasByCursoQuery.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteAsistenciaByClase\\GetReporteAsistenciasByCursoQuery.cs",
+              "ViewState": "AgIAAH4AAAAAAAAAAAAowIIAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-05T18:43:14.301Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "IGetReporteAsistenciasByCursoQuery.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteAsistenciaByClase\\IGetReporteAsistenciasByCursoQuery.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteAsistenciaByClase\\IGetReporteAsistenciasByCursoQuery.cs",
+              "ToolTip": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteAsistenciaByClase\\IGetReporteAsistenciasByCursoQuery.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteAsistenciaByClase\\IGetReporteAsistenciasByCursoQuery.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-05T18:43:05.698Z",
               "EditorCaption": ""
             }
           ]

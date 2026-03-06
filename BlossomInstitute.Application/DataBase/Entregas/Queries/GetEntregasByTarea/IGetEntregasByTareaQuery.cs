@@ -5,12 +5,16 @@ namespace BlossomInstitute.Application.DataBase.Entregas.Queries.GetEntregasByTa
     public interface IGetEntregasByTareaQuery
     {
         Task<BaseResponseModel> Execute(
-            int cursoId,
-            int tareaId,
-            int profesorUserId,
-            int pageNumber,
-            int pageSize,
-            string? search,
-            CancellationToken ct);
+        int cursoId,
+        int tareaId,
+        int profesorUserId,
+        int pageNumber,
+        int pageSize,
+        string? search,
+        int? estadoEntrega,
+        int? estadoFeedback,
+        bool? pendienteCorreccion,
+        bool? soloConAdjuntos,
+        CancellationToken ct);
     }
 }

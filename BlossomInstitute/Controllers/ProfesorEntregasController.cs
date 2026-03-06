@@ -19,16 +19,27 @@ namespace BlossomInstitute.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetByTarea(
-            [FromServices] IGetEntregasByTareaQuery query,
+        public async Task<IActionResult> GetEntregasByTarea(
             [FromRoute] int cursoId,
             [FromRoute] int tareaId,
+            [FromServices] IGetEntregasByTareaQuery query,
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10,
             [FromQuery] string? search = null,
+            [FromQuery] int? estadoEntrega = null,
+            [FromQuery] int? estadoFeedback = null,
+            [FromQuery] bool? pendienteCorreccion = null,
+            [FromQuery] bool? soloConAdjuntos = null,
             CancellationToken ct = default)
         {
-            var result = await query.Execute(cursoId, tareaId, GetUserId(), pageNumber, pageSize, search, ct);
+            var result = await query.Execute(
+                cursoId, tareaId, GetUserId(),
+                pageNumber, pageSize,
+                search,
+                estadoEntrega, estadoFeedback,
+                pendienteCorreccion, soloConAdjuntos,
+                ct);
+
             return StatusCode(result.StatusCode, result);
         }
 
