@@ -8,6 +8,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy
+            .WithOrigins(
+                "http://localhost:3000",
+                "http://127.0.0.1:3000",
+                "http://192.168.18.9:3000"
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 builder.Services
     .AddWebApi()
     .AddCommon()
@@ -26,16 +41,19 @@ catch (Exception ex)
     throw;
 }
 
-
 app.UseSwagger();
 app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Blossom Institute v1");
-        c.RoutePrefix = string.Empty;
-    });
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Blossom Institute v1");
+    c.RoutePrefix = string.Empty;
+});
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowFrontend");
+
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 app.Run();
