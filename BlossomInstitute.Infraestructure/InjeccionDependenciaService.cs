@@ -83,18 +83,15 @@ namespace BlossomInstitute.Infraestructure
 
             });
 
-            // Email config
-            var emailSection = configuration.GetSection("Email");
-            var host = emailSection["Host"];
-            if (string.IsNullOrWhiteSpace(host))
-                throw new InvalidOperationException("Email:Host no configurado");
-
-
             // Servicios
 
             services.AddScoped<IGetTokenJWTService, GetTokenJWTService>();
             services.Configure<EmailSettings>(configuration.GetSection("Email"));
-            services.AddScoped<IEmailService, SmtpEmailService>();
+
+            services.AddHttpClient<IEmailService, BrevoEmailService>(client =>
+            {
+                client.Timeout = TimeSpan.FromSeconds(30);
+            });
             QuestPDF.Settings.License = LicenseType.Community;
 
             return services;

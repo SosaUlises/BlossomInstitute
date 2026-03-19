@@ -61,10 +61,16 @@ namespace BlossomInstitute.Application.DataBase.Password.Command.ForgotPassword
             {
                 await _emailService.SendAsync(usuario.Email!, subject, body);
             }
-            catch
+            catch (Exception ex)
             {
-                return ResponseApiService.Response(StatusCodes.Status500InternalServerError,
-                    "No se pudo enviar el email. Intenta nuevamente más tarde.");
+                return ResponseApiService.Response(
+                    StatusCodes.Status500InternalServerError,
+                    new
+                    {
+                        error = ex.Message,
+                        inner = ex.InnerException?.Message
+                    },
+                    "No se pudo enviar el email");
             }
 
             if (_env.IsDevelopment())
