@@ -49,8 +49,7 @@
               "RelativeToolTip": "BlossomInstitute.Infraestructure\\InjeccionDependenciaService.cs",
               "ViewState": "AgIAAEkAAAAAAAAAAAAEwFQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-19T00:37:56.135Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-19T00:37:56.135Z"
             },
             {
               "$type": "Document",
@@ -58,9 +57,9 @@
               "Title": "secrets.json",
               "DocumentMoniker": "C:\\Users\\ulipv\\AppData\\Roaming\\Microsoft\\UserSecrets\\62970d7f-8876-4387-8500-099c83663af7\\secrets.json",
               "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Roaming\\Microsoft\\UserSecrets\\62970d7f-8876-4387-8500-099c83663af7\\secrets.json",
-              "ToolTip": "C:\\Users\\ulipv\\AppData\\Roaming\\Microsoft\\UserSecrets\\62970d7f-8876-4387-8500-099c83663af7\\secrets.json*",
-              "RelativeToolTip": "..\\..\\..\\AppData\\Roaming\\Microsoft\\UserSecrets\\62970d7f-8876-4387-8500-099c83663af7\\secrets.json*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAIAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\ulipv\\AppData\\Roaming\\Microsoft\\UserSecrets\\62970d7f-8876-4387-8500-099c83663af7\\secrets.json",
+              "RelativeToolTip": "..\\..\\..\\AppData\\Roaming\\Microsoft\\UserSecrets\\62970d7f-8876-4387-8500-099c83663af7\\secrets.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAABsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2026-03-19T00:36:57.706Z",
               "EditorCaption": ""
@@ -75,8 +74,7 @@
               "RelativeToolTip": "BlossomInstitute\\appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-03-19T00:31:27.064Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-19T00:31:27.064Z"
             }
           ]
         }

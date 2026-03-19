@@ -41,16 +41,17 @@ namespace BlossomInstitute.Application.DataBase.Password.Command.ResetPassword
                 return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Usuario inactivo");
 
 
-            var decodedToken = WebUtility.UrlDecode(model.Token)?.Trim();
-            if (string.IsNullOrWhiteSpace(decodedToken))
+            var token = model.Token?.Trim();
+
+            if (string.IsNullOrWhiteSpace(token))
                 return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Token inválido o expirado");
 
-
-            var result = await _userManager.ResetPasswordAsync(usuario, decodedToken, model.NewPassword);
+            var result = await _userManager.ResetPasswordAsync(usuario, token, model.NewPassword);
 
             if (!result.Succeeded)
             {
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest,
+                return ResponseApiService.Response(
+                    StatusCodes.Status400BadRequest,
                     result.Errors.Select(e => e.Description).ToList(),
                     "No se pudo restablecer la contraseña");
             }
