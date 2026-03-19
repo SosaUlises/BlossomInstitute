@@ -1521,6 +1521,18 @@
         }
       }
     },
+    "/api/v1/dashboard/admin": {
+      "get": {
+        "tags": [
+          "MeAdminDashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1/me/alumno/asistencias": {
       "get": {
         "tags": [

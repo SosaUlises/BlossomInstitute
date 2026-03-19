@@ -970,6 +970,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "BlossomInstitute.Controllers.Me.Admin.MeAdminDashboard",
+    "Method": "GetAdminDashboard",
+    "RelativePath": "api/v1/dashboard/admin",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "BlossomInstitute.Controllers.Me.Alumnos.MeAlumnoAsistenciasController",
     "Method": "GetMisAsistencias",
     "RelativePath": "api/v1/me/alumno/asistencias",
