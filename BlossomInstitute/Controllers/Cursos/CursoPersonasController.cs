@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
+
 namespace BlossomInstitute.Controllers.Cursos
 {
     [ApiController]
@@ -72,53 +73,55 @@ namespace BlossomInstitute.Controllers.Cursos
 
         [HttpPost("assign/profesores")]
         public async Task<IActionResult> AssignProfesores(
-           [FromRoute] int id,
-           [FromBody] AssignProfesoresToCursoModel model,
-           [FromServices] IAssignProfesoresToCursoCommand command,
-           [FromServices] IValidator<AssignProfesoresToCursoModel> validator,
-           CancellationToken ct)
+            [FromRoute] int cursoId,
+            [FromBody] AssignProfesoresToCursoModel model,
+            [FromServices] IAssignProfesoresToCursoCommand command,
+            [FromServices] IValidator<AssignProfesoresToCursoModel> validator,
+            CancellationToken ct)
         {
             var vr = await validator.ValidateAsync(model, ct);
-            if (!vr.IsValid) return BadRequest(ResponseApiService.Response(400, vr.Errors));
+            if (!vr.IsValid)
+                return BadRequest(ResponseApiService.Response(400, vr.Errors));
 
-            var result = await command.Execute(id, model, ct);
+            var result = await command.Execute(cursoId, model, ct);
             return StatusCode(result.StatusCode, result);
         }
 
         [HttpDelete("remove/profesores/{profesorId:int}")]
         public async Task<IActionResult> RemoveProfesor(
-            [FromRoute] int id,
+            [FromRoute] int cursoId,
             [FromRoute] int profesorId,
             [FromServices] IRemoveProfesorFromCursoCommand command,
             CancellationToken ct)
         {
-            var result = await command.Execute(id, profesorId, ct);
+            var result = await command.Execute(cursoId, profesorId, ct);
             return StatusCode(result.StatusCode, result);
         }
 
         [HttpPost("assign/alumnos")]
         public async Task<IActionResult> MatricularAlumnos(
-            [FromRoute] int id,
+            [FromRoute] int cursoId,
             [FromBody] MatricularAlumnosModel model,
             [FromServices] IMatricularAlumnosCommand command,
             [FromServices] IValidator<MatricularAlumnosModel> validator,
             CancellationToken ct)
         {
             var vr = await validator.ValidateAsync(model, ct);
-            if (!vr.IsValid) return BadRequest(ResponseApiService.Response(400, vr.Errors));
+            if (!vr.IsValid)
+                return BadRequest(ResponseApiService.Response(400, vr.Errors));
 
-            var result = await command.Execute(id, model, ct);
+            var result = await command.Execute(cursoId, model, ct);
             return StatusCode(result.StatusCode, result);
         }
 
         [HttpDelete("remove/alumnos/{alumnoId:int}")]
         public async Task<IActionResult> RemoveAlumno(
-            [FromRoute] int id,
+            [FromRoute] int cursoId,
             [FromRoute] int alumnoId,
             [FromServices] IRemoveAlumnoFromCursoCommand command,
             CancellationToken ct)
         {
-            var result = await command.Execute(id, alumnoId, ct);
+            var result = await command.Execute(cursoId, alumnoId, ct);
             return StatusCode(result.StatusCode, result);
         }
     }

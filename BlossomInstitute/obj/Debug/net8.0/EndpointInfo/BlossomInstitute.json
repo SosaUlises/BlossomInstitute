@@ -832,20 +832,12 @@
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "cursoId",
             "in": "path",
             "required": true,
             "schema": {
               "type": "integer",
               "format": "int32"
-            }
-          },
-          {
-            "name": "cursoId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
             }
           }
         ],
@@ -882,7 +874,7 @@
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "cursoId",
             "in": "path",
             "required": true,
             "schema": {
@@ -897,14 +889,6 @@
             "schema": {
               "type": "integer",
               "format": "int32"
-            }
-          },
-          {
-            "name": "cursoId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
             }
           }
         ],
@@ -922,20 +906,12 @@
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "cursoId",
             "in": "path",
             "required": true,
             "schema": {
               "type": "integer",
               "format": "int32"
-            }
-          },
-          {
-            "name": "cursoId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
             }
           }
         ],
@@ -972,7 +948,7 @@
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "cursoId",
             "in": "path",
             "required": true,
             "schema": {
@@ -987,14 +963,6 @@
             "schema": {
               "type": "integer",
               "format": "int32"
-            }
-          },
-          {
-            "name": "cursoId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
             }
           }
         ],

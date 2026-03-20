@@ -464,18 +464,13 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "id",
+        "Name": "cursoId",
         "Type": "System.Int32",
-        "IsRequired": false
+        "IsRequired": true
       },
       {
         "Name": "model",
         "Type": "BlossomInstitute.Application.DataBase.Curso.Commands.AsignarAlumnos.MatricularAlumnosModel",
-        "IsRequired": true
-      },
-      {
-        "Name": "cursoId",
-        "Type": "",
         "IsRequired": true
       }
     ],
@@ -490,18 +485,13 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "id",
+        "Name": "cursoId",
         "Type": "System.Int32",
-        "IsRequired": false
+        "IsRequired": true
       },
       {
         "Name": "model",
         "Type": "BlossomInstitute.Application.DataBase.Curso.Commands.AsignarProfesores.AssignProfesoresToCursoModel",
-        "IsRequired": true
-      },
-      {
-        "Name": "cursoId",
-        "Type": "",
         "IsRequired": true
       }
     ],
@@ -667,18 +657,13 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "alumnoId",
+        "Name": "cursoId",
         "Type": "System.Int32",
         "IsRequired": true
       },
       {
-        "Name": "cursoId",
-        "Type": "",
+        "Name": "alumnoId",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],
@@ -693,18 +678,13 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "profesorId",
+        "Name": "cursoId",
         "Type": "System.Int32",
         "IsRequired": true
       },
       {
-        "Name": "cursoId",
-        "Type": "",
+        "Name": "profesorId",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],
