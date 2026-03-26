@@ -1858,6 +1858,48 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "BlossomInstitute.Controllers.Settings.SettingsAccountController",
+    "Method": "GetMyAccount",
+    "RelativePath": "api/v1/settings/account",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlossomInstitute.Controllers.Settings.SettingsAccountController",
+    "Method": "UpdateMyAccount",
+    "RelativePath": "api/v1/settings/account",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "BlossomInstitute.Application.DataBase.Settings.Command.UpdateAccount.UpdateMyAccountSettingsModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlossomInstitute.Controllers.Settings.SettingsAccountController",
+    "Method": "ChangeMyPassword",
+    "RelativePath": "api/v1/settings/account/change-password",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "BlossomInstitute.Application.DataBase.Settings.Command.ChangePassword.ChangeMyPasswordModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "BlossomInstitute.Controllers.Entregas.AlumnoEntregasController",
     "Method": "Upsert",
     "RelativePath": "api/v1/tareas/{tareaId}/entrega",

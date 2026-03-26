@@ -1,4 +1,5 @@
 ﻿using BlossomInstitute.Application.DataBase.Settings.Queries;
+using BlossomInstitute.Application.DataBase.Settings.Queries.GetMyAccount;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Usuario;
 using BlossomInstitute.Domain.Model;
