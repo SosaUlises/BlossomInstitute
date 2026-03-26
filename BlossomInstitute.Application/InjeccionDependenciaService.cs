@@ -57,6 +57,9 @@ using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteHomeworkByCu
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteMarksByCursoAndTerm;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteStudentMarksDetail;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteStudentSummaryByCursoAndTerm;
+using BlossomInstitute.Application.DataBase.Settings.Command.ChangePassword;
+using BlossomInstitute.Application.DataBase.Settings.Command.UpdateAccount;
+using BlossomInstitute.Application.DataBase.Settings.Queries.GetMyAccount;
 using BlossomInstitute.Application.DataBase.Tarea.Commands.ArchivarTarea;
 using BlossomInstitute.Application.DataBase.Tarea.Commands.CreateTarea;
 using BlossomInstitute.Application.DataBase.Tarea.Commands.UpdateTarea;
@@ -71,6 +74,7 @@ using BlossomInstitute.Application.Validator.Entrega;
 using BlossomInstitute.Application.Validator.Login;
 using BlossomInstitute.Application.Validator.Password;
 using BlossomInstitute.Application.Validator.Profesor;
+using BlossomInstitute.Application.Validator.Settings;
 using BlossomInstitute.Application.Validator.Tarea;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -174,6 +178,11 @@ namespace BlossomInstitute.Application
             services.AddTransient<IGetReporteStudentMarksDetailByCursoAndTermQuery, GetReporteStudentMarksDetailByCursoAndTermQuery>();
             services.AddScoped<IReporteExportService, ReporteExportService>();
 
+            // Settings
+            services.AddTransient<IGetMyAccountSettingsQuery, GetMyAccountSettingsQuery>();
+            services.AddTransient<IUpdateMyAccountSettingsCommand, UpdateMyAccountSettingsCommand>();
+            services.AddTransient<IChangeMyPasswordCommand, ChangeMyPasswordCommand>();
+
 
             // Validators
             services.AddScoped<IValidator<LoginModel>, LoginValidator>();
@@ -197,6 +206,8 @@ namespace BlossomInstitute.Application
             services.AddScoped<IValidator<CreateFeedbackEntregaModel>, CreateFeedbackEntregaValidator>();
             services.AddScoped<IValidator<CreateCalificacionModel>, CreateCalificacionValidator>();
             services.AddScoped<IValidator<UpdateCalificacionModel>, UpdateCalificacionValidator>();
+            services.AddScoped<IValidator<UpdateMyAccountSettingsModel>, UpdateMyAccountSettingsModelValidator>();
+            services.AddScoped<IValidator<ChangeMyPasswordModel>, ChangeMyPasswordModelValidator>();
 
 
             return services;

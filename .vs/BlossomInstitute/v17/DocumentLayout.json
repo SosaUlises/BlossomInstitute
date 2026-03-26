@@ -3,32 +3,56 @@
   "WorkspaceRootPath": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\services\\export\\reporteexportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\services\\export\\reporteexportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute\\controllers\\settings\\settingsaccountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|solutionrelative:blossominstitute\\controllers\\settings\\settingsaccountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\services\\export\\ireporteexportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\services\\export\\ireporteexportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\injecciondependenciaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\injecciondependenciaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute\\controllers\\reportes\\reportecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|solutionrelative:blossominstitute\\controllers\\reportes\\reportecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\settings\\command\\changepassword\\changemypasswordcommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\settings\\command\\changepassword\\changemypasswordcommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\reportes\\queries\\reportehomeworkbycursoandterm\\getreportehomeworkbycursoandtermquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\reportes\\queries\\reportehomeworkbycursoandterm\\getreportehomeworkbycursoandtermquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\settings\\command\\changepassword\\ichangemypasswordcommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\settings\\command\\changepassword\\ichangemypasswordcommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\reportes\\queries\\reportehomeworkbycursoandterm\\reportehomeworkbycursoandtermresponsemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\reportes\\queries\\reportehomeworkbycursoandterm\\reportehomeworkbycursoandtermresponsemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\settings\\command\\changepassword\\changemypasswordmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\settings\\command\\changepassword\\changemypasswordmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\reportes\\queries\\reportehomeworkbycursoandterm\\reportehomeworkbycursoandtermitemmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\reportes\\queries\\reportehomeworkbycursoandterm\\reportehomeworkbycursoandtermitemmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\validator\\settings\\changemypasswordmodelvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\validator\\settings\\changemypasswordmodelvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\reportes\\queries\\reportestudentsummarybycursoandterm\\getreportestudentsummarybycursoandtermquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\reportes\\queries\\reportestudentsummarybycursoandterm\\getreportestudentsummarybycursoandtermquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\settings\\queries\\getmyaccount\\getmyaccountsettingsmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\settings\\queries\\getmyaccount\\getmyaccountsettingsmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\settings\\command\\updateaccount\\iupdatemyaccountsettingscommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\settings\\command\\updateaccount\\iupdatemyaccountsettingscommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\settings\\queries\\getmyaccount\\getmyaccountsettingsquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\settings\\queries\\getmyaccount\\getmyaccountsettingsquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\settings\\command\\updateaccount\\updatemyaccountsettingscommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\settings\\command\\updateaccount\\updatemyaccountsettingscommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\settings\\command\\updateaccount\\updatemyaccountsettingsmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\settings\\command\\updateaccount\\updatemyaccountsettingsmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\settings\\queries\\getmyaccount\\igetmyaccountsettingsquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\settings\\queries\\getmyaccount\\igetmyaccountsettingsquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\validator\\settings\\updatemyaccountsettingsmodelvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\validator\\settings\\updatemyaccountsettingsmodelvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,7 +62,7 @@
       "DocumentGroups": [
         {
           "DockedHeight": 422,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -59,92 +83,170 @@
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "ReporteController.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\Reportes\\ReporteController.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute\\Controllers\\Reportes\\ReporteController.cs",
-              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\Reportes\\ReporteController.cs",
-              "RelativeToolTip": "BlossomInstitute\\Controllers\\Reportes\\ReporteController.cs",
-              "ViewState": "AgIAAOgBAAAAAAAAAAAwwOYBAAAlAAAAAAAAAA==",
+              "Title": "ChangeMyPasswordCommand.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Settings\\Command\\ChangePassword\\ChangeMyPasswordCommand.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Settings\\Command\\ChangePassword\\ChangeMyPasswordCommand.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Settings\\Command\\ChangePassword\\ChangeMyPasswordCommand.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Settings\\Command\\ChangePassword\\ChangeMyPasswordCommand.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAA1AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-26T01:58:03.228Z",
+              "WhenOpened": "2026-03-26T16:40:50.242Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "IReporteExportService.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\Services\\Export\\IReporteExportService.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute.Application\\Services\\Export\\IReporteExportService.cs",
-              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\Services\\Export\\IReporteExportService.cs",
-              "RelativeToolTip": "BlossomInstitute.Application\\Services\\Export\\IReporteExportService.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAAgwBwAAAA/AAAAAAAAAA==",
+              "Title": "InjeccionDependenciaService.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\InjeccionDependenciaService.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\InjeccionDependenciaService.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\InjeccionDependenciaService.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\InjeccionDependenciaService.cs",
+              "ViewState": "AgIAAKIAAAAAAAAAAAAgwLQAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-26T01:56:26.784Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "GetReporteHomeworkByCursoAndTermQuery.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteHomeworkByCursoAndTerm\\GetReporteHomeworkByCursoAndTermQuery.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteHomeworkByCursoAndTerm\\GetReporteHomeworkByCursoAndTermQuery.cs",
-              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteHomeworkByCursoAndTerm\\GetReporteHomeworkByCursoAndTermQuery.cs",
-              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteHomeworkByCursoAndTerm\\GetReporteHomeworkByCursoAndTermQuery.cs",
-              "ViewState": "AgIAADsBAAAAAAAAAAAowAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-26T01:53:22.459Z",
+              "WhenOpened": "2026-03-26T16:34:18.722Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "ReporteExportService.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\Services\\Export\\ReporteExportService.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute.Application\\Services\\Export\\ReporteExportService.cs",
-              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\Services\\Export\\ReporteExportService.cs",
-              "RelativeToolTip": "BlossomInstitute.Application\\Services\\Export\\ReporteExportService.cs",
-              "ViewState": "AgIAALwCAAAAAAAAAAAowMwCAAAlAAAAAAAAAA==",
+              "Title": "SettingsAccountController.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\Settings\\SettingsAccountController.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute\\Controllers\\Settings\\SettingsAccountController.cs",
+              "ToolTip": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\Settings\\SettingsAccountController.cs",
+              "RelativeToolTip": "BlossomInstitute\\Controllers\\Settings\\SettingsAccountController.cs",
+              "ViewState": "AgIAACkAAAAAAAAAAAAwwDIAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-26T01:52:11.262Z",
+              "WhenOpened": "2026-03-26T16:32:14.761Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ReporteHomeworkByCursoAndTermResponseModel.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteHomeworkByCursoAndTerm\\ReporteHomeworkByCursoAndTermResponseModel.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteHomeworkByCursoAndTerm\\ReporteHomeworkByCursoAndTermResponseModel.cs",
-              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteHomeworkByCursoAndTerm\\ReporteHomeworkByCursoAndTermResponseModel.cs",
-              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteHomeworkByCursoAndTerm\\ReporteHomeworkByCursoAndTermResponseModel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "IChangeMyPasswordCommand.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Settings\\Command\\ChangePassword\\IChangeMyPasswordCommand.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Settings\\Command\\ChangePassword\\IChangeMyPasswordCommand.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Settings\\Command\\ChangePassword\\IChangeMyPasswordCommand.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Settings\\Command\\ChangePassword\\IChangeMyPasswordCommand.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-26T01:53:24.059Z",
+              "WhenOpened": "2026-03-26T16:41:05.478Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "ReporteHomeworkByCursoAndTermItemModel.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteHomeworkByCursoAndTerm\\ReporteHomeworkByCursoAndTermItemModel.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteHomeworkByCursoAndTerm\\ReporteHomeworkByCursoAndTermItemModel.cs",
-              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteHomeworkByCursoAndTerm\\ReporteHomeworkByCursoAndTermItemModel.cs",
-              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteHomeworkByCursoAndTerm\\ReporteHomeworkByCursoAndTermItemModel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "ChangeMyPasswordModelValidator.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\Validator\\Settings\\ChangeMyPasswordModelValidator.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\Validator\\Settings\\ChangeMyPasswordModelValidator.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\Validator\\Settings\\ChangeMyPasswordModelValidator.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\Validator\\Settings\\ChangeMyPasswordModelValidator.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-26T01:53:21.507Z",
+              "WhenOpened": "2026-03-26T16:40:08.382Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ChangeMyPasswordModel.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Settings\\Command\\ChangePassword\\ChangeMyPasswordModel.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Settings\\Command\\ChangePassword\\ChangeMyPasswordModel.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Settings\\Command\\ChangePassword\\ChangeMyPasswordModel.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Settings\\Command\\ChangePassword\\ChangeMyPasswordModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T16:38:26.365Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "GetMyAccountSettingsQuery.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Settings\\Queries\\GetMyAccount\\GetMyAccountSettingsQuery.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Settings\\Queries\\GetMyAccount\\GetMyAccountSettingsQuery.cs",
+              "ToolTip": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Settings\\Queries\\GetMyAccount\\GetMyAccountSettingsQuery.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Settings\\Queries\\GetMyAccount\\GetMyAccountSettingsQuery.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAAAowAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T16:21:01.427Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "IUpdateMyAccountSettingsCommand.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Settings\\Command\\UpdateAccount\\IUpdateMyAccountSettingsCommand.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Settings\\Command\\UpdateAccount\\IUpdateMyAccountSettingsCommand.cs",
+              "ToolTip": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Settings\\Command\\UpdateAccount\\IUpdateMyAccountSettingsCommand.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Settings\\Command\\UpdateAccount\\IUpdateMyAccountSettingsCommand.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T16:24:04.438Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 6,
-              "Title": "GetReporteStudentSummaryByCursoAndTermQuery.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteStudentSummaryByCursoAndTerm\\GetReporteStudentSummaryByCursoAndTermQuery.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteStudentSummaryByCursoAndTerm\\GetReporteStudentSummaryByCursoAndTermQuery.cs",
-              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteStudentSummaryByCursoAndTerm\\GetReporteStudentSummaryByCursoAndTermQuery.cs",
-              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteStudentSummaryByCursoAndTerm\\GetReporteStudentSummaryByCursoAndTermQuery.cs",
-              "ViewState": "AgIAADgBAAAAAAAAAAAowAAAAAAAAAAAAAAAAA==",
+              "Title": "GetMyAccountSettingsModel.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Settings\\Queries\\GetMyAccount\\GetMyAccountSettingsModel.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Settings\\Queries\\GetMyAccount\\GetMyAccountSettingsModel.cs",
+              "ToolTip": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Settings\\Queries\\GetMyAccount\\GetMyAccountSettingsModel.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Settings\\Queries\\GetMyAccount\\GetMyAccountSettingsModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAA4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-26T01:51:40.244Z",
+              "WhenOpened": "2026-03-26T16:17:12.713Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "UpdateMyAccountSettingsCommand.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Settings\\Command\\UpdateAccount\\UpdateMyAccountSettingsCommand.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Settings\\Command\\UpdateAccount\\UpdateMyAccountSettingsCommand.cs",
+              "ToolTip": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Settings\\Command\\UpdateAccount\\UpdateMyAccountSettingsCommand.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Settings\\Command\\UpdateAccount\\UpdateMyAccountSettingsCommand.cs",
+              "ViewState": "AgIAACwAAAAAAAAAAAAowEYAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T16:23:32.688Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "UpdateMyAccountSettingsModel.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Settings\\Command\\UpdateAccount\\UpdateMyAccountSettingsModel.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Settings\\Command\\UpdateAccount\\UpdateMyAccountSettingsModel.cs",
+              "ToolTip": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Settings\\Command\\UpdateAccount\\UpdateMyAccountSettingsModel.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Settings\\Command\\UpdateAccount\\UpdateMyAccountSettingsModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T16:18:49.841Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "IGetMyAccountSettingsQuery.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Settings\\Queries\\GetMyAccount\\IGetMyAccountSettingsQuery.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Settings\\Queries\\GetMyAccount\\IGetMyAccountSettingsQuery.cs",
+              "ToolTip": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Settings\\Queries\\GetMyAccount\\IGetMyAccountSettingsQuery.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Settings\\Queries\\GetMyAccount\\IGetMyAccountSettingsQuery.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T16:22:00.895Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "UpdateMyAccountSettingsModelValidator.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\Validator\\Settings\\UpdateMyAccountSettingsModelValidator.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\Validator\\Settings\\UpdateMyAccountSettingsModelValidator.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\Validator\\Settings\\UpdateMyAccountSettingsModelValidator.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\Validator\\Settings\\UpdateMyAccountSettingsModelValidator.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T16:20:00.9Z",
               "EditorCaption": ""
             }
           ]
