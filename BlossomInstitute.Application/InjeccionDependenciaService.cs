@@ -55,6 +55,7 @@ using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteAttendanceBy
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteEntregaByTarea;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteHomeworkByCursoAndTerm;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteMarksByCursoAndTerm;
+using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteStudentMarksDetail;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteStudentSummaryByCursoAndTerm;
 using BlossomInstitute.Application.DataBase.Tarea.Commands.ArchivarTarea;
 using BlossomInstitute.Application.DataBase.Tarea.Commands.CreateTarea;
@@ -170,6 +171,7 @@ namespace BlossomInstitute.Application
             services.AddTransient<IGetReporteHomeworkByCursoAndTermQuery, GetReporteHomeworkByCursoAndTermQuery>();
             services.AddTransient<IGetReporteAttendanceByCursoAndTermQuery, GetReporteAttendanceByCursoAndTermQuery>();
             services.AddTransient<IGetReporteStudentSummaryByCursoAndTermQuery, GetReporteStudentSummaryByCursoAndTermQuery>();
+            services.AddTransient<IGetReporteStudentMarksDetailByCursoAndTermQuery, GetReporteStudentMarksDetailByCursoAndTermQuery>();
             services.AddScoped<IReporteExportService, ReporteExportService>();
 
 

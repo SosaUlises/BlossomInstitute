@@ -3,12 +3,32 @@
   "WorkspaceRootPath": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute\\controllers\\cursos\\cursoasistenciacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|solutionrelative:blossominstitute\\controllers\\cursos\\cursoasistenciacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\injecciondependenciaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\injecciondependenciaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute\\controllers\\cursos\\cursopersonascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|solutionrelative:blossominstitute\\controllers\\cursos\\cursopersonascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute\\controllers\\reportes\\reportecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|solutionrelative:blossominstitute\\controllers\\reportes\\reportecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\reportes\\queries\\reportestudentmarksdetail\\reportestudentmarksdetailitemmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\reportes\\queries\\reportestudentmarksdetail\\reportestudentmarksdetailitemmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\reportes\\queries\\reportestudentmarksdetail\\reportestudentmarksdetailresponsemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\reportes\\queries\\reportestudentmarksdetail\\reportestudentmarksdetailresponsemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\reportes\\queries\\reportestudentmarksdetail\\igetreportestudentmarksdetailbycursoandtermquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\reportes\\queries\\reportestudentmarksdetail\\igetreportestudentmarksdetailbycursoandtermquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\reportes\\queries\\reportestudentmarksdetail\\getreportestudentmarksdetailbycursoandtermquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\reportes\\queries\\reportestudentmarksdetail\\getreportestudentmarksdetailbycursoandtermquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\reportes\\queries\\reportestudentmarksdetail\\reportestudentmarksdetailskillmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\reportes\\queries\\reportestudentmarksdetail\\reportestudentmarksdetailskillmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -39,27 +59,92 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "CursoAsistenciaController.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\Cursos\\CursoAsistenciaController.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute\\Controllers\\Cursos\\CursoAsistenciaController.cs",
-              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\Cursos\\CursoAsistenciaController.cs",
-              "RelativeToolTip": "BlossomInstitute\\Controllers\\Cursos\\CursoAsistenciaController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "InjeccionDependenciaService.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\InjeccionDependenciaService.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\InjeccionDependenciaService.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\InjeccionDependenciaService.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\InjeccionDependenciaService.cs",
+              "ViewState": "AgIAAJsAAAAAAAAAAAAgwLAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-20T15:09:54.672Z",
+              "WhenOpened": "2026-03-26T01:22:23.396Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "CursoPersonasController.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\Cursos\\CursoPersonasController.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute\\Controllers\\Cursos\\CursoPersonasController.cs",
-              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\Cursos\\CursoPersonasController.cs",
-              "RelativeToolTip": "BlossomInstitute\\Controllers\\Cursos\\CursoPersonasController.cs",
-              "ViewState": "AgIAADIAAAAAAAAAAAAwwCEAAAAUAAAAAAAAAA==",
+              "Title": "ReporteController.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\Reportes\\ReporteController.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute\\Controllers\\Reportes\\ReporteController.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\Reportes\\ReporteController.cs",
+              "RelativeToolTip": "BlossomInstitute\\Controllers\\Reportes\\ReporteController.cs",
+              "ViewState": "AgIAAMUBAAAAAAAAAAAowM8BAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-20T15:09:42.335Z",
+              "WhenOpened": "2026-03-26T01:21:58.838Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "IGetReporteStudentMarksDetailByCursoAndTermQuery.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteStudentMarksDetail\\IGetReporteStudentMarksDetailByCursoAndTermQuery.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteStudentMarksDetail\\IGetReporteStudentMarksDetailByCursoAndTermQuery.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteStudentMarksDetail\\IGetReporteStudentMarksDetailByCursoAndTermQuery.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteStudentMarksDetail\\IGetReporteStudentMarksDetailByCursoAndTermQuery.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T01:16:12.781Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ReporteStudentMarksDetailItemModel.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteStudentMarksDetail\\ReporteStudentMarksDetailItemModel.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteStudentMarksDetail\\ReporteStudentMarksDetailItemModel.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteStudentMarksDetail\\ReporteStudentMarksDetailItemModel.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteStudentMarksDetail\\ReporteStudentMarksDetailItemModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwBIAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T01:12:05.168Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "GetReporteStudentMarksDetailByCursoAndTermQuery.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteStudentMarksDetail\\GetReporteStudentMarksDetailByCursoAndTermQuery.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteStudentMarksDetail\\GetReporteStudentMarksDetailByCursoAndTermQuery.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteStudentMarksDetail\\GetReporteStudentMarksDetailByCursoAndTermQuery.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteStudentMarksDetail\\GetReporteStudentMarksDetailByCursoAndTermQuery.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T01:15:59.455Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ReporteStudentMarksDetailResponseModel.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteStudentMarksDetail\\ReporteStudentMarksDetailResponseModel.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteStudentMarksDetail\\ReporteStudentMarksDetailResponseModel.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteStudentMarksDetail\\ReporteStudentMarksDetailResponseModel.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteStudentMarksDetail\\ReporteStudentMarksDetailResponseModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T01:15:10.054Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ReporteStudentMarksDetailSkillModel.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteStudentMarksDetail\\ReporteStudentMarksDetailSkillModel.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteStudentMarksDetail\\ReporteStudentMarksDetailSkillModel.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteStudentMarksDetail\\ReporteStudentMarksDetailSkillModel.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Reportes\\Queries\\ReporteStudentMarksDetail\\ReporteStudentMarksDetailSkillModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T01:11:07.354Z",
               "EditorCaption": ""
             }
           ]

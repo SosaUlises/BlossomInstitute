@@ -1268,6 +1268,42 @@
   },
   {
     "ContainingType": "BlossomInstitute.Controllers.Reportes.ReporteController",
+    "Method": "GetReporteStudentMarksDetailByCursoAndTerm",
+    "RelativePath": "api/v1/reportes/cursos/{cursoId}/alumnos/{alumnoId}/years/{year}/terms/{term}/marks-detail",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cursoId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "alumnoId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "year",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "term",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "tipo",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlossomInstitute.Controllers.Reportes.ReporteController",
     "Method": "GetReporteStudentSummaryByCursoAndTerm",
     "RelativePath": "api/v1/reportes/cursos/{cursoId}/alumnos/{alumnoId}/years/{year}/terms/{term}/summary",
     "HttpMethod": "GET",

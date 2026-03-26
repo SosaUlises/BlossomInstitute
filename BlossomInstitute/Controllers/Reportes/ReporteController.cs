@@ -4,6 +4,7 @@ using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteAttendanceBy
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteEntregaByTarea;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteHomeworkByCursoAndTerm;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteMarksByCursoAndTerm;
+using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteStudentMarksDetail;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteStudentSummaryByCursoAndTerm;
 using BlossomInstitute.Application.Services.Export;
 using BlossomInstitute.Common.Features;
@@ -454,6 +455,30 @@ namespace BlossomInstitute.Controllers.Reportes
             var fileName = $"student-summary-course-{cursoId}-student-{alumnoId}-year-{year}-term-{term}.pdf";
 
             return File(bytes, "application/pdf", fileName);
+        }
+
+
+        [HttpGet("cursos/{cursoId:int}/alumnos/{alumnoId:int}/years/{year:int}/terms/{term:int}/marks-detail")]
+        public async Task<IActionResult> GetReporteStudentMarksDetailByCursoAndTerm(
+            [FromRoute] int cursoId,
+            [FromRoute] int alumnoId,
+            [FromRoute] int year,
+            [FromRoute] int term,
+            [FromServices] IGetReporteStudentMarksDetailByCursoAndTermQuery query,
+            [FromQuery] int? tipo = null,
+            CancellationToken ct = default)
+        {
+            var result = await query.Execute(
+                cursoId,
+                alumnoId,
+                year,
+                term,
+                GetUserId(),
+                IsAdmin(),
+                tipo,
+                ct);
+
+            return StatusCode(result.StatusCode, result);
         }
     }
 }
