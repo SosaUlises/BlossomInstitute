@@ -1,6 +1,7 @@
 ﻿using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteAttendanceByCursoAndTerm;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteHomeworkByCursoAndTerm;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteMarksByCursoAndTerm;
+using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteStudentMarksDetail;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteStudentSummaryByCursoAndTerm;
 
 namespace BlossomInstitute.Application.Services.Export
@@ -25,7 +26,8 @@ namespace BlossomInstitute.Application.Services.Export
             ReporteAttendanceByCursoAndTermResumenModel resumen,
             List<ReporteAttendanceByCursoAndTermItemModel> items);
 
-
+        byte[] ExportStudentAssessmentsDetailByCourseTermToPdf(
+             ReporteStudentMarksDetailResponseModel data);
 
         byte[] ExportHomeworkByCourseTermToExcel(
         ReporteHomeworkByCursoAndTermResumenModel resumen,

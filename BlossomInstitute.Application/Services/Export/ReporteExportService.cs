@@ -1,7 +1,9 @@
 ﻿using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteAttendanceByCursoAndTerm;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteHomeworkByCursoAndTerm;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteMarksByCursoAndTerm;
+using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteStudentMarksDetail;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteStudentSummaryByCursoAndTerm;
+using BlossomInstitute.Domain.Entidades.Calificacion;
 using ClosedXML.Excel;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
@@ -590,7 +592,199 @@ namespace BlossomInstitute.Application.Services.Export
 
             return document.GeneratePdf();
         }
+        public byte[] ExportStudentAssessmentsDetailByCourseTermToPdf(
+             ReporteStudentMarksDetailResponseModel data)
+        {
+            var document = Document.Create(container =>
+            {
+                container.Page(page =>
+                {
+                    page.Margin(20);
+                    page.Size(PageSizes.A4);
+                    page.DefaultTextStyle(x => x.FontSize(10));
 
+                    page.Header().Column(column =>
+                    {
+                        column.Spacing(4);
+
+                        column.Item()
+                            .Text("Blossom Institute")
+                            .Bold()
+                            .FontSize(18);
+
+                        column.Item()
+                            .Text($"Student Assessments Detail - {data.CursoNombre}");
+
+                        column.Item()
+                            .Text($"Year {data.Year} - Term {data.Term} ({data.From:yyyy-MM-dd} to {data.To:yyyy-MM-dd})");
+                    });
+
+                    page.Content().Column(column =>
+                    {
+                        column.Spacing(12);
+
+                        // Datos alumno
+                        column.Item().Border(1).Padding(8).Column(c =>
+                        {
+                            c.Spacing(4);
+                            c.Item().Text("Student Information").Bold().FontSize(12);
+
+                            c.Item().Table(table =>
+                            {
+                                table.ColumnsDefinition(columns =>
+                                {
+                                    columns.RelativeColumn();
+                                    columns.RelativeColumn(2);
+                                    columns.RelativeColumn();
+                                    columns.RelativeColumn(2);
+                                });
+
+                                table.Cell().Padding(2).Text("Student").Bold();
+                                table.Cell().Padding(2).Text($"{data.AlumnoApellido}, {data.AlumnoNombre}");
+
+                                table.Cell().Padding(2).Text("DNI").Bold();
+                                table.Cell().Padding(2).Text(data.AlumnoDni.ToString());
+
+                                table.Cell().Padding(2).Text("Email").Bold();
+                                table.Cell().Padding(2).Text(data.AlumnoEmail ?? "-");
+
+                                table.Cell().Padding(2).Text("Course").Bold();
+                                table.Cell().Padding(2).Text(data.CursoNombre);
+                            });
+                        });
+
+                        // Resumen
+                        column.Item().Border(1).Padding(8).Column(c =>
+                        {
+                            c.Spacing(4);
+                            c.Item().Text("Summary").Bold().FontSize(12);
+
+                            c.Item().Table(table =>
+                            {
+                                table.ColumnsDefinition(columns =>
+                                {
+                                    columns.RelativeColumn();
+                                    columns.RelativeColumn();
+                                    columns.RelativeColumn();
+                                    columns.RelativeColumn();
+                                });
+
+                                table.Cell().Padding(2).Text("Year").Bold();
+                                table.Cell().Padding(2).Text(data.Year.ToString());
+
+                                table.Cell().Padding(2).Text("Term").Bold();
+                                table.Cell().Padding(2).Text(data.Term.ToString());
+
+                                table.Cell().Padding(2).Text("From").Bold();
+                                table.Cell().Padding(2).Text(data.From.ToString("yyyy-MM-dd"));
+
+                                table.Cell().Padding(2).Text("To").Bold();
+                                table.Cell().Padding(2).Text(data.To.ToString("yyyy-MM-dd"));
+
+                                table.Cell().Padding(2).Text("Total Assessments").Bold();
+                                table.Cell().Padding(2).Text(data.Total.ToString());
+
+                                table.Cell().Padding(2).Text("");
+                                table.Cell().Padding(2).Text("");
+                            });
+                        });
+
+                        if (data.Items == null || data.Items.Count == 0)
+                        {
+                            column.Item()
+                                .Border(1)
+                                .Padding(8)
+                                .Text("No assessments found for the selected filters.");
+                        }
+                        else
+                        {
+                            foreach (var item in data.Items)
+                            {
+                                column.Item().Border(1).Padding(8).Column(c =>
+                                {
+                                    c.Spacing(6);
+
+                                    c.Item().Text($"{GetTipoCalificacionLabel(item.Tipo)} - {item.Titulo}")
+                                         .Bold()
+                                         .FontSize(12);
+
+                                    c.Item().Text($"Date: {item.Fecha:yyyy-MM-dd} | Grade: {item.Nota:0.##}");
+
+                                    if (!string.IsNullOrWhiteSpace(item.Descripcion))
+                                        c.Item().Text($"Description: {item.Descripcion}");
+
+                                    if (item.Tipo == TipoCalificacion.Homework)
+                                    {
+                                        c.Item().Text("Generated from homework");
+                                    }
+
+                                    if (item.Skills == null || item.Skills.Count == 0)
+                                    {
+                                        c.Item()
+                                            .PaddingTop(4)
+                                            .Text("No skill detail available.");
+                                    }
+                                    else
+                                    {
+                                        c.Item().PaddingTop(4).Table(table =>
+                                        {
+                                            table.ColumnsDefinition(columns =>
+                                            {
+                                                columns.RelativeColumn(2);
+                                                columns.RelativeColumn();
+                                                columns.RelativeColumn();
+                                                columns.RelativeColumn();
+                                            });
+
+                                            void Header(string text) =>
+                                                table.Cell().BorderBottom(1).Padding(4).Text(text).Bold();
+
+                                            Header("Skill");
+                                            Header("Obtained");
+                                            Header("Maximum");
+                                            Header("%");
+
+                                            foreach (var skill in item.Skills)
+                                            {
+                                                table.Cell().Padding(4).Text(skill.Skill.ToString());
+                                                table.Cell().Padding(4).Text(skill.PuntajeObtenido.ToString("0.##"));
+                                                table.Cell().Padding(4).Text(skill.PuntajeMaximo.ToString("0.##"));
+                                                table.Cell().Padding(4).Text(skill.Porcentaje?.ToString("0.00") ?? "-");
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        }
+                    });
+
+                    page.Footer()
+                        .AlignCenter()
+                        .Text(x =>
+                        {
+                            x.Span("Generated by Blossom Institute - ");
+                            x.CurrentPageNumber();
+                            x.Span(" / ");
+                            x.TotalPages();
+                        });
+                });
+            });
+
+            return document.GeneratePdf();
+        }
+
+        private static string GetTipoCalificacionLabel(TipoCalificacion tipo)
+        {
+            return tipo switch
+            {
+                TipoCalificacion.Homework => "Homework",
+                TipoCalificacion.Quiz => "Quiz",
+                TipoCalificacion.Test => "Test",
+                TipoCalificacion.Participation => "Participation",
+                TipoCalificacion.Behaviour => "Behaviour",
+                _ => tipo.ToString()
+            };
+        }
         public byte[] ExportStudentSummaryByCourseTermToPdf(
              ReporteStudentSummaryByCursoAndTermResponseModel data)
         {
