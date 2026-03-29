@@ -8,8 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DataBase\Clase\Command\NewFolder\**" />
     <Compile Remove="DataBase\Reportes\Queries\ReporteAsistenciasByClase\**" />
+    <EmbeddedResource Remove="DataBase\Clase\Command\NewFolder\**" />
     <EmbeddedResource Remove="DataBase\Reportes\Queries\ReporteAsistenciasByClase\**" />
+    <None Remove="DataBase\Clase\Command\NewFolder\**" />
     <None Remove="DataBase\Reportes\Queries\ReporteAsistenciasByClase\**" />
   </ItemGroup>
 
@@ -42,10 +45,6 @@
   <ItemGroup>
     <ProjectReference Include="..\BlossomInstitute.Common\BlossomInstitute.Common.csproj" />
     <ProjectReference Include="..\BlossomInstitute.Domain\BlossomInstitute.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="DataBase\Clase\Command\NewFolder\" />
   </ItemGroup>
 
 </Project>

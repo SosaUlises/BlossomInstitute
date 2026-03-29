@@ -21,6 +21,7 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasByCurso
             EstadoTarea? estado,
             int pageNumber,
             int pageSize,
+            string? search = null,
             CancellationToken ct = default)
         {
             if (cursoId <= 0)
@@ -38,6 +39,15 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasByCurso
             var query = _db.Tareas
                 .AsNoTracking()
                 .Where(t => t.CursoId == cursoId);
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                var searchTrimmed = search.Trim();
+
+                query = query.Where(t =>
+                    t.Titulo.Contains(searchTrimmed) ||
+                    (t.Consigna != null && t.Consigna.Contains(searchTrimmed)));
+            }
 
             if (estado.HasValue)
                 query = query.Where(t => t.Estado == estado.Value);

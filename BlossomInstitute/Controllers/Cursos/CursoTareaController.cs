@@ -67,14 +67,15 @@ namespace BlossomInstitute.Controllers.Cursos
 
         [HttpGet]
         public async Task<IActionResult> GetAll(
-            [FromServices] IGetTareasByCursoQuery query,
-            [FromRoute] int cursoId,
-            [FromQuery] EstadoTarea? estado,
-            [FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 20,
-            CancellationToken ct = default)
+             [FromServices] IGetTareasByCursoQuery query,
+             [FromRoute] int cursoId,
+             [FromQuery] EstadoTarea? estado,
+             [FromQuery] int pageNumber = 1,
+             [FromQuery] int pageSize = 20,
+             [FromQuery] string? search = null,
+             CancellationToken ct = default)
         {
-            var result = await query.Execute(cursoId, estado, pageNumber, pageSize, ct);
+            var result = await query.Execute(cursoId, estado, pageNumber, pageSize, search, ct);
             return StatusCode(result.StatusCode, result);
         }
 
