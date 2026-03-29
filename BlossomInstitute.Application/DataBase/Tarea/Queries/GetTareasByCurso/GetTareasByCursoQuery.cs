@@ -1,4 +1,5 @@
-﻿using BlossomInstitute.Common.Features;
+﻿using BlossomInstitute.Application.DataBase.Tarea.Queries.Models;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Tarea;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
@@ -9,40 +10,65 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasByCurso
     public class GetTareasByCursoQuery : IGetTareasByCursoQuery
     {
         private readonly IDataBaseService _db;
-        public GetTareasByCursoQuery(IDataBaseService db) => _db = db;
 
-        public async Task<BaseResponseModel> Execute(int cursoId, EstadoTarea? estado, int pageNumber, int pageSize, CancellationToken ct = default)
+        public GetTareasByCursoQuery(IDataBaseService db)
         {
-            if (cursoId <= 0) return ResponseApiService.Response(400, "CursoId inválido");
-            if (pageNumber <= 0) pageNumber = 1;
-            if (pageSize <= 0) pageSize = 10;
-            if (pageSize > 200) pageSize = 200;
+            _db = db;
+        }
 
-            var q = _db.Tareas.AsNoTracking()
+        public async Task<BaseResponseModel> Execute(
+            int cursoId,
+            EstadoTarea? estado,
+            int pageNumber,
+            int pageSize,
+            CancellationToken ct = default)
+        {
+            if (cursoId <= 0)
+                return ResponseApiService.Response(400, "CursoId inválido");
+
+            if (pageNumber <= 0)
+                pageNumber = 1;
+
+            if (pageSize <= 0)
+                pageSize = 10;
+
+            if (pageSize > 200)
+                pageSize = 200;
+
+            var query = _db.Tareas
+                .AsNoTracking()
                 .Where(t => t.CursoId == cursoId);
 
             if (estado.HasValue)
-                q = q.Where(t => t.Estado == estado.Value);
+                query = query.Where(t => t.Estado == estado.Value);
 
-            var total = await q.CountAsync(ct);
+            var total = await query.CountAsync(ct);
 
-            var items = await q
+            var items = await query
                 .OrderByDescending(t => t.CreatedAtUtc)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .Select(t => new
+                .Select(t => new TareaByCursoItemModel
                 {
-                    t.Id,
-                    t.CursoId,
-                    t.ProfesorId,
-                    t.Titulo,
-                    t.Estado,
-                    t.FechaEntregaUtc,
-                    t.CreatedAtUtc
+                    Id = t.Id,
+                    CursoId = t.CursoId,
+                    ProfesorId = t.ProfesorId,
+                    Titulo = t.Titulo,
+                    Estado = (int)t.Estado,
+                    FechaEntregaUtc = t.FechaEntregaUtc,
+                    CreatedAtUtc = t.CreatedAtUtc
                 })
                 .ToListAsync(ct);
 
-            return ResponseApiService.Response(StatusCodes.Status200OK, new { total, pageNumber, pageSize, items });
+            var response = new TareasByCursoPagedModel
+            {
+                Total = total,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                Items = items
+            };
+
+            return ResponseApiService.Response(StatusCodes.Status200OK, response);
         }
     }
 }

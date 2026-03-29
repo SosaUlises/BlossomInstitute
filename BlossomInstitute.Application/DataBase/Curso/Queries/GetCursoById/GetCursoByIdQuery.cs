@@ -14,20 +14,38 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetCursoById
             _db = db;
         }
 
-        public async Task<BaseResponseModel> Execute(int cursoId)
+        public async Task<BaseResponseModel> Execute(
+            int cursoId,
+            int userId,
+            bool isAdmin,
+            CancellationToken ct = default)
         {
             if (cursoId <= 0)
                 return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Id inválido");
 
-            var curso = await _db.Cursos
+            if (userId <= 0)
+                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, "Usuario no autenticado");
+
+            var query = _db.Cursos
                 .AsNoTracking()
                 .Include(c => c.Horarios)
                 .Include(c => c.Profesores)
                 .Include(c => c.Matriculas)
-                .FirstOrDefaultAsync(c => c.Id == cursoId);
+                .Where(c => c.Id == cursoId);
+
+            if (!isAdmin)
+            {
+                query = query.Where(c => c.Profesores.Any(p => p.ProfesorId == userId));
+            }
+
+            var curso = await query.FirstOrDefaultAsync(ct);
 
             if (curso == null)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Curso no encontrado");
+            {
+                return ResponseApiService.Response(
+                    StatusCodes.Status404NotFound,
+                    "Curso no encontrado o sin permisos para acceder");
+            }
 
             var dto = new GetCursoByIdModel
             {
