@@ -20,7 +20,11 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Commands.CreateTarea
             _userManager = userManager;
         }
 
-        public async Task<BaseResponseModel> Execute(int cursoId, int profesorUserId, CreateTareaModel model, CancellationToken ct = default)
+        public async Task<BaseResponseModel> Execute(
+            int cursoId,
+            int profesorUserId,
+            CreateTareaModel model,
+            CancellationToken ct = default)
         {
             if (cursoId <= 0)
                 return ResponseApiService.Response(StatusCodes.Status400BadRequest, "CursoId inválido");
@@ -65,7 +69,10 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Commands.CreateTarea
 
             recursos = recursos
                 .Where(r => !string.IsNullOrWhiteSpace(r.Url))
-                .GroupBy(r => r.Url!.Trim())
+                .GroupBy(r =>
+                    !string.IsNullOrWhiteSpace(r.StorageKey)
+                        ? r.StorageKey!.Trim().ToLowerInvariant()
+                        : r.Url!.Trim().ToLowerInvariant())
                 .Select(g => g.First())
                 .ToList();
 
@@ -73,6 +80,8 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Commands.CreateTarea
 
             try
             {
+                var nowUtc = DateTime.UtcNow;
+
                 var tarea = new TareaEntity
                 {
                     CursoId = cursoId,
@@ -81,7 +90,7 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Commands.CreateTarea
                     Consigna = string.IsNullOrWhiteSpace(model.Consigna) ? null : model.Consigna.Trim(),
                     FechaEntregaUtc = model.FechaEntregaUtc,
                     Estado = model.Estado,
-                    CreatedAtUtc = DateTime.UtcNow
+                    CreatedAtUtc = nowUtc
                 };
 
                 foreach (var r in recursos)
@@ -90,7 +99,11 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Commands.CreateTarea
                     {
                         Tipo = r.Tipo,
                         Url = r.Url!.Trim(),
-                        Nombre = string.IsNullOrWhiteSpace(r.Nombre) ? null : r.Nombre.Trim()
+                        Nombre = string.IsNullOrWhiteSpace(r.Nombre) ? null : r.Nombre.Trim(),
+                        StorageProvider = r.StorageProvider,
+                        StorageKey = string.IsNullOrWhiteSpace(r.StorageKey) ? null : r.StorageKey.Trim(),
+                        ContentType = string.IsNullOrWhiteSpace(r.ContentType) ? null : r.ContentType.Trim(),
+                        SizeBytes = r.SizeBytes
                     });
                 }
 
@@ -123,3 +136,8 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Commands.CreateTarea
         }
     }
 }
+
+
+
+
+

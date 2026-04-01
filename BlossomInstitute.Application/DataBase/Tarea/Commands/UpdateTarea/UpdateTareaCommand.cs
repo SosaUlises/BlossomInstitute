@@ -1,4 +1,6 @@
-﻿using BlossomInstitute.Common.Features;
+﻿using BlossomInstitute.Application.DataBase;
+using BlossomInstitute.Application.DataBase.Tarea.Commands.UpdateTarea;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Curso;
 using BlossomInstitute.Domain.Entidades.Tarea;
 using BlossomInstitute.Domain.Entidades.Usuario;
@@ -61,7 +63,8 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Commands.UpdateTarea
 
             if (!isAdmin)
             {
-                var profesorAsignado = await _db.CursoProfesores.AsNoTracking()
+                var profesorAsignado = await _db.CursoProfesores
+                    .AsNoTracking()
                     .AnyAsync(x => x.CursoId == cursoId && x.ProfesorId == profesorUserId, ct);
 
                 if (!profesorAsignado)
@@ -83,7 +86,10 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Commands.UpdateTarea
 
             recursos = recursos
                 .Where(r => !string.IsNullOrWhiteSpace(r.Url))
-                .GroupBy(r => r.Url!.Trim(), StringComparer.OrdinalIgnoreCase)
+                .GroupBy(r =>
+                    !string.IsNullOrWhiteSpace(r.StorageKey)
+                        ? r.StorageKey!.Trim().ToLowerInvariant()
+                        : r.Url!.Trim().ToLowerInvariant())
                 .Select(g => g.First())
                 .ToList();
 
@@ -106,7 +112,11 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Commands.UpdateTarea
                     {
                         Tipo = r.Tipo,
                         Url = r.Url!.Trim(),
-                        Nombre = string.IsNullOrWhiteSpace(r.Nombre) ? null : r.Nombre.Trim()
+                        Nombre = string.IsNullOrWhiteSpace(r.Nombre) ? null : r.Nombre.Trim(),
+                        StorageProvider = r.StorageProvider,
+                        StorageKey = string.IsNullOrWhiteSpace(r.StorageKey) ? null : r.StorageKey.Trim(),
+                        ContentType = string.IsNullOrWhiteSpace(r.ContentType) ? null : r.ContentType.Trim(),
+                        SizeBytes = r.SizeBytes
                     });
                 }
 
@@ -156,3 +166,5 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Commands.UpdateTarea
         }
     }
 }
+
+
