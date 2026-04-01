@@ -415,6 +415,32 @@
   },
   {
     "ContainingType": "BlossomInstitute.Controllers.Cursos.CursoCalificacionesController",
+    "Method": "GetById",
+    "RelativePath": "api/v1/cursos/{cursoId}/alumnos/{alumnoId}/calificaciones/{calificacionId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cursoId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "alumnoId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "calificacionId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlossomInstitute.Controllers.Cursos.CursoCalificacionesController",
     "Method": "Archive",
     "RelativePath": "api/v1/cursos/{cursoId}/alumnos/{alumnoId}/calificaciones/{calificacionId}/archivar",
     "HttpMethod": "PATCH",

@@ -1,6 +1,7 @@
 ﻿using BlossomInstitute.Application.DataBase.Calificacion.Commands.ArchiveCalificacion;
 using BlossomInstitute.Application.DataBase.Calificacion.Commands.CreateCalificacion;
 using BlossomInstitute.Application.DataBase.Calificacion.Commands.UpdateCalificacion;
+using BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalificacionById;
 using BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalificacionesByAlumno;
 using BlossomInstitute.Common.Features;
 using FluentValidation;
@@ -81,6 +82,26 @@ namespace BlossomInstitute.Controllers.Cursos
             CancellationToken ct = default)
         {
             var result = await query.Execute(alumnoId, GetUserId(), IsAdmin(), IsProfesor(), cursoId, pageNumber, pageSize, ct);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpGet("{calificacionId:int}")]
+        public async Task<IActionResult> GetById(
+            [FromRoute] int cursoId,
+            [FromRoute] int alumnoId,
+            [FromRoute] int calificacionId,
+            [FromServices] IGetCalificacionByIdQuery query,
+            CancellationToken ct)
+        {
+            var result = await query.Execute(
+                cursoId,
+                alumnoId,
+                calificacionId,
+                GetUserId(),
+                IsAdmin(),
+                IsProfesor(),
+                ct);
+
             return StatusCode(result.StatusCode, result);
         }
     }
