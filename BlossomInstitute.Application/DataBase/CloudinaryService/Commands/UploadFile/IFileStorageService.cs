@@ -8,5 +8,7 @@ namespace BlossomInstitute.Application.DataBase.CloudinaryService.Commands.Uploa
             IFormFile file,
             string folder,
             CancellationToken ct = default);
+
+        Task DeleteAsync(string storageKey, CancellationToken ct = default);
     }
 }

@@ -63,5 +63,26 @@ namespace BlossomInstitute.Application.DataBase.CloudinaryService.Commands.Uploa
                 SizeBytes = file.Length
             };
         }
+
+        public async Task DeleteAsync(string storageKey, CancellationToken ct = default)
+        {
+            if (string.IsNullOrWhiteSpace(storageKey))
+                throw new InvalidOperationException("StorageKey inválido");
+
+            var deleteParams = new DeletionParams(storageKey)
+            {
+                ResourceType = ResourceType.Raw
+            };
+
+            var result = await _cloudinary.DestroyAsync(deleteParams);
+
+            if (result.Error != null)
+                throw new InvalidOperationException(result.Error.Message);
+
+            if (result.Result != "ok" && result.Result != "not found")
+                throw new InvalidOperationException($"No se pudo eliminar el archivo. Resultado: {result.Result}");
+        }
     }
 }
+
+

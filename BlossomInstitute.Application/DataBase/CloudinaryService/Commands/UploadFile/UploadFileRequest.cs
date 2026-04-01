@@ -7,4 +7,8 @@ namespace BlossomInstitute.Application.DataBase.CloudinaryService.Commands.Uploa
         public IFormFile File { get; set; } = default!;
         public string? Folder { get; set; }
     }
+    public class DeleteUploadRequest
+    {
+        public string StorageKey { get; set; } = default!;
+    }
 }

@@ -3185,6 +3185,35 @@
             "description": "OK"
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "Uploads"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteUploadRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteUploadRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteUploadRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
       }
     }
   },
@@ -3487,6 +3516,32 @@
             "nullable": true
           },
           "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "storageProvider": {
+            "$ref": "#/components/schemas/StorageProviderType"
+          },
+          "storageKey": {
+            "type": "string",
+            "nullable": true
+          },
+          "contentType": {
+            "type": "string",
+            "nullable": true
+          },
+          "sizeBytes": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DeleteUploadRequest": {
+        "type": "object",
+        "properties": {
+          "storageKey": {
             "type": "string",
             "nullable": true
           }
@@ -3901,6 +3956,22 @@
           },
           "nombre": {
             "type": "string",
+            "nullable": true
+          },
+          "storageProvider": {
+            "$ref": "#/components/schemas/StorageProviderType"
+          },
+          "storageKey": {
+            "type": "string",
+            "nullable": true
+          },
+          "contentType": {
+            "type": "string",
+            "nullable": true
+          },
+          "sizeBytes": {
+            "type": "integer",
+            "format": "int64",
             "nullable": true
           }
         },

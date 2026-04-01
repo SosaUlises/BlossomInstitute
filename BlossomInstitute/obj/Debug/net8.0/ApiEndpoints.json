@@ -1971,5 +1971,21 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlossomInstitute.Controllers.Uploads.UploadsController",
+    "Method": "Delete",
+    "RelativePath": "api/v1/uploads",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "BlossomInstitute.Application.DataBase.CloudinaryService.Commands.UploadFile.DeleteUploadRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]

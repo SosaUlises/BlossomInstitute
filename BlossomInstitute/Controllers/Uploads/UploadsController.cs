@@ -45,6 +45,19 @@ namespace BlossomInstitute.Controllers.Uploads
                 ResponseApiService.Response(201, result, "Archivo subido correctamente")
             );
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(
+            [FromBody] DeleteUploadRequest request,
+            [FromServices] IFileStorageService storage,
+            CancellationToken ct)
+        {
+            if (string.IsNullOrWhiteSpace(request.StorageKey))
+                return BadRequest(ResponseApiService.Response(400, "StorageKey inválido"));
+
+            await storage.DeleteAsync(request.StorageKey, ct);
+
+            return Ok(ResponseApiService.Response(200, true, "Archivo eliminado correctamente"));
+        }
     }
 }
-
