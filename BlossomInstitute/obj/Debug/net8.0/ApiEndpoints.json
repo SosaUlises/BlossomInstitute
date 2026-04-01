@@ -1950,5 +1950,26 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlossomInstitute.Controllers.Uploads.UploadsController",
+    "Method": "Upload",
+    "RelativePath": "api/v1/uploads",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "File",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "Folder",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
   }
 ]

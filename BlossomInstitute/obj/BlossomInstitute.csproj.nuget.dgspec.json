@@ -59,7 +59,7 @@
           "dependencies": {
             "AutoMapper": {
               "target": "Package",
-              "version": "[12.0.0, )"
+              "version": "[15.1.3, )"
             },
             "AutoMapper.Extensions.Microsoft.DependencyInjection": {
               "target": "Package",
@@ -68,6 +68,10 @@
             "ClosedXML": {
               "target": "Package",
               "version": "[0.105.0, )"
+            },
+            "CloudinaryDotNet": {
+              "target": "Package",
+              "version": "[1.28.0, )"
             },
             "FluentValidation": {
               "target": "Package",
@@ -198,7 +202,7 @@
           "dependencies": {
             "AutoMapper": {
               "target": "Package",
-              "version": "[12.0.0, )"
+              "version": "[15.1.3, )"
             },
             "AutoMapper.Extensions.Microsoft.DependencyInjection": {
               "target": "Package",
@@ -207,6 +211,10 @@
             "ClosedXML": {
               "target": "Package",
               "version": "[0.105.0, )"
+            },
+            "CloudinaryDotNet": {
+              "target": "Package",
+              "version": "[1.28.0, )"
             },
             "FluentValidation": {
               "target": "Package",
@@ -333,7 +341,7 @@
           "dependencies": {
             "AutoMapper": {
               "target": "Package",
-              "version": "[12.0.0, )"
+              "version": "[15.1.3, )"
             },
             "AutoMapper.Extensions.Microsoft.DependencyInjection": {
               "target": "Package",
@@ -342,6 +350,10 @@
             "ClosedXML": {
               "target": "Package",
               "version": "[0.105.0, )"
+            },
+            "CloudinaryDotNet": {
+              "target": "Package",
+              "version": "[1.28.0, )"
             },
             "FluentValidation": {
               "target": "Package",
@@ -475,7 +487,7 @@
           "dependencies": {
             "AutoMapper": {
               "target": "Package",
-              "version": "[12.0.0, )"
+              "version": "[15.1.3, )"
             },
             "AutoMapper.Extensions.Microsoft.DependencyInjection": {
               "target": "Package",
@@ -484,6 +496,10 @@
             "ClosedXML": {
               "target": "Package",
               "version": "[0.105.0, )"
+            },
+            "CloudinaryDotNet": {
+              "target": "Package",
+              "version": "[1.28.0, )"
             },
             "FluentValidation": {
               "target": "Package",
@@ -580,7 +596,7 @@
           "dependencies": {
             "AutoMapper": {
               "target": "Package",
-              "version": "[12.0.0, )"
+              "version": "[15.1.3, )"
             },
             "AutoMapper.Extensions.Microsoft.DependencyInjection": {
               "target": "Package",
@@ -589,6 +605,10 @@
             "ClosedXML": {
               "target": "Package",
               "version": "[0.105.0, )"
+            },
+            "CloudinaryDotNet": {
+              "target": "Package",
+              "version": "[1.28.0, )"
             },
             "FluentValidation": {
               "target": "Package",

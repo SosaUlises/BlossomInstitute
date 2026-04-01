@@ -1,5 +1,6 @@
 using BlossomInstitute;
 using BlossomInstitute.Application;
+using BlossomInstitute.Application.DataBase.CloudinaryService.Commands.UploadFile;
 using BlossomInstitute.Common;
 using BlossomInstitute.Infraestructure;
 using BlossomInstitute.Infraestructure.Seed;
@@ -22,6 +23,9 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod();
     });
 });
+
+builder.Services.Configure<CloudinaryStorageOptions>(
+    builder.Configuration.GetSection("CloudinaryStorage"));
 
 builder.Services
     .AddWebApi()
