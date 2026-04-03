@@ -11,25 +11,45 @@ namespace BlossomInstitute.Application.DataBase.Profesor.Queries.GetById
     public class GetProfesorByIdQuery : IGetProfesorByIdQuery
     {
         private readonly UserManager<UsuarioEntity> _userManager;
-        private readonly IMapper _mapper;
 
-        public GetProfesorByIdQuery(UserManager<UsuarioEntity> userManager, IMapper mapper)
+        public GetProfesorByIdQuery(UserManager<UsuarioEntity> userManager)
         {
             _userManager = userManager;
-            _mapper = mapper;
         }
 
         public async Task<BaseResponseModel> Execute(int userId)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
+
             if (user == null)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Profesor no encontrado");
+                return ResponseApiService.Response(
+                    StatusCodes.Status404NotFound,
+                    "Profesor no encontrado"
+                );
 
             var roles = await _userManager.GetRolesAsync(user);
-            if (!roles.Contains("Profesor"))
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Profesor no encontrado");
 
-            return ResponseApiService.Response(StatusCodes.Status200OK, _mapper.Map<GetProfesorModel>(user));
+            if (!roles.Contains("Profesor"))
+                return ResponseApiService.Response(
+                    StatusCodes.Status404NotFound,
+                    "Profesor no encontrado"
+                );
+
+            var model = new GetProfesorModel
+            {
+                Id = user.Id,
+                Email = user.Email ?? string.Empty,
+                Nombre = user.Nombre ?? string.Empty,
+                Apellido = user.Apellido ?? string.Empty,
+                Dni = user.Dni,
+                Telefono = user.PhoneNumber ?? string.Empty,
+                Activo = user.Activo
+            };
+
+            return ResponseApiService.Response(
+                StatusCodes.Status200OK,
+                model
+            );
         }
     }
 }
