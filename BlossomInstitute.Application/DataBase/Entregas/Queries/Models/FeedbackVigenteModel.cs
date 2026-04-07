@@ -6,5 +6,7 @@
         public int Estado { get; set; } // enum EstadoCorreccion
         public decimal? Nota { get; set; }
         public DateTime FechaCorreccionUtc { get; set; }
+
+        public List<FeedbackAdjuntoItemModel> Adjuntos { get; set; } = new();
     }
 }

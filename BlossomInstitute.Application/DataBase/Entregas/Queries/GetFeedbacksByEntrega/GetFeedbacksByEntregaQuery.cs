@@ -78,7 +78,21 @@ namespace BlossomInstitute.Application.DataBase.Entregas.Queries.GetFeedbacksByE
                     Estado = f.Estado,
                     Nota = f.Nota,
                     Comentario = f.Comentario,
-                    FechaCorreccionUtc = f.FechaCorreccionUtc
+                    FechaCorreccionUtc = f.FechaCorreccionUtc,
+                    Adjuntos = f.Adjuntos
+                        .OrderBy(a => a.CreatedAtUtc)
+                        .Select(a => new FeedbackAdjuntoItemModel
+                        {
+                            Id = a.Id,
+                            Tipo = (int)a.Tipo,
+                            Url = a.Url,
+                            Nombre = a.Nombre,
+                            StorageProvider = a.StorageProvider.HasValue ? (int)a.StorageProvider.Value : null,
+                            StorageKey = a.StorageKey,
+                            ContentType = a.ContentType,
+                            SizeBytes = a.SizeBytes
+                        })
+                        .ToList()
                 })
                 .ToListAsync(ct);
 

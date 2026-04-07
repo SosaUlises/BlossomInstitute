@@ -11,7 +11,6 @@ namespace BlossomInstitute.Application.DataBase.Entregas.Queries.Models
         public string? Comentario { get; set; }
         public DateTime FechaCorreccionUtc { get; set; }
 
-        public string? ArchivoCorregidoUrl { get; set; }
-        public string? ArchivoCorregidoNombre { get; set; }
+        public List<FeedbackAdjuntoItemModel> Adjuntos { get; set; } = new();
     }
 }

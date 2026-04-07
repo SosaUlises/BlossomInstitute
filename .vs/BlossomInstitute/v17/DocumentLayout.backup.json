@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\profesor\\queries\\getall\\getallprofesoresquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\profesor\\queries\\getall\\getallprofesoresquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\entregas\\queries\\getfeedbacksbyentrega\\getfeedbacksbyentregaquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\entregas\\queries\\getfeedbacksbyentrega\\getfeedbacksbyentregaquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\profesor\\queries\\getall\\getprofesormodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\profesor\\queries\\getall\\getprofesormodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\entregas\\queries\\models\\feedbackvigentemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\entregas\\queries\\models\\feedbackvigentemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\profesor\\queries\\getbyid\\getprofesorbyidquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\profesor\\queries\\getbyid\\getprofesorbyidquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\entregas\\queries\\models\\feedbackhistoryitemmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\entregas\\queries\\models\\feedbackhistoryitemmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -39,40 +39,40 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "GetAllProfesoresQuery.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Profesor\\Queries\\GetAll\\GetAllProfesoresQuery.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Profesor\\Queries\\GetAll\\GetAllProfesoresQuery.cs",
-              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Profesor\\Queries\\GetAll\\GetAllProfesoresQuery.cs",
-              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Profesor\\Queries\\GetAll\\GetAllProfesoresQuery.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "GetFeedbacksByEntregaQuery.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Entregas\\Queries\\GetFeedbacksByEntrega\\GetFeedbacksByEntregaQuery.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Entregas\\Queries\\GetFeedbacksByEntrega\\GetFeedbacksByEntregaQuery.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Entregas\\Queries\\GetFeedbacksByEntrega\\GetFeedbacksByEntregaQuery.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Entregas\\Queries\\GetFeedbacksByEntrega\\GetFeedbacksByEntregaQuery.cs",
+              "ViewState": "AgIAAF0AAAAAAAAAAAAowBQAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-03T12:27:56.731Z",
+              "WhenOpened": "2026-04-07T16:29:06.463Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "GetProfesorModel.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Profesor\\Queries\\GetAll\\GetProfesorModel.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Profesor\\Queries\\GetAll\\GetProfesorModel.cs",
-              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Profesor\\Queries\\GetAll\\GetProfesorModel.cs",
-              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Profesor\\Queries\\GetAll\\GetProfesorModel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAA1AAAAAAAAAA==",
+              "Title": "FeedbackVigenteModel.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Entregas\\Queries\\Models\\FeedbackVigenteModel.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Entregas\\Queries\\Models\\FeedbackVigenteModel.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Entregas\\Queries\\Models\\FeedbackVigenteModel.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Entregas\\Queries\\Models\\FeedbackVigenteModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-03T12:26:08.599Z",
+              "WhenOpened": "2026-04-07T16:28:48.886Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "GetProfesorByIdQuery.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Profesor\\Queries\\GetById\\GetProfesorByIdQuery.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Profesor\\Queries\\GetById\\GetProfesorByIdQuery.cs",
-              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Profesor\\Queries\\GetById\\GetProfesorByIdQuery.cs",
-              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Profesor\\Queries\\GetById\\GetProfesorByIdQuery.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAAgwDUAAAAFAAAAAAAAAA==",
+              "Title": "FeedbackHistoryItemModel.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Entregas\\Queries\\Models\\FeedbackHistoryItemModel.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Entregas\\Queries\\Models\\FeedbackHistoryItemModel.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Entregas\\Queries\\Models\\FeedbackHistoryItemModel.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Entregas\\Queries\\Models\\FeedbackHistoryItemModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-03T12:24:58.574Z",
+              "WhenOpened": "2026-04-07T16:28:27.036Z",
               "EditorCaption": ""
             }
           ]
