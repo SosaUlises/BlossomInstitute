@@ -56,6 +56,12 @@ namespace BlossomInstitute.Application.DataBase.Entregas.Commands.CreateFeedback
             if (tarea.Estado != EstadoTarea.Publicada)
                 return ResponseApiService.Response(StatusCodes.Status409Conflict, "La tarea no está publicada");
 
+            if (!tarea.FechaEntregaUtc.HasValue)
+                return ResponseApiService.Response(
+                    StatusCodes.Status409Conflict,
+                    "Esta publicación es un anuncio y no admite feedback");
+
+
             var profAsignado = await _db.CursoProfesores
                 .AsNoTracking()
                 .AnyAsync(x => x.CursoId == cursoId && x.ProfesorId == profesorUserId, ct);

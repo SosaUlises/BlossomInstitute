@@ -50,6 +50,11 @@ namespace BlossomInstitute.Application.DataBase.Entregas.Commands.UpsertEntregaA
             if (tarea.Estado != EstadoTarea.Publicada)
                 return ResponseApiService.Response(StatusCodes.Status409Conflict, "La tarea no está publicada");
 
+            if (!tarea.FechaEntregaUtc.HasValue)
+                return ResponseApiService.Response(
+                    StatusCodes.Status409Conflict,
+                    "Esta publicación es un anuncio y no admite entregas");
+
             var estaMatriculado = await _db.Matriculas
                 .AsNoTracking()
                 .AnyAsync(m => m.CursoId == tarea.CursoId && m.AlumnoId == alumnoId, ct);

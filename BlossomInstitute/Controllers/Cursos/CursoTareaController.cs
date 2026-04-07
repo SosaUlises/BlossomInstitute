@@ -75,7 +75,7 @@ namespace BlossomInstitute.Controllers.Cursos
              [FromQuery] string? search = null,
              CancellationToken ct = default)
         {
-            var result = await query.Execute(cursoId, estado, pageNumber, pageSize, search, ct);
+            var result = await query.Execute(cursoId, GetUserId(), pageNumber, pageSize, search, estado, ct);
             return StatusCode(result.StatusCode, result);
         }
 
@@ -86,7 +86,7 @@ namespace BlossomInstitute.Controllers.Cursos
             [FromServices] IGetTareaByIdQuery query,
             CancellationToken ct = default)
         {
-            var result = await query.Execute(cursoId, tareaId, ct);
+            var result = await query.Execute(cursoId, tareaId, GetUserId(), ct);
             return StatusCode(result.StatusCode, result);
         }
 

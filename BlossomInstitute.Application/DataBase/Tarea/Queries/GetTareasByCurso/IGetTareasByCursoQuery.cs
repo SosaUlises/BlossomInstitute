@@ -6,11 +6,12 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasByCurso
     public interface IGetTareasByCursoQuery
     {
         Task<BaseResponseModel> Execute(
-            int cursoId,
-            EstadoTarea? estado,
-            int pageNumber,
-            int pageSize,
-            string? search = null,
-            CancellationToken ct = default);
+             int cursoId,
+             int userId,
+             int pageNumber,
+             int pageSize,
+             string? search,
+             EstadoTarea? estado,
+             CancellationToken ct = default);
     }
 }

@@ -125,7 +125,8 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Commands.CreateTarea
                     tarea.ProfesorId,
                     tarea.Titulo,
                     tarea.Estado,
-                    tarea.FechaEntregaUtc
+                    tarea.FechaEntregaUtc,
+                    EsAnuncio = !tarea.FechaEntregaUtc.HasValue
                 }, "Tarea creada correctamente");
             }
             catch
@@ -136,7 +137,6 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Commands.CreateTarea
         }
     }
 }
-
 
 
 

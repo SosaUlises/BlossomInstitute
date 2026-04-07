@@ -1,8 +1,11 @@
-﻿using BlossomInstitute.Application.DataBase.Tarea.Queries.Models;
+﻿using BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasByCurso;
+using BlossomInstitute.Application.DataBase.Tarea.Queries.Models;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Tarea;
+using BlossomInstitute.Domain.Entidades.Usuario;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasByCurso
@@ -10,31 +13,63 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasByCurso
     public class GetTareasByCursoQuery : IGetTareasByCursoQuery
     {
         private readonly IDataBaseService _db;
+        private readonly UserManager<UsuarioEntity> _userManager;
 
-        public GetTareasByCursoQuery(IDataBaseService db)
+        public GetTareasByCursoQuery(
+            IDataBaseService db,
+            UserManager<UsuarioEntity> userManager)
         {
             _db = db;
+            _userManager = userManager;
         }
 
         public async Task<BaseResponseModel> Execute(
             int cursoId,
-            EstadoTarea? estado,
+            int userId,
             int pageNumber,
             int pageSize,
-            string? search = null,
+            string? search,
+            EstadoTarea? estado,
             CancellationToken ct = default)
         {
             if (cursoId <= 0)
-                return ResponseApiService.Response(400, "CursoId inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "CursoId inválido");
 
-            if (pageNumber <= 0)
-                pageNumber = 1;
+            if (pageNumber <= 0) pageNumber = 1;
+            if (pageSize <= 0) pageSize = 10;
+            if (pageSize > 100) pageSize = 100;
 
-            if (pageSize <= 0)
-                pageSize = 10;
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null)
+                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, "No autenticado");
 
-            if (pageSize > 200)
-                pageSize = 200;
+            if (!user.Activo)
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Usuario inválido o inactivo");
+
+            var isProfesor = await _userManager.IsInRoleAsync(user, "Profesor");
+            var isAdmin = await _userManager.IsInRoleAsync(user, "Administrador");
+
+            if (!isProfesor && !isAdmin)
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Acceso denegado");
+
+            var curso = await _db.Cursos
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.Id == cursoId, ct);
+
+            if (curso == null)
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Curso no encontrado");
+
+            if (!isAdmin)
+            {
+                var profesorAsignado = await _db.CursoProfesores
+                    .AsNoTracking()
+                    .AnyAsync(x => x.CursoId == cursoId && x.ProfesorId == userId, ct);
+
+                if (!profesorAsignado)
+                    return ResponseApiService.Response(StatusCodes.Status403Forbidden, "No estás asignado a este curso");
+            }
+
+            search = search?.Trim();
 
             var query = _db.Tareas
                 .AsNoTracking()
@@ -42,15 +77,16 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasByCurso
 
             if (!string.IsNullOrWhiteSpace(search))
             {
-                var searchTrimmed = search.Trim();
-
+                var s = search.ToLowerInvariant();
                 query = query.Where(t =>
-                    t.Titulo.Contains(searchTrimmed) ||
-                    (t.Consigna != null && t.Consigna.Contains(searchTrimmed)));
+                    t.Titulo.ToLower().Contains(s) ||
+                    (t.Consigna != null && t.Consigna.ToLower().Contains(s)));
             }
 
             if (estado.HasValue)
+            {
                 query = query.Where(t => t.Estado == estado.Value);
+            }
 
             var total = await query.CountAsync(ct);
 
@@ -66,19 +102,18 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasByCurso
                     Titulo = t.Titulo,
                     Estado = (int)t.Estado,
                     FechaEntregaUtc = t.FechaEntregaUtc,
+                    EsAnuncio = !t.FechaEntregaUtc.HasValue,
                     CreatedAtUtc = t.CreatedAtUtc
                 })
                 .ToListAsync(ct);
 
-            var response = new TareasByCursoPagedModel
+            return ResponseApiService.Response(StatusCodes.Status200OK, new
             {
-                Total = total,
-                PageNumber = pageNumber,
-                PageSize = pageSize,
-                Items = items
-            };
-
-            return ResponseApiService.Response(StatusCodes.Status200OK, response);
+                pageNumber,
+                pageSize,
+                total,
+                items
+            });
         }
     }
 }
