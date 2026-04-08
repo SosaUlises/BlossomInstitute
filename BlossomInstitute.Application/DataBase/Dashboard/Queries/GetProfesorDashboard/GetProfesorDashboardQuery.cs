@@ -51,9 +51,19 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetProfesorDas
             if (profesor == null)
                 return ResponseApiService.Response(StatusCodes.Status404NotFound, "Profesor no encontrado");
 
-            var hoy = DateOnly.FromDateTime(DateTime.Now);
-            var ahoraLocal = DateTime.Now;
-            var ahoraUtc = DateTime.UtcNow;
+            TimeZoneInfo argentinaTimeZone;
+
+            try
+            {
+                argentinaTimeZone = TimeZoneInfo.FindSystemTimeZoneById("America/Argentina/Buenos_Aires");
+            }
+            catch
+            {
+                argentinaTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Argentina Standard Time");
+            }
+
+            var ahoraLocal = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, argentinaTimeZone);
+            var hoy = DateOnly.FromDateTime(ahoraLocal);
 
             var cursos = await _db.CursoProfesores
                 .AsNoTracking()
