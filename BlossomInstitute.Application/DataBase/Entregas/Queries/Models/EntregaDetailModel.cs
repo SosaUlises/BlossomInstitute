@@ -5,6 +5,8 @@
         public int EntregaId { get; set; }
         public int TareaId { get; set; }
         public int AlumnoId { get; set; }
+        public string? AlumnoNombre { get; set; }
+        public string? AlumnoApellido { get; set; }
 
         public string? Texto { get; set; }
         public DateTime FechaEntregaUtc { get; set; }

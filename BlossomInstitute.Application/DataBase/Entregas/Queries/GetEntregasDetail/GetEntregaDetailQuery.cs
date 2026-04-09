@@ -15,31 +15,50 @@ namespace BlossomInstitute.Application.DataBase.Entregas.Queries.GetEntregasDeta
             _db = db;
         }
 
-        public async Task<BaseResponseModel> Execute(int cursoId, int tareaId, int alumnoId, int profesorUserId, CancellationToken ct)
+        public async Task<BaseResponseModel> Execute(
+            int cursoId,
+            int tareaId,
+            int alumnoId,
+            int profesorUserId,
+            CancellationToken ct)
         {
-            if (cursoId <= 0 || tareaId <= 0 || alumnoId <= 0) return ResponseApiService.Response(400, "Parámetros inválidos");
+            if (cursoId <= 0 || tareaId <= 0 || alumnoId <= 0)
+                return ResponseApiService.Response(400, "Parámetros inválidos");
 
-            // Profesor asignado
-            var profAsignado = await _db.CursoProfesores.AsNoTracking()
+            var profAsignado = await _db.CursoProfesores
+                .AsNoTracking()
                 .AnyAsync(x => x.CursoId == cursoId && x.ProfesorId == profesorUserId, ct);
-            if (!profAsignado) return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Profesor no asignado a este curso");
 
-            // Tarea pertenece al curso
-            var tareaOk = await _db.Tareas.AsNoTracking()
+            if (!profAsignado)
+                return ResponseApiService.Response(
+                    StatusCodes.Status403Forbidden,
+                    "Profesor no asignado a este curso");
+
+            var tareaOk = await _db.Tareas
+                .AsNoTracking()
                 .AnyAsync(t => t.Id == tareaId && t.CursoId == cursoId, ct);
-            if (!tareaOk) return ResponseApiService.Response(StatusCodes.Status404NotFound, "Tarea no encontrada");
 
-            // Entrega
-            var entrega = await _db.Entregas.AsNoTracking()
+            if (!tareaOk)
+                return ResponseApiService.Response(
+                    StatusCodes.Status404NotFound,
+                    "Tarea no encontrada");
+
+            var entrega = await _db.Entregas
+                .AsNoTracking()
                 .Where(e => e.TareaId == tareaId && e.AlumnoId == alumnoId)
                 .Select(e => new EntregaDetailModel
                 {
                     EntregaId = e.Id,
                     TareaId = e.TareaId,
                     AlumnoId = e.AlumnoId,
+
+                    AlumnoNombre = e.Alumno.Usuario.Nombre,
+                    AlumnoApellido = e.Alumno.Usuario.Apellido,
+
                     Texto = e.Texto,
                     FechaEntregaUtc = e.FechaEntregaUtc,
                     EstadoEntrega = (int)e.Estado,
+
                     Adjuntos = e.Adjuntos
                         .OrderBy(a => a.Id)
                         .Select(a => new EntregaAdjuntoModel
@@ -50,6 +69,7 @@ namespace BlossomInstitute.Application.DataBase.Entregas.Queries.GetEntregasDeta
                             Nombre = a.Nombre
                         })
                         .ToList(),
+
                     FeedbackVigente = e.Feedbacks
                         .Where(f => f.EsVigente)
                         .OrderByDescending(f => f.FechaCorreccionUtc)
@@ -59,7 +79,9 @@ namespace BlossomInstitute.Application.DataBase.Entregas.Queries.GetEntregasDeta
                             Estado = (int)f.Estado,
                             Nota = f.Nota,
                             FechaCorreccionUtc = f.FechaCorreccionUtc
-                        }).FirstOrDefault(),
+                        })
+                        .FirstOrDefault(),
+
                     FeedbackHistorial = e.Feedbacks
                         .OrderByDescending(f => f.FechaCorreccionUtc)
                         .Select(f => new FeedbackHistoryItemModel
@@ -70,11 +92,15 @@ namespace BlossomInstitute.Application.DataBase.Entregas.Queries.GetEntregasDeta
                             Nota = f.Nota,
                             Comentario = f.Comentario,
                             FechaCorreccionUtc = f.FechaCorreccionUtc
-                        }).ToList()
+                        })
+                        .ToList()
                 })
                 .FirstOrDefaultAsync(ct);
 
-            if (entrega == null) return ResponseApiService.Response(StatusCodes.Status404NotFound, "Entrega no encontrada");
+            if (entrega == null)
+                return ResponseApiService.Response(
+                    StatusCodes.Status404NotFound,
+                    "Entrega no encontrada");
 
             return ResponseApiService.Response(StatusCodes.Status200OK, entrega);
         }
