@@ -30,6 +30,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
 
             var nowUtc = DateTime.UtcNow;
             var nowLocal = DateTime.Now;
+            var today = DateOnly.FromDateTime(nowLocal);
+            var firstDayOfMonth = new DateOnly(today.Year, today.Month, 1);
 
             // -------------------------------------------------
             // OVERVIEW
@@ -67,11 +69,20 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             };
 
             // -------------------------------------------------
-            // GENERAL AVERAGE
+            // GENERAL AVERAGE (TODOS LOS TIPOS)
             // -------------------------------------------------
             var generalAverageRaw = await _db.Calificaciones
                 .AsNoTracking()
-                .Where(x => !x.Archivado)
+                .Where(x =>
+                    !x.Archivado &&
+                    x.Curso.Estado == EstadoCurso.Activo &&
+                    (
+                        x.Tipo == TipoCalificacion.Homework ||
+                        x.Tipo == TipoCalificacion.Quiz ||
+                        x.Tipo == TipoCalificacion.Test ||
+                        x.Tipo == TipoCalificacion.Participation ||
+                        x.Tipo == TipoCalificacion.Behaviour
+                    ))
                 .Select(x => (decimal?)x.Nota)
                 .AverageAsync(ct);
 
@@ -80,7 +91,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 : null;
 
             // -------------------------------------------------
-            // AVERAGE GRADES BY COURSE
+            // AVERAGE GRADES BY COURSE (GENERAL)
             // -------------------------------------------------
             var averageGradesByCourse = await _db.Calificaciones
                 .AsNoTracking()
@@ -90,7 +101,9 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                     (
                         x.Tipo == TipoCalificacion.Homework ||
                         x.Tipo == TipoCalificacion.Quiz ||
-                        x.Tipo == TipoCalificacion.Test
+                        x.Tipo == TipoCalificacion.Test ||
+                        x.Tipo == TipoCalificacion.Participation ||
+                        x.Tipo == TipoCalificacion.Behaviour
                     ))
                 .GroupBy(x => new { x.CursoId, x.Curso.Nombre })
                 .Select(g => new DashboardAverageGradeByCourseModel
@@ -100,8 +113,92 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                     AverageGrade = Math.Round(g.Average(x => x.Nota), 2)
                 })
                 .OrderByDescending(x => x.AverageGrade)
-                .Take(8)
                 .ToListAsync(ct);
+
+            // -------------------------------------------------
+            // AVERAGE GRADES BY COURSE (SOLO MANUALES)
+            // -------------------------------------------------
+            var manualAverageGradesByCourse = await _db.Calificaciones
+                .AsNoTracking()
+                .Where(x =>
+                    !x.Archivado &&
+                    x.Curso.Estado == EstadoCurso.Activo &&
+                    (
+                        x.Tipo == TipoCalificacion.Quiz ||
+                        x.Tipo == TipoCalificacion.Test ||
+                        x.Tipo == TipoCalificacion.Participation ||
+                        x.Tipo == TipoCalificacion.Behaviour
+                    ))
+                .GroupBy(x => new { x.CursoId, x.Curso.Nombre })
+                .Select(g => new DashboardAverageGradeByCourseModel
+                {
+                    CursoId = g.Key.CursoId,
+                    CursoNombre = g.Key.Nombre,
+                    AverageGrade = Math.Round(g.Average(x => x.Nota), 2)
+                })
+                .OrderByDescending(x => x.AverageGrade)
+                .ToListAsync(ct);
+
+            // -------------------------------------------------
+            // STUDENTS AT RISK THIS MONTH (GENERAL)
+            // promedio mensual < 60 incluyendo homework + manuales
+            // -------------------------------------------------
+            var studentsAtRiskThisMonthCount = await _db.Calificaciones
+                .AsNoTracking()
+                .Where(x =>
+                    !x.Archivado &&
+                    x.Curso.Estado == EstadoCurso.Activo &&
+                    x.Fecha >= firstDayOfMonth &&
+                    x.Fecha <= today &&
+                    (
+                        x.Tipo == TipoCalificacion.Homework ||
+                        x.Tipo == TipoCalificacion.Quiz ||
+                        x.Tipo == TipoCalificacion.Test ||
+                        x.Tipo == TipoCalificacion.Participation ||
+                        x.Tipo == TipoCalificacion.Behaviour
+                    ))
+                .GroupBy(x => x.AlumnoId)
+                .Where(g => g.Average(x => x.Nota) < 60)
+                .CountAsync(ct);
+
+            // -------------------------------------------------
+            // STUDENTS WITH LOW MANUAL PERFORMANCE THIS MONTH
+            // promedio mensual < 60 solo en evaluaciones manuales
+            // -------------------------------------------------
+            var studentsManualLowGradesThisMonthCount = await _db.Calificaciones
+                .AsNoTracking()
+                .Where(x =>
+                    !x.Archivado &&
+                    x.Curso.Estado == EstadoCurso.Activo &&
+                    x.Fecha >= firstDayOfMonth &&
+                    x.Fecha <= today &&
+                    (
+                        x.Tipo == TipoCalificacion.Quiz ||
+                        x.Tipo == TipoCalificacion.Test ||
+                        x.Tipo == TipoCalificacion.Participation ||
+                        x.Tipo == TipoCalificacion.Behaviour
+                    ))
+                .GroupBy(x => x.AlumnoId)
+                .Where(g => g.Average(x => x.Nota) < 60)
+                .CountAsync(ct);
+
+            // -------------------------------------------------
+            // COURSES AT RISK BY OVERALL AVERAGE
+            // -------------------------------------------------
+            var coursesAtRiskByOverallAverage = averageGradesByCourse
+                .Where(x => x.AverageGrade < 60)
+                .OrderBy(x => x.AverageGrade)
+                .Take(5)
+                .ToList();
+
+            // -------------------------------------------------
+            // COURSES AT RISK BY MANUAL AVERAGE
+            // -------------------------------------------------
+            var coursesAtRiskByManualAverage = manualAverageGradesByCourse
+                .Where(x => x.AverageGrade < 60)
+                .OrderBy(x => x.AverageGrade)
+                .Take(5)
+                .ToList();
 
             // -------------------------------------------------
             // UPCOMING ASSIGNMENTS
@@ -163,6 +260,11 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 Overview = overview,
                 GeneralAverage = generalAverage,
                 AverageGradesByCourse = averageGradesByCourse,
+                ManualAverageGradesByCourse = manualAverageGradesByCourse,
+                StudentsAtRiskThisMonthCount = studentsAtRiskThisMonthCount,
+                StudentsManualLowGradesThisMonthCount = studentsManualLowGradesThisMonthCount,
+                CoursesAtRiskByOverallAverage = coursesAtRiskByOverallAverage,
+                CoursesAtRiskByManualAverage = coursesAtRiskByManualAverage,
                 UpcomingAssignments = upcomingAssignments,
                 UpcomingClasses = upcomingClasses
             };
@@ -202,3 +304,5 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
         }
     }
 }
+
+
