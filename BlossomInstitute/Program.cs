@@ -14,11 +14,17 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend", policy =>
     {
         policy
-            .WithOrigins(
-                "http://localhost:3000",
-                "http://127.0.0.1:3000",
-                "http://192.168.18.9:3000"
-            )
+            .SetIsOriginAllowed(origin =>
+            {
+                if (string.IsNullOrWhiteSpace(origin))
+                    return false;
+
+                return origin == "http://localhost:3000"
+                    || origin == "http://127.0.0.1:3000"
+                    || origin == "http://192.168.18.9:3000"
+                    || origin == "https://blossom-institute.vercel.app"
+                    || origin.EndsWith(".vercel.app");
+            })
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
