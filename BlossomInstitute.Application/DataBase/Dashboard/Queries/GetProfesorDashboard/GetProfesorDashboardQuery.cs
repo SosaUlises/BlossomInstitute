@@ -174,31 +174,48 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetProfesorDas
 
             var tareasPublicadasCount = await tareasPublicadasBaseQuery.CountAsync(ct);
 
-            var ultimasEntregas = await _db.Entregas
-                .AsNoTracking()
-                .Where(x => cursoIds.Contains(x.Tarea.CursoId))
-                .OrderByDescending(x => x.FechaEntregaUtc)
+            var entregasDashboard = await _db.Entregas
+              .AsNoTracking()
+              .Where(x => cursoIds.Contains(x.Tarea.CursoId))
+              .Select(x => new ProfesorDashboardUltimaEntregaItemModel
+              {
+                  EntregaId = x.Id,
+                  TareaId = x.TareaId,
+                  CursoId = x.Tarea.CursoId,
+                  CursoNombre = x.Tarea.Curso.Nombre,
+                  TituloTarea = x.Tarea.Titulo,
+                  AlumnoId = x.AlumnoId,
+                  AlumnoNombre = x.Alumno.Usuario.Nombre,
+                  AlumnoApellido = x.Alumno.Usuario.Apellido,
+                  FechaEntregaUtc = x.FechaEntregaUtc,
+                  EstadoEntrega = x.Estado,
+                  TieneFeedbackVigente = x.Feedbacks.Any(f => f.EsVigente)
+              })
+              .ToListAsync(ct);
+
+            var pendientesCorreccion = entregasDashboard
+                .Where(x => !x.TieneFeedbackVigente)
+                .OrderBy(x => x.FechaEntregaUtc)
                 .Take(5)
-                .Select(x => new ProfesorDashboardUltimaEntregaItemModel
-                {
-                    EntregaId = x.Id,
-                    TareaId = x.TareaId,
-                    CursoId = x.Tarea.CursoId,
-                    CursoNombre = x.Tarea.Curso.Nombre,
-                    TituloTarea = x.Tarea.Titulo,
-                    AlumnoId = x.AlumnoId,
-                    AlumnoNombre = x.Alumno.Usuario.Nombre,
-                    AlumnoApellido = x.Alumno.Usuario.Apellido,
-                    FechaEntregaUtc = x.FechaEntregaUtc,
-                    EstadoEntrega = x.Estado
-                })
-                .ToListAsync(ct);
+                .ToList();
+
+            var cupoRestante = Math.Max(0, 5 - pendientesCorreccion.Count);
+
+            var recientesCorregidas = entregasDashboard
+                .Where(x => x.TieneFeedbackVigente)
+                .OrderByDescending(x => x.FechaEntregaUtc)
+                .Take(cupoRestante)
+                .ToList();
+
+            var ultimasEntregas = pendientesCorreccion
+                .Concat(recientesCorregidas)
+                .ToList();
 
             var entregasPendientesCorreccionCount = await _db.Entregas
                 .AsNoTracking()
                 .Where(x =>
                     cursoIds.Contains(x.Tarea.CursoId) &&
-                    !_db.EntregaFeedbacks.Any(f => f.EntregaId == x.Id && f.EsVigente))
+                    !x.Feedbacks.Any(f => f.EsVigente))
                 .CountAsync(ct);
 
             var alumnosPorCurso = await _db.Matriculas

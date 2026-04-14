@@ -14,5 +14,6 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.ProfesoresMode
         public string AlumnoApellido { get; set; } = default!;
         public DateTime FechaEntregaUtc { get; set; }
         public EstadoEntrega EstadoEntrega { get; set; }
+        public bool TieneFeedbackVigente { get; set; }
     }
 }
