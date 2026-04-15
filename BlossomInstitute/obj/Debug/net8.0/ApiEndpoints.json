@@ -675,6 +675,53 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "BlossomInstitute.Controllers.Cursos.CursoPlantillaCalificacionesController",
+    "Method": "Create",
+    "RelativePath": "api/v1/cursos/{cursoId}/plantillas-calificaciones",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cursoId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "model",
+        "Type": "BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.CreatePlantilla.CreatePlantillaCalificacionModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlossomInstitute.Controllers.Cursos.CursoPlantillaCalificacionesController",
+    "Method": "Update",
+    "RelativePath": "api/v1/cursos/{cursoId}/plantillas-calificaciones/{plantillaId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cursoId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "plantillaId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "model",
+        "Type": "BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Update.UpdatePlantillaCalificacionModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "BlossomInstitute.Controllers.Cursos.CursoPersonasController",
     "Method": "GetProfesoresByCurso",
     "RelativePath": "api/v1/cursos/{cursoId}/profesores",

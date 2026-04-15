@@ -32,7 +32,7 @@ namespace BlossomInstitute.Application.DataBase
         DbSet<CalificacionEntity> Calificaciones { get; set; }
         DbSet<CalificacionDetalleEntity> CalificacionDetalles { get; set; }
         DbSet<PlantillaCalificacionEntity> PlantillaCalificaciones { get; set; }
-        DbSet<PlantillaCalificacionDetalleEntity> PlantillaCalificacionsDetalle { get; set; }
+        DbSet<PlantillaCalificacionDetalleEntity> PlantillaCalificacionesDetalle { get; set; }
 
 
         // Identity (solo lectura para queries)
