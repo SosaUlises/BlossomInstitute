@@ -47,6 +47,7 @@ using BlossomInstitute.Application.DataBase.Entregas.Queries.GetFeedbacksByEntre
 using BlossomInstitute.Application.DataBase.Login.Command;
 using BlossomInstitute.Application.DataBase.Password.Command.ForgotPassword;
 using BlossomInstitute.Application.DataBase.Password.Command.ResetPassword;
+using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.CreatePlantilla;
 using BlossomInstitute.Application.DataBase.Profesor.Command.ActivarProfesor;
 using BlossomInstitute.Application.DataBase.Profesor.Command.CreateProfesor;
 using BlossomInstitute.Application.DataBase.Profesor.Command.DeleteProfesor;
@@ -166,6 +167,11 @@ namespace BlossomInstitute.Application
             services.AddTransient<IGetCalificacionesByCursoQuery, GetCalificacionesByCursoQuery>();
             services.AddTransient<IGetCalificacionesByAlumnoQuery, GetCalificacionesByAlumnoQuery>();
             services.AddTransient<IGetCalificacionByIdQuery, GetCalificacionByIdQuery>();
+
+
+            // Plantilla Calificaciones
+            services.AddTransient<ICreatePlantillaCalificacionCommand, CreatePlantillaCalificacionCommand>();
+
 
             // Dashboard
             services.AddTransient<IGetAlumnoDashboardQuery, GetAlumnoDashboardQuery>();
