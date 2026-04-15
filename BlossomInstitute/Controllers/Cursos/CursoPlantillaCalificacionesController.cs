@@ -1,6 +1,8 @@
 ﻿using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Archive;
 using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.CreatePlantilla;
 using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Update;
+using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Query.GetAll;
+using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Query.GetById;
 using BlossomInstitute.Common.Features;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
@@ -93,6 +95,38 @@ namespace BlossomInstitute.Controllers.Cursos
             }
 
             var result = await command.Execute(cursoId, plantillaId, GetUserId(), ct);
+            return StatusCode(result.StatusCode, result);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll(
+            [FromRoute] int cursoId,
+            [FromQuery] int pageNumber,
+            [FromQuery] int pageSize,
+            [FromQuery] string? search,
+            [FromServices] IGetAllPlantillaCalificacionesByCursoQuery query,
+            CancellationToken ct)
+        {
+            if (cursoId <= 0)
+                return BadRequest(ResponseApiService.Response(StatusCodes.Status400BadRequest, "Curso inválido"));
+
+
+            var result = await query.Execute(cursoId, GetUserId(), pageNumber, pageSize, search, ct);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpGet("{plantillaId:int}")]
+        public async Task<IActionResult> GetById(
+            [FromRoute] int cursoId,
+            [FromRoute] int plantillaId,
+            [FromServices] IGetPlantillaCalificacionByIdQuery query,
+            CancellationToken ct)
+        {
+            if (cursoId <= 0 || plantillaId <= 0)
+                return BadRequest(ResponseApiService.Response(StatusCodes.Status400BadRequest, "Parámetros inválidos"));
+
+            var result = await query.Execute(cursoId, plantillaId, GetUserId(), ct);
             return StatusCode(result.StatusCode, result);
         }
     }

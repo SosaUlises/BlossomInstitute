@@ -50,6 +50,8 @@ using BlossomInstitute.Application.DataBase.Password.Command.ResetPassword;
 using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Archive;
 using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.CreatePlantilla;
 using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Update;
+using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Query.GetAll;
+using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Query.GetById;
 using BlossomInstitute.Application.DataBase.Profesor.Command.ActivarProfesor;
 using BlossomInstitute.Application.DataBase.Profesor.Command.CreateProfesor;
 using BlossomInstitute.Application.DataBase.Profesor.Command.DeleteProfesor;
@@ -175,6 +177,8 @@ namespace BlossomInstitute.Application
             services.AddTransient<ICreatePlantillaCalificacionCommand, CreatePlantillaCalificacionCommand>();
             services.AddTransient<IUpdatePlantillaCalificacionCommand, UpdatePlantillaCalificacionCommand>();
             services.AddTransient<IArchivePlantillaCalificacionCommand, ArchivePlantillaCalificacionCommand>();
+            services.AddTransient<IGetAllPlantillaCalificacionesByCursoQuery, GetAllPlantillaCalificacionesByCursoQuery>();
+            services.AddTransient<IGetPlantillaCalificacionByIdQuery, GetPlantillaCalificacionByIdQuery>();
 
 
             // Dashboard
