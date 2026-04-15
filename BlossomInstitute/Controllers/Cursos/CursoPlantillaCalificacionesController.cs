@@ -1,4 +1,5 @@
-﻿using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.CreatePlantilla;
+﻿using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Archive;
+using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.CreatePlantilla;
 using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Update;
 using BlossomInstitute.Common.Features;
 using FluentValidation;
@@ -74,6 +75,24 @@ namespace BlossomInstitute.Controllers.Cursos
 
       
             var result = await command.Execute(cursoId, plantillaId, GetUserId(), model, ct);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPatch("{plantillaId:int}/archive")]
+        public async Task<IActionResult> Archive(
+           [FromRoute] int cursoId,
+           [FromRoute] int plantillaId,
+           [FromServices] IArchivePlantillaCalificacionCommand command,
+           CancellationToken ct)
+        {
+            if (cursoId <= 0 || plantillaId <= 0)
+            {
+                return BadRequest(ResponseApiService.Response(
+                    StatusCodes.Status400BadRequest,
+                    "Parámetros inválidos"));
+            }
+
+            var result = await command.Execute(cursoId, plantillaId, GetUserId(), ct);
             return StatusCode(result.StatusCode, result);
         }
     }
