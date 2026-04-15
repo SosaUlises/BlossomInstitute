@@ -67,8 +67,7 @@
               "RelativeToolTip": "BlossomInstitute.Application\\InjeccionDependenciaService.cs",
               "ViewState": "AgIAAEwAAAAAAAAAAAAAAHIAAABjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-15T01:28:51.642Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-15T01:28:51.642Z"
             },
             {
               "$type": "Document",
@@ -80,8 +79,7 @@
               "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Alumno\\Queries\\GetAsignableByCurso\\IGetAsignableAlumnosByCursoQuery.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAABjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-15T01:27:38.821Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-15T01:27:38.821Z"
             },
             {
               "$type": "Document",
@@ -93,8 +91,7 @@
               "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Alumno\\Queries\\GetAsignableByCurso\\GetAsignableAlumnosByCursoQuery.cs",
               "ViewState": "AgIAAEIAAAAAAAAAAAAowBUAAABvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-15T01:27:31.878Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-15T01:27:31.878Z"
             },
             {
               "$type": "Document",
@@ -106,8 +103,11 @@
               "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Alumno\\Queries\\GetAsignableByCurso\\GetAsignableAlumnoModel.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-15T01:27:07.502Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-15T01:27:07.502Z"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
             }
           ]
         }
