@@ -3,6 +3,7 @@ using BlossomInstitute.Application.DataBase.Alumno.Command.CreateAlumno;
 using BlossomInstitute.Application.DataBase.Alumno.Command.DesactivarAlumno;
 using BlossomInstitute.Application.DataBase.Alumno.Command.UpdateAlumno;
 using BlossomInstitute.Application.DataBase.Alumno.Queries.GetAll;
+using BlossomInstitute.Application.DataBase.Alumno.Queries.GetAsignableByCurso;
 using BlossomInstitute.Application.DataBase.Alumno.Queries.GetById;
 using BlossomInstitute.Common.Features;
 using FluentValidation;
@@ -95,6 +96,25 @@ namespace BlossomInstitute.Controllers.Usuarios
         {
             if (userId <= 0) return BadRequest(ResponseApiService.Response(400, "Id inválido"));
             var result = await query.Execute(userId);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpGet("assignable")]
+        public async Task<IActionResult> GetAssignableByCurso(
+            [FromQuery] int cursoId,
+            [FromServices] IGetAsignableAlumnosByCursoQuery query,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string? search = null)
+        {
+            if (cursoId <= 0)
+                return BadRequest(ResponseApiService.Response(StatusCodes.Status400BadRequest, "Curso inválido"));
+
+            if (pageNumber <= 0) pageNumber = 1;
+            if (pageSize <= 0) pageSize = 10;
+            if (pageSize > 100) pageSize = 100;
+
+            var result = await query.Execute(cursoId, pageNumber, pageSize, search);
             return StatusCode(result.StatusCode, result);
         }
     }
