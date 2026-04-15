@@ -39,6 +39,8 @@ namespace BlossomInstitute.Infraestructure.DataBase
         public DbSet<FeedbackEntregaAdjuntoEntity> FeedbackEntregaAdjuntos { get; set; }
         public DbSet<CalificacionEntity> Calificaciones { get; set; }
         public DbSet<CalificacionDetalleEntity> CalificacionDetalles { get; set; }
+        public DbSet<PlantillaCalificacionEntity> PlantillaCalificaciones { get; set; }
+        public DbSet<PlantillaCalificacionDetalleEntity> PlantillaCalificacionesDetalle { get; set; }
 
         // Identity (solo lectura para queries)
         public IQueryable<UsuarioEntity> Usuarios => Users.AsNoTracking();
@@ -73,6 +75,8 @@ namespace BlossomInstitute.Infraestructure.DataBase
             new CalificacionConfiguration(modelBuilder.Entity<CalificacionEntity>());
             new CalificacionDetalleConfiguration(modelBuilder.Entity<CalificacionDetalleEntity>());
             new FeedbackEntregaAdjuntoConfiguration(modelBuilder.Entity<FeedbackEntregaAdjuntoEntity>());
+            new PlantillaCalificacionesConfiguration(modelBuilder.Entity<PlantillaCalificacionEntity>());
+            new PlantillaCalificacionesDetalleConfiguration(modelBuilder.Entity<PlantillaCalificacionDetalleEntity>());
 
         }
 
