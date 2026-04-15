@@ -7,48 +7,12 @@
       "RelativeMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|solutionrelative:blossominstitute\\controllers\\cursos\\cursoplantillacalificacionescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\validator\\calificacion\\applyplantillacalificacionmodelvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\validator\\calificacion\\applyplantillacalificacionmodelvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\injecciondependenciaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\injecciondependenciaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\plantillacalificacion\\query\\getbyid\\getplantillacalificacionbyidquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\plantillacalificacion\\query\\getbyid\\getplantillacalificacionbyidquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\plantillacalificacion\\query\\getall\\igetallplantillacalificacionesbycursoquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\plantillacalificacion\\query\\getall\\igetallplantillacalificacionesbycursoquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\plantillacalificacion\\query\\getall\\getallplantillacalificacionesbycursoquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\plantillacalificacion\\query\\getall\\getallplantillacalificacionesbycursoquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\plantillacalificacion\\query\\getbyid\\igetplantillacalificacionbyidquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\plantillacalificacion\\query\\getbyid\\igetplantillacalificacionbyidquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\plantillacalificacion\\query\\models\\plantillacalificacionlistitemmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\plantillacalificacion\\query\\models\\plantillacalificacionlistitemmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\plantillacalificacion\\query\\models\\plantillacalificaciondetallemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\plantillacalificacion\\query\\models\\plantillacalificaciondetallemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\plantillacalificacion\\query\\models\\plantillacalificaciondetailmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\plantillacalificacion\\query\\models\\plantillacalificaciondetailmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\plantillacalificacion\\command\\archive\\archiveplantillacalificacioncommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\plantillacalificacion\\command\\archive\\archiveplantillacalificacioncommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\plantillacalificacion\\command\\archive\\iarchiveplantillacalificacioncommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\plantillacalificacion\\command\\archive\\iarchiveplantillacalificacioncommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute\\controllers\\cursos\\cursopersonascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|solutionrelative:blossominstitute\\controllers\\cursos\\cursopersonascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -58,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedHeight": 422,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -74,161 +38,42 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "IGetAllPlantillaCalificacionesByCursoQuery.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Query\\GetAll\\IGetAllPlantillaCalificacionesByCursoQuery.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Query\\GetAll\\IGetAllPlantillaCalificacionesByCursoQuery.cs",
-              "ToolTip": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Query\\GetAll\\IGetAllPlantillaCalificacionesByCursoQuery.cs",
-              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Query\\GetAll\\IGetAllPlantillaCalificacionesByCursoQuery.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-15T21:03:34.642Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "GetPlantillaCalificacionByIdQuery.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Query\\GetById\\GetPlantillaCalificacionByIdQuery.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Query\\GetById\\GetPlantillaCalificacionByIdQuery.cs",
-              "ToolTip": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Query\\GetById\\GetPlantillaCalificacionByIdQuery.cs",
-              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Query\\GetById\\GetPlantillaCalificacionByIdQuery.cs",
-              "ViewState": "AgIAAEgAAAAAAAAAAAAowDsAAAAqAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-15T21:05:29.45Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "InjeccionDependenciaService.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\InjeccionDependenciaService.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute.Application\\InjeccionDependenciaService.cs",
-              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\InjeccionDependenciaService.cs",
-              "RelativeToolTip": "BlossomInstitute.Application\\InjeccionDependenciaService.cs",
-              "ViewState": "AgIAAKMAAAAAAAAAAAAgwLQAAABnAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-15T20:34:57.412Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "CursoPlantillaCalificacionesController.cs",
               "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\Cursos\\CursoPlantillaCalificacionesController.cs",
               "RelativeDocumentMoniker": "BlossomInstitute\\Controllers\\Cursos\\CursoPlantillaCalificacionesController.cs",
               "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\Cursos\\CursoPlantillaCalificacionesController.cs",
               "RelativeToolTip": "BlossomInstitute\\Controllers\\Cursos\\CursoPlantillaCalificacionesController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAH4AAAB4AAAAAAAAAA==",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAowJsAAAA0AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-15T20:34:45.98Z",
+              "WhenOpened": "2026-04-15T21:57:01.12Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "GetAllPlantillaCalificacionesByCursoQuery.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Query\\GetAll\\GetAllPlantillaCalificacionesByCursoQuery.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Query\\GetAll\\GetAllPlantillaCalificacionesByCursoQuery.cs",
-              "ToolTip": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Query\\GetAll\\GetAllPlantillaCalificacionesByCursoQuery.cs",
-              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Query\\GetAll\\GetAllPlantillaCalificacionesByCursoQuery.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAABoAAAAbAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "ApplyPlantillaCalificacionModelValidator.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\Validator\\Calificacion\\ApplyPlantillaCalificacionModelValidator.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\Validator\\Calificacion\\ApplyPlantillaCalificacionModelValidator.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\Validator\\Calificacion\\ApplyPlantillaCalificacionModelValidator.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\Validator\\Calificacion\\ApplyPlantillaCalificacionModelValidator.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAgwBEAAABBAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-15T21:03:27.097Z",
+              "WhenOpened": "2026-04-15T21:55:45.586Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "IGetPlantillaCalificacionByIdQuery.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Query\\GetById\\IGetPlantillaCalificacionByIdQuery.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Query\\GetById\\IGetPlantillaCalificacionByIdQuery.cs",
-              "ToolTip": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Query\\GetById\\IGetPlantillaCalificacionByIdQuery.cs",
-              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Query\\GetById\\IGetPlantillaCalificacionByIdQuery.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "InjeccionDependenciaService.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\InjeccionDependenciaService.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\InjeccionDependenciaService.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\InjeccionDependenciaService.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\InjeccionDependenciaService.cs",
+              "ViewState": "AgIAAKEAAAAAAAAAAAAgwLYAAABnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-15T21:05:47.678Z",
+              "WhenOpened": "2026-04-15T21:55:02.684Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "PlantillaCalificacionDetailModel.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Query\\Models\\PlantillaCalificacionDetailModel.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Query\\Models\\PlantillaCalificacionDetailModel.cs",
-              "ToolTip": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Query\\Models\\PlantillaCalificacionDetailModel.cs",
-              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Query\\Models\\PlantillaCalificacionDetailModel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAA2AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-15T21:00:53.949Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "PlantillaCalificacionListItemModel.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Query\\Models\\PlantillaCalificacionListItemModel.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Query\\Models\\PlantillaCalificacionListItemModel.cs",
-              "ToolTip": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Query\\Models\\PlantillaCalificacionListItemModel.cs",
-              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Query\\Models\\PlantillaCalificacionListItemModel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-15T21:00:22.533Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "PlantillaCalificacionDetalleModel.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Query\\Models\\PlantillaCalificacionDetalleModel.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Query\\Models\\PlantillaCalificacionDetalleModel.cs",
-              "ToolTip": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Query\\Models\\PlantillaCalificacionDetalleModel.cs",
-              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Query\\Models\\PlantillaCalificacionDetalleModel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-15T21:00:06.857Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "IArchivePlantillaCalificacionCommand.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Command\\Archive\\IArchivePlantillaCalificacionCommand.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Command\\Archive\\IArchivePlantillaCalificacionCommand.cs",
-              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Command\\Archive\\IArchivePlantillaCalificacionCommand.cs",
-              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Command\\Archive\\IArchivePlantillaCalificacionCommand.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-15T20:32:01.166Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "ArchivePlantillaCalificacionCommand.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Command\\Archive\\ArchivePlantillaCalificacionCommand.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Command\\Archive\\ArchivePlantillaCalificacionCommand.cs",
-              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Command\\Archive\\ArchivePlantillaCalificacionCommand.cs",
-              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Command\\Archive\\ArchivePlantillaCalificacionCommand.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAABMAAAAnAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-15T20:31:55.22Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "CursoPersonasController.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\Cursos\\CursoPersonasController.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute\\Controllers\\Cursos\\CursoPersonasController.cs",
-              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\Cursos\\CursoPersonasController.cs",
-              "RelativeToolTip": "BlossomInstitute\\Controllers\\Cursos\\CursoPersonasController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-15T20:34:45.473Z"
             }
           ]
         }

@@ -1,4 +1,5 @@
-﻿using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Archive;
+﻿using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Apply;
+using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Archive;
 using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.CreatePlantilla;
 using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Update;
 using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Query.GetAll;
@@ -127,6 +128,36 @@ namespace BlossomInstitute.Controllers.Cursos
                 return BadRequest(ResponseApiService.Response(StatusCodes.Status400BadRequest, "Parámetros inválidos"));
 
             var result = await query.Execute(cursoId, plantillaId, GetUserId(), ct);
+            return StatusCode(result.StatusCode, result);
+        }
+
+
+
+        [HttpPost("{plantillaId:int}/apply")]
+        public async Task<IActionResult> Apply(
+            [FromRoute] int cursoId,
+            [FromRoute] int plantillaId,
+            [FromBody] ApplyPlantillaCalificacionModel model,
+            [FromServices] IApplyPlantillaCalificacionCommand command,
+            [FromServices] IValidator<ApplyPlantillaCalificacionModel> validator,
+            CancellationToken ct)
+        {
+            if (cursoId <= 0 || plantillaId <= 0)
+            {
+                return BadRequest(ResponseApiService.Response(
+                    StatusCodes.Status400BadRequest,
+                    "Parámetros inválidos"));
+            }
+
+            var validationResult = await validator.ValidateAsync(model, ct);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(ResponseApiService.Response(
+                    StatusCodes.Status400BadRequest,
+                    validationResult.Errors));
+            }
+
+            var result = await command.Execute(cursoId, plantillaId, GetUserId(), model, ct);
             return StatusCode(result.StatusCode, result);
         }
     }
