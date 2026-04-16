@@ -3,12 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\plantillacalificacion\\command\\apply\\applyplantillacalificacioncommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\plantillacalificacion\\command\\apply\\applyplantillacalificacioncommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute\\controllers\\cursos\\cursoplantillacalificacionescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|solutionrelative:blossominstitute\\controllers\\cursos\\cursoplantillacalificacionescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\plantillacalificacion\\command\\create\\createplantillacalificacioncommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\plantillacalificacion\\command\\create\\createplantillacalificacioncommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute\\controllers\\cursos\\cursoasistenciacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{38A96820-2DB8-4A03-9C44-04B614C84CF1}|BlossomInstitute\\BlossomInstitute.csproj|solutionrelative:blossominstitute\\controllers\\cursos\\cursoasistenciacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedHeight": 422,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -33,33 +37,45 @@
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
             },
             {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ApplyPlantillaCalificacionCommand.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Command\\Apply\\ApplyPlantillaCalificacionCommand.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Command\\Apply\\ApplyPlantillaCalificacionCommand.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Command\\Apply\\ApplyPlantillaCalificacionCommand.cs",
+              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Command\\Apply\\ApplyPlantillaCalificacionCommand.cs",
+              "ViewState": "AgIAAKsAAAAAAAAAAAAowKgAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-16T19:54:31.064Z",
+              "EditorCaption": ""
+            },
+            {
               "$type": "Bookmark",
               "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "CreatePlantillaCalificacionCommand.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Command\\Create\\CreatePlantillaCalificacionCommand.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Command\\Create\\CreatePlantillaCalificacionCommand.cs",
-              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Command\\Create\\CreatePlantillaCalificacionCommand.cs",
-              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\PlantillaCalificacion\\Command\\Create\\CreatePlantillaCalificacionCommand.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "CursoAsistenciaController.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\Cursos\\CursoAsistenciaController.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute\\Controllers\\Cursos\\CursoAsistenciaController.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\Cursos\\CursoAsistenciaController.cs",
+              "RelativeToolTip": "BlossomInstitute\\Controllers\\Cursos\\CursoAsistenciaController.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-16T01:07:17.244Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-16T19:53:35.268Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "CursoPlantillaCalificacionesController.cs",
               "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\Cursos\\CursoPlantillaCalificacionesController.cs",
               "RelativeDocumentMoniker": "BlossomInstitute\\Controllers\\Cursos\\CursoPlantillaCalificacionesController.cs",
               "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute\\Controllers\\Cursos\\CursoPlantillaCalificacionesController.cs",
               "RelativeToolTip": "BlossomInstitute\\Controllers\\Cursos\\CursoPlantillaCalificacionesController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHUAAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAAH0AAAAAAAAAAAAuwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-16T01:06:54.53Z",
+              "WhenOpened": "2026-04-16T19:52:16.746Z",
               "EditorCaption": ""
             }
           ]

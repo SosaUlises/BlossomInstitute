@@ -232,6 +232,7 @@ namespace BlossomInstitute.Application
             services.AddScoped<IValidator<UpdateCalificacionModel>, UpdateCalificacionValidator>();
             services.AddScoped<IValidator<UpdateMyAccountSettingsModel>, UpdateMyAccountSettingsModelValidator>();
             services.AddScoped<IValidator<ChangeMyPasswordModel>, ChangeMyPasswordModelValidator>();
+            services.AddScoped<IValidator<ApplyPlantillaCalificacionModel>, ApplyPlantillaCalificacionModelValidator>();
 
 
             return services;
