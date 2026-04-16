@@ -697,6 +697,37 @@
   },
   {
     "ContainingType": "BlossomInstitute.Controllers.Cursos.CursoPlantillaCalificacionesController",
+    "Method": "GetAll",
+    "RelativePath": "api/v1/cursos/{cursoId}/plantillas-calificaciones",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cursoId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "search",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlossomInstitute.Controllers.Cursos.CursoPlantillaCalificacionesController",
     "Method": "Update",
     "RelativePath": "api/v1/cursos/{cursoId}/plantillas-calificaciones/{plantillaId}",
     "HttpMethod": "PUT",
@@ -716,6 +747,74 @@
       {
         "Name": "model",
         "Type": "BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Update.UpdatePlantillaCalificacionModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlossomInstitute.Controllers.Cursos.CursoPlantillaCalificacionesController",
+    "Method": "GetById",
+    "RelativePath": "api/v1/cursos/{cursoId}/plantillas-calificaciones/{plantillaId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cursoId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "plantillaId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlossomInstitute.Controllers.Cursos.CursoPlantillaCalificacionesController",
+    "Method": "Apply",
+    "RelativePath": "api/v1/cursos/{cursoId}/plantillas-calificaciones/{plantillaId}/apply",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cursoId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "plantillaId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "model",
+        "Type": "BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Apply.ApplyPlantillaCalificacionModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlossomInstitute.Controllers.Cursos.CursoPlantillaCalificacionesController",
+    "Method": "Archive",
+    "RelativePath": "api/v1/cursos/{cursoId}/plantillas-calificaciones/{plantillaId}/archive",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cursoId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "plantillaId",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],

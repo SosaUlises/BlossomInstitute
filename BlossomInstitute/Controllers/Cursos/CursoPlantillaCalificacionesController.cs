@@ -28,7 +28,6 @@ namespace BlossomInstitute.Controllers.Cursos
             [FromRoute] int cursoId,
             [FromBody] CreatePlantillaCalificacionModel model,
             [FromServices] ICreatePlantillaCalificacionCommand command,
-            [FromServices] IValidator<CreatePlantillaCalificacionModel> validator,
             CancellationToken ct)
         {
             if (cursoId <= 0)
@@ -37,16 +36,6 @@ namespace BlossomInstitute.Controllers.Cursos
                     StatusCodes.Status400BadRequest,
                     "Curso inválido"));
             }
-
-            var validationResult = await validator.ValidateAsync(model, ct);
-
-            if (!validationResult.IsValid)
-            {
-                return BadRequest(ResponseApiService.Response(
-                    StatusCodes.Status400BadRequest,
-                    validationResult.Errors));
-            }
-
   
             var result = await command.Execute(cursoId, GetUserId(), model, ct);
             return StatusCode(result.StatusCode, result);
@@ -58,7 +47,6 @@ namespace BlossomInstitute.Controllers.Cursos
             [FromRoute] int plantillaId,
             [FromBody] UpdatePlantillaCalificacionModel model,
             [FromServices] IUpdatePlantillaCalificacionCommand command,
-            [FromServices] IValidator<UpdatePlantillaCalificacionModel> validator,
             CancellationToken ct)
         {
             if (cursoId <= 0 || plantillaId <= 0)
@@ -67,15 +55,6 @@ namespace BlossomInstitute.Controllers.Cursos
                     StatusCodes.Status400BadRequest,
                     "Parámetros inválidos"));
             }
-
-            var validationResult = await validator.ValidateAsync(model, ct);
-            if (!validationResult.IsValid)
-            {
-                return BadRequest(ResponseApiService.Response(
-                    StatusCodes.Status400BadRequest,
-                    validationResult.Errors));
-            }
-
       
             var result = await command.Execute(cursoId, plantillaId, GetUserId(), model, ct);
             return StatusCode(result.StatusCode, result);
