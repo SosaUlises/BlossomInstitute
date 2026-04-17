@@ -140,7 +140,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 .ToListAsync(ct);
 
             // -------------------------------------------------
-            // Estudiantes con calificaciones bajas
+            // Estudiantes con calificaciones manuales bajas este mes
+            // criterio: al menos una nota manual < 60
             // -------------------------------------------------
             var studentsManualLowPerformance = await _db.Calificaciones
                 .AsNoTracking()
@@ -165,16 +166,19 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 {
                     AlumnoId = g.Key.AlumnoId,
                     AlumnoNombre = g.Key.Nombre + " " + g.Key.Apellido,
+                    LowestGrade = g.Min(x => x.Nota),
                     AverageGrade = Math.Round(g.Average(x => x.Nota), 2),
                     CalificacionesCount = g.Count(),
+                    LowGradesCount = g.Count(x => x.Nota < 60),
                     CursoNombre = g
-                        .OrderBy(x => x.Nota)
+                        .Where(x => x.Nota == g.Min(y => y.Nota))
                         .Select(x => x.Curso.Nombre)
                         .FirstOrDefault()
                 })
-                .Where(x => x.AverageGrade < 60)
-                .OrderBy(x => x.AverageGrade)
-                .ThenByDescending(x => x.CalificacionesCount)
+                .Where(x => x.LowGradesCount > 0)
+                .OrderBy(x => x.LowestGrade)
+                .ThenByDescending(x => x.LowGradesCount)
+                .ThenBy(x => x.AverageGrade)
                 .Take(5)
                 .ToListAsync(ct);
 

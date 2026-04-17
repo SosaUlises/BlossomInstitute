@@ -59,8 +59,10 @@
         {
             public int AlumnoId { get; set; }
             public string AlumnoNombre { get; set; } = default!;
+            public decimal LowestGrade { get; set; }
             public decimal AverageGrade { get; set; }
             public int CalificacionesCount { get; set; }
+            public int LowGradesCount { get; set; }
             public string? CursoNombre { get; set; }
         }
 

@@ -9,6 +9,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\dashboard\\queries\\getadmindashboard\\getadmindashboardresponsemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\dashboard\\queries\\getadmindashboard\\getadmindashboardresponsemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{004BB8D1-4AA1-4217-B83D-127265CE479E}|BlossomInstitute.Domain\\BlossomInstitute.Domain.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.domain\\entidades\\calificacion\\calificacionentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{004BB8D1-4AA1-4217-B83D-127265CE479E}|BlossomInstitute.Domain\\BlossomInstitute.Domain.csproj|solutionrelative:blossominstitute.domain\\entidades\\calificacion\\calificacionentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -33,8 +37,17 @@
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CalificacionEntity.cs",
+              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Domain\\Entidades\\Calificacion\\CalificacionEntity.cs",
+              "RelativeDocumentMoniker": "BlossomInstitute.Domain\\Entidades\\Calificacion\\CalificacionEntity.cs",
+              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Domain\\Entidades\\Calificacion\\CalificacionEntity.cs",
+              "RelativeToolTip": "BlossomInstitute.Domain\\Entidades\\Calificacion\\CalificacionEntity.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAA8wCwAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-17T20:44:44.734Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -44,7 +57,7 @@
               "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Dashboard\\Queries\\GetAdminDashboard\\GetAdminDashboardQuery.cs",
               "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Dashboard\\Queries\\GetAdminDashboard\\GetAdminDashboardQuery.cs",
               "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Dashboard\\Queries\\GetAdminDashboard\\GetAdminDashboardQuery.cs",
-              "ViewState": "AgIAABkAAAAAAAAAAAAowCgBAAA9AAAAAAAAAA==",
+              "ViewState": "AgIAACEBAAAAAAAAAAAYwJEAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-17T19:35:07.746Z",
               "EditorCaption": ""
@@ -57,10 +70,14 @@
               "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Dashboard\\Queries\\GetAdminDashboard\\GetAdminDashboardResponseModel.cs",
               "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Dashboard\\Queries\\GetAdminDashboard\\GetAdminDashboardResponseModel.cs",
               "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Dashboard\\Queries\\GetAdminDashboard\\GetAdminDashboardResponseModel.cs",
-              "ViewState": "AgIAAAUAAAAAAAAAAAAQwAwAAABKAAAAAAAAAA==",
+              "ViewState": "AgIAADAAAAAAAAAAAAAowDYAAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-17T19:44:15.699Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
             }
           ]
         }
