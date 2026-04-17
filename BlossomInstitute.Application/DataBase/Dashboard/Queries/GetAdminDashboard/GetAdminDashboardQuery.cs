@@ -140,49 +140,6 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 .ToListAsync(ct);
 
             // -------------------------------------------------
-            // Estudiantes con calificaciones manuales bajas este mes
-            // criterio: al menos una nota manual < 60
-            // -------------------------------------------------
-            var studentsManualLowPerformance = await _db.Calificaciones
-                .AsNoTracking()
-                .Where(x =>
-                    !x.Archivado &&
-                    x.Curso.Estado == EstadoCurso.Activo &&
-                    x.Fecha >= firstDayOfMonth &&
-                    x.Fecha <= today &&
-                    (
-                        x.Tipo == TipoCalificacion.Quiz ||
-                        x.Tipo == TipoCalificacion.Test ||
-                        x.Tipo == TipoCalificacion.Participation ||
-                        x.Tipo == TipoCalificacion.Behaviour
-                    ))
-                .GroupBy(x => new
-                {
-                    x.AlumnoId,
-                    Nombre = x.Alumno.Usuario.Nombre,
-                    Apellido = x.Alumno.Usuario.Apellido
-                })
-                .Select(g => new DashboardLowPerformanceStudentModel
-                {
-                    AlumnoId = g.Key.AlumnoId,
-                    AlumnoNombre = g.Key.Nombre + " " + g.Key.Apellido,
-                    LowestGrade = g.Min(x => x.Nota),
-                    AverageGrade = Math.Round(g.Average(x => x.Nota), 2),
-                    CalificacionesCount = g.Count(),
-                    LowGradesCount = g.Count(x => x.Nota < 60),
-                    CursoNombre = g
-                        .Where(x => x.Nota == g.Min(y => y.Nota))
-                        .Select(x => x.Curso.Nombre)
-                        .FirstOrDefault()
-                })
-                .Where(x => x.LowGradesCount > 0)
-                .OrderBy(x => x.LowestGrade)
-                .ThenByDescending(x => x.LowGradesCount)
-                .ThenBy(x => x.AverageGrade)
-                .Take(5)
-                .ToListAsync(ct);
-
-            // -------------------------------------------------
             // STUDENTS AT RISK THIS MONTH (GENERAL)
             // promedio mensual < 60 incluyendo homework + manuales
             // -------------------------------------------------
@@ -205,25 +162,53 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 .CountAsync(ct);
 
             // -------------------------------------------------
-            // STUDENTS WITH LOW MANUAL PERFORMANCE THIS MONTH
-            // promedio mensual < 60 solo en evaluaciones manuales
+            // LOW MANUAL GRADE BASE QUERY
+            // evaluaciones manuales < 60 en el mes
             // -------------------------------------------------
-            var studentsManualLowGradesThisMonthCount = await _db.Calificaciones
+            var lowManualGradesBaseQuery = _db.Calificaciones
                 .AsNoTracking()
                 .Where(x =>
                     !x.Archivado &&
                     x.Curso.Estado == EstadoCurso.Activo &&
                     x.Fecha >= firstDayOfMonth &&
                     x.Fecha <= today &&
+                    x.Nota < 60 &&
                     (
                         x.Tipo == TipoCalificacion.Quiz ||
                         x.Tipo == TipoCalificacion.Test ||
                         x.Tipo == TipoCalificacion.Participation ||
                         x.Tipo == TipoCalificacion.Behaviour
-                    ))
-                .GroupBy(x => x.AlumnoId)
-                .Where(g => g.Average(x => x.Nota) < 60)
+                    ));
+
+            // -------------------------------------------------
+            // STUDENTS WITH AT LEAST ONE LOW MANUAL GRADE THIS MONTH
+            // -------------------------------------------------
+            var studentsManualLowGradesThisMonthCount = await lowManualGradesBaseQuery
+                .Select(x => x.AlumnoId)
+                .Distinct()
                 .CountAsync(ct);
+
+            // -------------------------------------------------
+            // STUDENTS MANUAL LOW PERFORMANCE LIST
+            // listado de evaluaciones bajas reales, no promedio
+            // -------------------------------------------------
+            var studentsManualLowPerformance = await lowManualGradesBaseQuery
+                .OrderBy(x => x.Nota)
+                .ThenByDescending(x => x.Fecha)
+                .Take(5)
+                .Select(x => new DashboardLowManualGradeAlertModel
+                {
+                    AlumnoId = x.AlumnoId,
+                    AlumnoNombre = x.Alumno.Usuario.Nombre + " " + x.Alumno.Usuario.Apellido,
+                    CursoId = x.CursoId,
+                    CursoNombre = x.Curso.Nombre,
+                    CalificacionId = x.Id,
+                    Titulo = x.Titulo,
+                    Tipo = x.Tipo,
+                    Nota = Math.Round(x.Nota, 2),
+                    Fecha = x.Fecha
+                })
+                .ToListAsync(ct);
 
             // -------------------------------------------------
             // COURSES AT RISK BY OVERALL AVERAGE
@@ -236,6 +221,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
 
             // -------------------------------------------------
             // COURSES AT RISK BY MANUAL AVERAGE
+            // sin contar homework
             // -------------------------------------------------
             var coursesAtRiskByManualAverage = manualAverageGradesByCourse
                 .Where(x => x.AverageGrade < 60)
@@ -306,9 +292,9 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 ManualAverageGradesByCourse = manualAverageGradesByCourse,
                 StudentsAtRiskThisMonthCount = studentsAtRiskThisMonthCount,
                 StudentsManualLowGradesThisMonthCount = studentsManualLowGradesThisMonthCount,
+                StudentsManualLowPerformance = studentsManualLowPerformance,
                 CoursesAtRiskByOverallAverage = coursesAtRiskByOverallAverage,
                 CoursesAtRiskByManualAverage = coursesAtRiskByManualAverage,
-                StudentsManualLowPerformance = studentsManualLowPerformance,
                 UpcomingAssignments = upcomingAssignments,
                 UpcomingClasses = upcomingClasses
             };
@@ -348,5 +334,3 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
         }
     }
 }
-
-

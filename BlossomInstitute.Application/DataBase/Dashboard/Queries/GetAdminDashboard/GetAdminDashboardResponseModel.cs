@@ -1,4 +1,6 @@
-﻿namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashboard
+﻿using BlossomInstitute.Domain.Entidades.Calificacion;
+
+namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashboard
 {
 
         public class GetAdminDashboardResponseModel
@@ -12,9 +14,8 @@
             public int StudentsAtRiskThisMonthCount { get; set; }
             public int StudentsManualLowGradesThisMonthCount { get; set; }
 
-            public List<DashboardLowPerformanceStudentModel> StudentsManualLowPerformance { get; set; } = new();
-
-            public List<DashboardAverageGradeByCourseModel> CoursesAtRiskByOverallAverage { get; set; } = new();
+            public List<DashboardLowManualGradeAlertModel> StudentsManualLowPerformance { get; set; } = [];
+           public List<DashboardAverageGradeByCourseModel> CoursesAtRiskByOverallAverage { get; set; } = new();
             public List<DashboardAverageGradeByCourseModel> CoursesAtRiskByManualAverage { get; set; } = new();
 
             public List<DashboardUpcomingAssignmentModel> UpcomingAssignments { get; set; } = new();
@@ -66,4 +67,16 @@
             public string? CursoNombre { get; set; }
         }
 
+    public class DashboardLowManualGradeAlertModel
+    {
+        public int AlumnoId { get; set; }
+        public string AlumnoNombre { get; set; } = default!;
+        public int CursoId { get; set; }
+        public string CursoNombre { get; set; } = default!;
+        public int CalificacionId { get; set; }
+        public string Titulo { get; set; } = default!;
+        public TipoCalificacion Tipo { get; set; }
+        public decimal Nota { get; set; }
+        public DateOnly Fecha { get; set; }
+    }
 }
