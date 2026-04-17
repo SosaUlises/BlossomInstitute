@@ -12,6 +12,8 @@
             public int StudentsAtRiskThisMonthCount { get; set; }
             public int StudentsManualLowGradesThisMonthCount { get; set; }
 
+            public List<DashboardLowPerformanceStudentModel> StudentsManualLowPerformance { get; set; } = new();
+
             public List<DashboardAverageGradeByCourseModel> CoursesAtRiskByOverallAverage { get; set; } = new();
             public List<DashboardAverageGradeByCourseModel> CoursesAtRiskByManualAverage { get; set; } = new();
 
@@ -51,6 +53,15 @@
             public string DiaSemana { get; set; } = default!;
             public TimeOnly HoraInicio { get; set; }
             public DateTime ProximaClase { get; set; }
+        }
+
+        public class DashboardLowPerformanceStudentModel
+        {
+            public int AlumnoId { get; set; }
+            public string AlumnoNombre { get; set; } = default!;
+            public decimal AverageGrade { get; set; }
+            public int CalificacionesCount { get; set; }
+            public string? CursoNombre { get; set; }
         }
 
 }
