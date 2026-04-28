@@ -55,10 +55,17 @@ namespace BlossomInstitute.Infraestructure
             var jwtIssuer = configuration["Jwt_Issuer"];
             var jwtAudience = configuration["Jwt_Audience"];
 
-            if (string.IsNullOrEmpty(jwtKey) || jwtKey.Length < 32)
-            {
-                Console.WriteLine($"[ERROR CRÍTICO] La Jwt_Key es nula o muy corta. Valor leído: '{jwtKey}'");
-            }
+            if (string.IsNullOrWhiteSpace(jwtKey))
+                throw new InvalidOperationException("Jwt_Key no está configurado.");
+
+            if (jwtKey.Length < 32)
+                throw new InvalidOperationException("Jwt_Key debe tener al menos 32 caracteres.");
+
+            if (string.IsNullOrWhiteSpace(jwtIssuer))
+                throw new InvalidOperationException("Jwt_Issuer no está configurado.");
+
+            if (string.IsNullOrWhiteSpace(jwtAudience))
+                throw new InvalidOperationException("Jwt_Audience no está configurado.");
 
             services.AddAuthentication(options =>
             {
