@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BlossomInstitute.UnitTests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+381fc3b30fc2f785873fb17d9dbd3f28f732a5a2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+02bfb4c12f2545efd71d3b1a6d2bac2cf13a0c92")]
 [assembly: System.Reflection.AssemblyProductAttribute("BlossomInstitute.UnitTests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BlossomInstitute.UnitTests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

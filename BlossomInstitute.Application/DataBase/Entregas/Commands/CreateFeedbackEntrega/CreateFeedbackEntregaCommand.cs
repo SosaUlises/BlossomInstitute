@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Common.Features;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Calificacion;
 using BlossomInstitute.Domain.Entidades.Calificaciones;
 using BlossomInstitute.Domain.Entidades.Entrega;
@@ -31,30 +31,30 @@ namespace BlossomInstitute.Application.DataBase.Entregas.Commands.CreateFeedback
             CancellationToken ct)
         {
             if (cursoId <= 0 || tareaId <= 0 || alumnoId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Parámetros inválidos");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Parámetros inválidos");
 
             if (model.Nota.HasValue && (model.Nota.Value < 0 || model.Nota.Value > 100))
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "La nota debe estar entre 0 y 100");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "La nota debe estar entre 0 y 100");
 
             var profesorUser = await _userManager.FindByIdAsync(profesorUserId.ToString());
             if (profesorUser == null)
-                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, "No autenticado");
+                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, message: "No autenticado");
 
             if (!profesorUser.Activo)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Usuario inactivo");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Usuario inactivo");
 
             if (!await _userManager.IsInRoleAsync(profesorUser, "Profesor"))
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "No autorizado");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "No autorizado");
 
             var tarea = await _db.Tareas
                 .AsNoTracking()
                 .FirstOrDefaultAsync(t => t.Id == tareaId && t.CursoId == cursoId, ct);
 
             if (tarea == null)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Tarea no encontrada");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Tarea no encontrada");
 
             if (tarea.Estado != EstadoTarea.Publicada)
-                return ResponseApiService.Response(StatusCodes.Status409Conflict, "La tarea no está publicada");
+                return ResponseApiService.Response(StatusCodes.Status409Conflict, message: "La tarea no está publicada");
 
             if (!tarea.FechaEntregaUtc.HasValue)
                 return ResponseApiService.Response(
@@ -67,13 +67,13 @@ namespace BlossomInstitute.Application.DataBase.Entregas.Commands.CreateFeedback
                 .AnyAsync(x => x.CursoId == cursoId && x.ProfesorId == profesorUserId, ct);
 
             if (!profAsignado)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Profesor no asignado a este curso");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Profesor no asignado a este curso");
 
             var entrega = await _db.Entregas
                 .FirstOrDefaultAsync(e => e.TareaId == tareaId && e.AlumnoId == alumnoId, ct);
 
             if (entrega == null)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "El alumno no tiene entrega para esta tarea");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "El alumno no tiene entrega para esta tarea");
 
             var nowUtc = DateTime.UtcNow;
 
@@ -191,7 +191,7 @@ namespace BlossomInstitute.Application.DataBase.Entregas.Commands.CreateFeedback
                 if (!ok)
                 {
                     await tx.RollbackAsync(ct);
-                    return ResponseApiService.Response(StatusCodes.Status500InternalServerError, "No se pudo guardar el feedback");
+                    return ResponseApiService.Response(StatusCodes.Status500InternalServerError, message: "No se pudo guardar el feedback");
                 }
 
                 await tx.CommitAsync(ct);

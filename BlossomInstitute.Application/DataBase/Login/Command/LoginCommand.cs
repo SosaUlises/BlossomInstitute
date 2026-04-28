@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.External;
+using BlossomInstitute.Application.External;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Usuario;
 using BlossomInstitute.Domain.Model;
@@ -29,28 +29,28 @@ namespace BlossomInstitute.Application.DataBase.Login.Command
             var email = model.Email?.Trim();
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(model.Password))
             {
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Email y contraseña son obligatorios");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Email y contraseña son obligatorios");
             }
 
 
             var usuario = await _userManager.FindByEmailAsync(email);
             if (usuario == null)
-                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, "Usuario o contraseña incorrectos");
+                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, message: "Usuario o contraseña incorrectos");
 
             if (!usuario.Activo)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Usuario inactivo");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Usuario inactivo");
 
             var result = await _signInManager.CheckPasswordSignInAsync(usuario, model.Password, lockoutOnFailure: true);
 
             if (result.IsLockedOut)
-                return ResponseApiService.Response(StatusCodes.Status423Locked, "Cuenta bloqueada temporalmente. Intenta más tarde.");
+                return ResponseApiService.Response(StatusCodes.Status423Locked, message: "Cuenta bloqueada temporalmente. Intenta más tarde.");
 
             if (!result.Succeeded)
-                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, "Usuario o contraseña incorrectos");
+                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, message: "Usuario o contraseña incorrectos");
 
             var roles = await _userManager.GetRolesAsync(usuario);
             if (roles == null || roles.Count == 0)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Usuario sin rol asignado");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Usuario sin rol asignado");
 
             var token = _jwtService.Execute(usuario.Id.ToString(), roles, usuario);
 

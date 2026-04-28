@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Common.Features;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Clase;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
@@ -24,11 +24,11 @@ namespace BlossomInstitute.Application.DataBase.Clase.Queries.GetClasesByCurso
             CancellationToken ct = default)
         {
             if (cursoId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "CursoId inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "CursoId inválido");
 
             var existeCurso = await _db.Cursos.AnyAsync(c => c.Id == cursoId, ct);
             if (!existeCurso)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Curso no encontrado");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Curso no encontrado");
 
             if (pageNumber <= 0) pageNumber = 1;
             if (pageSize <= 0) pageSize = 10;

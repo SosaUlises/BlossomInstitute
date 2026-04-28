@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Common.Features;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Calificacion;
 using BlossomInstitute.Domain.Entidades.Calificaciones;
 using BlossomInstitute.Domain.Model;
@@ -27,19 +27,19 @@ namespace BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteStudentM
             CancellationToken ct)
         {
             if (cursoId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "CursoId inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "CursoId inválido");
 
             if (alumnoId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "AlumnoId inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "AlumnoId inválido");
 
             if (year < 2000 || year > 2100)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Year inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Year inválido");
 
             if (term < 1 || term > 3)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Term inválido. Valores permitidos: 1, 2 o 3.");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Term inválido. Valores permitidos: 1, 2 o 3.");
 
             if (tipo.HasValue && !Enum.IsDefined(typeof(TipoCalificacion), tipo.Value))
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Tipo inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Tipo inválido");
 
             var curso = await _db.Cursos
                 .AsNoTracking()
@@ -52,7 +52,7 @@ namespace BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteStudentM
                 .FirstOrDefaultAsync(ct);
 
             if (curso == null)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Curso no encontrado");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Curso no encontrado");
 
             if (!isAdmin)
             {
@@ -61,7 +61,7 @@ namespace BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteStudentM
                     .AnyAsync(x => x.CursoId == cursoId && x.ProfesorId == userId, ct);
 
                 if (!profesorAsignado)
-                    return ResponseApiService.Response(StatusCodes.Status403Forbidden, "No autorizado");
+                    return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "No autorizado");
             }
 
             var alumno = await _db.Alumnos
@@ -78,14 +78,14 @@ namespace BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteStudentM
                 .FirstOrDefaultAsync(ct);
 
             if (alumno == null)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Alumno no encontrado");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Alumno no encontrado");
 
             var alumnoMatriculado = await _db.Matriculas
                 .AsNoTracking()
                 .AnyAsync(x => x.CursoId == cursoId && x.AlumnoId == alumnoId, ct);
 
             if (!alumnoMatriculado)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "El alumno no pertenece al curso");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "El alumno no pertenece al curso");
 
             var (from, to) = GetTermRange(year, term);
 

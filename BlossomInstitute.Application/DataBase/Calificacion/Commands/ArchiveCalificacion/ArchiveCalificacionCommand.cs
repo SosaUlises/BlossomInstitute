@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Common.Features;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Usuario;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
@@ -26,23 +26,23 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Commands.ArchiveCal
             CancellationToken ct)
         {
             if (cursoId <= 0 || alumnoId <= 0 || calificacionId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Parámetros inválidos");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Parámetros inválidos");
 
             var profesor = await _userManager.FindByIdAsync(profesorUserId.ToString());
             if (profesor == null)
-                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, "No autenticado");
+                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, message: "No autenticado");
 
             if (!profesor.Activo)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Usuario inactivo");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Usuario inactivo");
 
             if (!await _userManager.IsInRoleAsync(profesor, "Profesor"))
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "No autorizado");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "No autorizado");
 
             var profesorAsignado = await _db.CursoProfesores.AsNoTracking()
                 .AnyAsync(x => x.CursoId == cursoId && x.ProfesorId == profesorUserId, ct);
 
             if (!profesorAsignado)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Profesor no asignado a este curso");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Profesor no asignado a este curso");
 
             var calificacion = await _db.Calificaciones
                 .FirstOrDefaultAsync(x =>
@@ -52,7 +52,7 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Commands.ArchiveCal
                     !x.Archivado, ct);
 
             if (calificacion == null)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Calificación no encontrada");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Calificación no encontrada");
 
             calificacion.Archivado = true;
             calificacion.ArchivadoPorTarea = false;
@@ -60,9 +60,9 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Commands.ArchiveCal
 
             var ok = await _db.SaveAsync(ct);
             if (!ok)
-                return ResponseApiService.Response(StatusCodes.Status500InternalServerError, "No se pudo archivar la calificación");
+                return ResponseApiService.Response(StatusCodes.Status500InternalServerError, message: "No se pudo archivar la calificación");
 
-            return ResponseApiService.Response(StatusCodes.Status200OK, "Calificación archivada correctamente");
+            return ResponseApiService.Response(StatusCodes.Status200OK, message: "Calificación archivada correctamente");
         }
     }
 }

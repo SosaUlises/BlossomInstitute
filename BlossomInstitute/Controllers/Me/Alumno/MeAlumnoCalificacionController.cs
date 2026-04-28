@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalificacionesByAlumno;
+using BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalificacionesByAlumno;
 using BlossomInstitute.Common.Features;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +27,7 @@ namespace BlossomInstitute.Controllers.Me.Alumno
         {
             var userId = GetUserId();
             if (userId <= 0)
-                return Unauthorized(ResponseApiService.Response(StatusCodes.Status401Unauthorized, "Token inválido"));
+                return Unauthorized(ResponseApiService.Response(StatusCodes.Status401Unauthorized, message: "Token inválido"));
 
             var result = await query.Execute(
                 alumnoId: userId,

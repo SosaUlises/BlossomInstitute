@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Common.Features;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +24,7 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetProfesoresByCur
             CancellationToken ct)
         {
             if (cursoId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "CursoId inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "CursoId inválido");
 
             if (pageNumber <= 0) pageNumber = 1;
             if (pageSize <= 0) pageSize = 10;
@@ -35,7 +35,7 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetProfesoresByCur
                 .AnyAsync(x => x.Id == cursoId, ct);
 
             if (!cursoExiste)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Curso no encontrado");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Curso no encontrado");
 
             if (!isAdmin)
             {
@@ -44,7 +44,7 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetProfesoresByCur
                     .AnyAsync(x => x.CursoId == cursoId && x.ProfesorId == userId, ct);
 
                 if (!profesorAsignado)
-                    return ResponseApiService.Response(StatusCodes.Status403Forbidden, "No autorizado");
+                    return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "No autorizado");
             }
 
             var q = _db.CursoProfesores

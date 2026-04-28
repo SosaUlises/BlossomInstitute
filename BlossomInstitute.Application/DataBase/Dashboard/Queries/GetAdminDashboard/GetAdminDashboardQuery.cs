@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Common.Features;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Calificacion;
 using BlossomInstitute.Domain.Entidades.Curso;
 using BlossomInstitute.Domain.Entidades.Tarea;
@@ -23,10 +23,10 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             CancellationToken ct)
         {
             if (userId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "UserId inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "UserId inválido");
 
             if (!isAdmin)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "No autorizado");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "No autorizado");
 
             var nowUtc = DateTime.UtcNow;
             var nowLocal = DateTime.Now;

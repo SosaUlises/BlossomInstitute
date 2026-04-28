@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Calificacion.Queries.Model;
+using BlossomInstitute.Application.DataBase.Calificacion.Queries.Model;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
@@ -25,10 +25,10 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalifica
             CancellationToken ct)
         {
             if (cursoId <= 0 || alumnoId <= 0 || calificacionId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Parámetros inválidos");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Parámetros inválidos");
 
             if (!isAdmin && !isProfesor)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "No autorizado");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "No autorizado");
 
             if (isProfesor && !isAdmin)
             {
@@ -37,7 +37,7 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalifica
                     .AnyAsync(x => x.CursoId == cursoId && x.ProfesorId == userId, ct);
 
                 if (!profesorAsignado)
-                    return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Profesor no asignado a este curso");
+                    return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Profesor no asignado a este curso");
             }
 
             var calificacion = await _db.Calificaciones
@@ -72,7 +72,7 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalifica
                 .FirstOrDefaultAsync(ct);
 
             if (calificacion == null)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Calificación no encontrada");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Calificación no encontrada");
 
             return ResponseApiService.Response(StatusCodes.Status200OK, calificacion);
         }

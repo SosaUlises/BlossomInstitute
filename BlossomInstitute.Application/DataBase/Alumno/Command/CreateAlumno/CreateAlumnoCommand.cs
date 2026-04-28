@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Common.Features;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Alumno;
 using BlossomInstitute.Domain.Entidades.Usuario;
 using BlossomInstitute.Domain.Model;
@@ -24,15 +24,15 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Command.CreateAlumno
         {
             var email = model.Email?.Trim().ToLowerInvariant();
             if (string.IsNullOrWhiteSpace(email))
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Email inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Email inválido");
 
             var usuarioExistente = await _userManager.FindByEmailAsync(email);
             if (usuarioExistente != null)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, $"Ya existe un usuario con el email {email}");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: $"Ya existe un usuario con el email {email}");
 
             var existeDni = await _userManager.Users.AnyAsync(x => x.Dni == model.Dni);
             if (existeDni)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, $"Ya existe un usuario con el DNI {model.Dni}");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: $"Ya existe un usuario con el DNI {model.Dni}");
 
             await using var tx = await _dataBaseService.BeginTransactionAsync();
 

@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Common.Features;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Curso;
 using BlossomInstitute.Domain.Entidades.Usuario;
 using BlossomInstitute.Domain.Model;
@@ -24,16 +24,16 @@ namespace BlossomInstitute.Application.DataBase.Curso.Commands.AsignarProfesores
         public async Task<BaseResponseModel> Execute(int cursoId, AssignProfesoresToCursoModel model, CancellationToken ct = default)
         {
             if (cursoId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Id de curso inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Id de curso inválido");
 
             var curso = await _db.Cursos.FirstOrDefaultAsync(c => c.Id == cursoId, ct);
             if (curso == null)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Curso no encontrado");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Curso no encontrado");
 
             if (curso.Estado == EstadoCurso.Inactivo)
-                return ResponseApiService.Response(StatusCodes.Status409Conflict, "No se puede asignar profesores a un curso inactivo");
+                return ResponseApiService.Response(StatusCodes.Status409Conflict, message: "No se puede asignar profesores a un curso inactivo");
             if (curso.Estado == EstadoCurso.Archivado)
-                return ResponseApiService.Response(StatusCodes.Status409Conflict, "No se puede asignar profesores a un curso archivado");
+                return ResponseApiService.Response(StatusCodes.Status409Conflict, message: "No se puede asignar profesores a un curso archivado");
 
             var profesorIds = model.ProfesorIds.Distinct().ToList();
 
@@ -52,10 +52,10 @@ namespace BlossomInstitute.Application.DataBase.Curso.Commands.AsignarProfesores
             {
                 var user = await _userManager.FindByIdAsync(pid.ToString());
                 if (user == null || !user.Activo)
-                    return ResponseApiService.Response(StatusCodes.Status409Conflict, $"El profesor {pid} está inactivo o no existe como usuario");
+                    return ResponseApiService.Response(StatusCodes.Status409Conflict, message: $"El profesor {pid} está inactivo o no existe como usuario");
 
                 if (!await _userManager.IsInRoleAsync(user, "Profesor"))
-                    return ResponseApiService.Response(StatusCodes.Status409Conflict, $"El usuario {pid} no tiene rol Profesor");
+                    return ResponseApiService.Response(StatusCodes.Status409Conflict, message: $"El usuario {pid} no tiene rol Profesor");
             }
 
             // Ya existentes

@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Common.Features;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Usuario;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
@@ -19,14 +19,14 @@ namespace BlossomInstitute.Application.DataBase.Settings.Queries.GetMyAccount
         public async Task<BaseResponseModel> Execute(int userId, CancellationToken ct = default)
         {
             if (userId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "UserId inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "UserId inválido");
 
             var user = await _userManager.Users
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == userId, ct);
 
             if (user == null)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Usuario no encontrado");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Usuario no encontrado");
 
             var roles = await _userManager.GetRolesAsync(user);
 

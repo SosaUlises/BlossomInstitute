@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalificacionesByCurso;
+using BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalificacionesByCurso;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteAsistenciaByClase;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteAttendanceByCursoAndTerm;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteEntregaByTarea;
@@ -60,10 +60,10 @@ namespace BlossomInstitute.Controllers.Reportes
             CancellationToken ct = default)
         {
             if (cursoId <= 0)
-                return BadRequest(ResponseApiService.Response(400, "CursoId inválido"));
+                return BadRequest(ResponseApiService.Response(400, message: "CursoId inválido"));
 
             if (to < from)
-                return BadRequest(ResponseApiService.Response(400, "Rango de fechas inválido"));
+                return BadRequest(ResponseApiService.Response(400, message: "Rango de fechas inválido"));
 
             if (pageNumber <= 0) pageNumber = 1;
             if (pageSize <= 0) pageSize = 10;

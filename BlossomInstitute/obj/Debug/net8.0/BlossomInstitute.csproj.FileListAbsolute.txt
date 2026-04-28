@@ -648,7 +648,6 @@ C:\Users\ulipv\Source\Repos\blossom-institute-api\BlossomInstitute\obj\Debug\net
 C:\Users\ulipv\Source\Repos\blossom-institute-api\BlossomInstitute\obj\Debug\net8.0\staticwebassets.build.json.cache
 C:\Users\ulipv\Source\Repos\blossom-institute-api\BlossomInstitute\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\ulipv\Source\Repos\blossom-institute-api\BlossomInstitute\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-C:\Users\ulipv\Source\Repos\blossom-institute-api\BlossomInstitute\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\ulipv\Source\Repos\blossom-institute-api\BlossomInstitute\obj\Debug\net8.0\BlossomI.A2830B6D.Up2Date
 C:\Users\ulipv\Source\Repos\blossom-institute-api\BlossomInstitute\obj\Debug\net8.0\BlossomInstitute.dll
 C:\Users\ulipv\Source\Repos\blossom-institute-api\BlossomInstitute\obj\Debug\net8.0\refint\BlossomInstitute.dll

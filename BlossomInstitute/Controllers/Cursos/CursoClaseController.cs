@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Asistencia.Queries.GetAsistenciasByClase;
+using BlossomInstitute.Application.DataBase.Asistencia.Queries.GetAsistenciasByClase;
 using BlossomInstitute.Application.DataBase.Clase.Command;
 using BlossomInstitute.Application.DataBase.Clase.Queries.GetClasesByCurso;
 using BlossomInstitute.Common.Features;
@@ -24,7 +24,7 @@ namespace BlossomInstitute.Controllers.Cursos
             )
         {
             if (cursoId <= 0)
-                return BadRequest(ResponseApiService.Response(400, "CursoId inválido"));
+                return BadRequest(ResponseApiService.Response(400, message: "CursoId inválido"));
 
             DateOnly? fromDate = null;
             DateOnly? toDate = null;
@@ -32,14 +32,14 @@ namespace BlossomInstitute.Controllers.Cursos
             if (!string.IsNullOrWhiteSpace(from))
             {
                 if (!DateOnly.TryParse(from, out var d))
-                    return BadRequest(ResponseApiService.Response(400, "from inválido. Formato esperado: yyyy-MM-dd"));
+                    return BadRequest(ResponseApiService.Response(400, message: "from inválido. Formato esperado: yyyy-MM-dd"));
                 fromDate = d;
             }
 
             if (!string.IsNullOrWhiteSpace(to))
             {
                 if (!DateOnly.TryParse(to, out var d))
-                    return BadRequest(ResponseApiService.Response(400, "to inválido. Formato esperado: yyyy-MM-dd"));
+                    return BadRequest(ResponseApiService.Response(400, message: "to inválido. Formato esperado: yyyy-MM-dd"));
                 toDate = d;
             }
 
@@ -59,10 +59,10 @@ namespace BlossomInstitute.Controllers.Cursos
            CancellationToken ct)
         {
             if (cursoId <= 0)
-                return BadRequest(ResponseApiService.Response(400, "CursoId inválido"));
+                return BadRequest(ResponseApiService.Response(400, message: "CursoId inválido"));
 
             if (!DateOnly.TryParse(fecha, out var date))
-                return BadRequest(ResponseApiService.Response(400, "Fecha inválida. Formato esperado: yyyy-MM-dd"));
+                return BadRequest(ResponseApiService.Response(400, message: "Fecha inválida. Formato esperado: yyyy-MM-dd"));
 
             var result = await command.Execute(cursoId, date, ct);
             return StatusCode(result.StatusCode, result);

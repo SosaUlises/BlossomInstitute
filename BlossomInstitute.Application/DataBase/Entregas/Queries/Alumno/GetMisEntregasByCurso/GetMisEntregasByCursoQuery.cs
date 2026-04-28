@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Entregas.Queries.Models;
+using BlossomInstitute.Application.DataBase.Entregas.Queries.Models;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
@@ -17,14 +17,14 @@ namespace BlossomInstitute.Application.DataBase.Entregas.Queries.Alumno.GetMisEn
 
         public async Task<BaseResponseModel> Execute(int cursoId, int alumnoUserId, int pageNumber, int pageSize, CancellationToken ct)
         {
-            if (cursoId <= 0) return ResponseApiService.Response(400, "CursoId inválido");
+            if (cursoId <= 0) return ResponseApiService.Response(400, message: "CursoId inválido");
             if (pageNumber <= 0) pageNumber = 1;
             if (pageSize <= 0) pageSize = 10;
             if (pageSize > 100) pageSize = 100;
 
             var matriculado = await _db.Matriculas.AsNoTracking()
                 .AnyAsync(m => m.CursoId == cursoId && m.AlumnoId == alumnoUserId, ct);
-            if (!matriculado) return ResponseApiService.Response(StatusCodes.Status403Forbidden, "No estás matriculado en este curso");
+            if (!matriculado) return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "No estás matriculado en este curso");
 
             // Lista tareas del curso + mi entrega (si existe) con feedback vigente
             var q = _db.Tareas.AsNoTracking()

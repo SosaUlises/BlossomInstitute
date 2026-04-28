@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Common.Features;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -17,13 +17,13 @@ namespace BlossomInstitute.Application.DataBase.Curso.Commands.RemoveAlumno
         public async Task<BaseResponseModel> Execute(int cursoId, int alumnoId, CancellationToken ct = default)
         {
             if (cursoId <= 0 || alumnoId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Ids inválidos");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Ids inválidos");
 
             var rel = await _db.Matriculas
                 .FirstOrDefaultAsync(x => x.CursoId == cursoId && x.AlumnoId == alumnoId, ct);
 
             if (rel == null)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "La matrícula no existe");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "La matrícula no existe");
 
             await using var tx = await _db.BeginTransactionAsync(ct);
             _db.Matriculas.Remove(rel);

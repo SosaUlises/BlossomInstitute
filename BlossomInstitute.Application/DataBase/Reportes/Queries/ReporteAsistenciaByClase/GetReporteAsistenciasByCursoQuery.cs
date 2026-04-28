@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Common.Features;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Clase;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
@@ -25,15 +25,15 @@ namespace BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteAsistenc
             string? search,
             CancellationToken ct)
         {
-            if (cursoId <= 0) return ResponseApiService.Response(400, "CursoId inválido");
-            if (to < from) return ResponseApiService.Response(400, "Rango de fechas inválido");
+            if (cursoId <= 0) return ResponseApiService.Response(400, message: "CursoId inválido");
+            if (to < from) return ResponseApiService.Response(400, message: "Rango de fechas inválido");
 
             if (pageNumber <= 0) pageNumber = 1;
             if (pageSize <= 0) pageSize = 10;
             if (pageSize > 100) pageSize = 100;
 
             var cursoExists = await _db.Cursos.AsNoTracking().AnyAsync(x => x.Id == cursoId, ct);
-            if (!cursoExists) return ResponseApiService.Response(404, "Curso no encontrado");
+            if (!cursoExists) return ResponseApiService.Response(404, message: "Curso no encontrado");
 
             // Seguridad: prof asignado al curso
             if (!isAdmin)
@@ -42,7 +42,7 @@ namespace BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteAsistenc
                     .AnyAsync(x => x.CursoId == cursoId && x.ProfesorId == profesorUserId, ct);
 
                 if (!profAsignado)
-                    return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Profesor no asignado a este curso");
+                    return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Profesor no asignado a este curso");
             }
 
             //  Base alumnos (con search)

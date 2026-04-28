@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Calificacion.Queries.Model;
+using BlossomInstitute.Application.DataBase.Calificacion.Queries.Model;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Calificaciones;
 using BlossomInstitute.Domain.Model;
@@ -27,21 +27,21 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalifica
             CancellationToken ct)
         {
             if (alumnoId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "AlumnoId inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "AlumnoId inválido");
 
             if (pageNumber <= 0) pageNumber = 1;
             if (pageSize <= 0) pageSize = 10;
             if (pageSize > 100) pageSize = 100;
 
             if (!isAdmin && !isProfesor && alumnoId != userId)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "No autorizado");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "No autorizado");
 
             var alumnoExiste = await _db.Alumnos
                 .AsNoTracking()
                 .AnyAsync(x => x.Id == alumnoId, ct);
 
             if (!alumnoExiste)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Alumno no encontrado");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Alumno no encontrado");
 
             IQueryable<CalificacionEntity> q = _db.Calificaciones
                 .AsNoTracking()
@@ -61,7 +61,7 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalifica
                         .AnyAsync(x => x.CursoId == cursoId.Value && x.ProfesorId == userId, ct);
 
                     if (!profesorAsignado)
-                        return ResponseApiService.Response(StatusCodes.Status403Forbidden, "No autorizado para ver calificaciones de este curso");
+                        return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "No autorizado para ver calificaciones de este curso");
 
                     q = q.Where(x => x.CursoId == cursoId.Value);
                 }

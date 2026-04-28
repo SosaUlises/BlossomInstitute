@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Asistencia.Queries.GetMisAsistencias;
+using BlossomInstitute.Application.DataBase.Asistencia.Queries.GetMisAsistencias;
 using BlossomInstitute.Application.DataBase.Curso.Queries.GetMyCursos.Alumno;
 using BlossomInstitute.Common.Features;
 using Microsoft.AspNetCore.Authorization;
@@ -24,7 +24,7 @@ namespace BlossomInstitute.Controllers.Me.Alumnos
         {
             var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (!int.TryParse(userIdStr, out var userId) || userId <= 0)
-                return Unauthorized(ResponseApiService.Response(401, "Token inválido"));
+                return Unauthorized(ResponseApiService.Response(401, message: "Token inválido"));
 
             var result = await query.Execute(userId, pageNumber, pageSize, search, anio, estado);
             return StatusCode(result.StatusCode, result);

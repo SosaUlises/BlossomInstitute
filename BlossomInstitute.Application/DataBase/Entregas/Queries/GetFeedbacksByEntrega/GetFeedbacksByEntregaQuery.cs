@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Entregas.Queries.Models;
+using BlossomInstitute.Application.DataBase.Entregas.Queries.Models;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Usuario;
 using BlossomInstitute.Domain.Model;
@@ -29,31 +29,31 @@ namespace BlossomInstitute.Application.DataBase.Entregas.Queries.GetFeedbacksByE
             CancellationToken ct)
         {
             if (cursoId <= 0 || tareaId <= 0 || alumnoId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Parámetros inválidos");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Parámetros inválidos");
 
             var profesor = await _userManager.FindByIdAsync(profesorUserId.ToString());
             if (profesor == null)
-                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, "No autenticado");
+                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, message: "No autenticado");
 
             if (!profesor.Activo)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Usuario inactivo");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Usuario inactivo");
 
             if (!await _userManager.IsInRoleAsync(profesor, "Profesor"))
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "No autorizado");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "No autorizado");
 
             var profesorAsignado = await _db.CursoProfesores
                 .AsNoTracking()
                 .AnyAsync(x => x.CursoId == cursoId && x.ProfesorId == profesorUserId, ct);
 
             if (!profesorAsignado)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Profesor no asignado a este curso");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Profesor no asignado a este curso");
 
             var tareaExiste = await _db.Tareas
                 .AsNoTracking()
                 .AnyAsync(t => t.Id == tareaId && t.CursoId == cursoId, ct);
 
             if (!tareaExiste)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Tarea no encontrada");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Tarea no encontrada");
 
             var entrega = await _db.Entregas
                 .AsNoTracking()
@@ -65,7 +65,7 @@ namespace BlossomInstitute.Application.DataBase.Entregas.Queries.GetFeedbacksByE
                 .FirstOrDefaultAsync(ct);
 
             if (entrega == null)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Entrega no encontrada");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Entrega no encontrada");
 
             var feedbacks = await _db.EntregaFeedbacks
                 .AsNoTracking()

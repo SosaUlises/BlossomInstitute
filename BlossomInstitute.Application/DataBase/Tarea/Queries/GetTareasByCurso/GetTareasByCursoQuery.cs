@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasByCurso;
+using BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasByCurso;
 using BlossomInstitute.Application.DataBase.Tarea.Queries.Models;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Tarea;
@@ -33,7 +33,7 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasByCurso
             CancellationToken ct = default)
         {
             if (cursoId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "CursoId inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "CursoId inválido");
 
             if (pageNumber <= 0) pageNumber = 1;
             if (pageSize <= 0) pageSize = 10;
@@ -41,23 +41,23 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasByCurso
 
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
-                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, "No autenticado");
+                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, message: "No autenticado");
 
             if (!user.Activo)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Usuario inválido o inactivo");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Usuario inválido o inactivo");
 
             var isProfesor = await _userManager.IsInRoleAsync(user, "Profesor");
             var isAdmin = await _userManager.IsInRoleAsync(user, "Administrador");
 
             if (!isProfesor && !isAdmin)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Acceso denegado");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Acceso denegado");
 
             var curso = await _db.Cursos
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == cursoId, ct);
 
             if (curso == null)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Curso no encontrado");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Curso no encontrado");
 
             if (!isAdmin)
             {
@@ -66,7 +66,7 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasByCurso
                     .AnyAsync(x => x.CursoId == cursoId && x.ProfesorId == userId, ct);
 
                 if (!profesorAsignado)
-                    return ResponseApiService.Response(StatusCodes.Status403Forbidden, "No estás asignado a este curso");
+                    return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "No estás asignado a este curso");
             }
 
             search = search?.Trim();

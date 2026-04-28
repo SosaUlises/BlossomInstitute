@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Entregas.Queries.Models;
+using BlossomInstitute.Application.DataBase.Entregas.Queries.Models;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
@@ -23,7 +23,7 @@ namespace BlossomInstitute.Application.DataBase.Entregas.Queries.GetEntregasDeta
             CancellationToken ct)
         {
             if (cursoId <= 0 || tareaId <= 0 || alumnoId <= 0)
-                return ResponseApiService.Response(400, "Parámetros inválidos");
+                return ResponseApiService.Response(400, message: "Parámetros inválidos");
 
             var profAsignado = await _db.CursoProfesores
                 .AsNoTracking()

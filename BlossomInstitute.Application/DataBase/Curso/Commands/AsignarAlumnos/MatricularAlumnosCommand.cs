@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Common.Features;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Curso;
 using BlossomInstitute.Domain.Entidades.Usuario;
 using BlossomInstitute.Domain.Model;
@@ -24,16 +24,16 @@ namespace BlossomInstitute.Application.DataBase.Curso.Commands.AsignarAlumnos
         public async Task<BaseResponseModel> Execute(int cursoId, MatricularAlumnosModel model, CancellationToken ct = default)
         {
             if (cursoId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Id de curso inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Id de curso inválido");
 
             var curso = await _db.Cursos.FirstOrDefaultAsync(c => c.Id == cursoId, ct);
             if (curso == null)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Curso no encontrado");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Curso no encontrado");
 
             if (curso.Estado == EstadoCurso.Inactivo)
-                return ResponseApiService.Response(StatusCodes.Status409Conflict, "No se puede matricular en un curso inactivo");
+                return ResponseApiService.Response(StatusCodes.Status409Conflict, message: "No se puede matricular en un curso inactivo");
             if (curso.Estado == EstadoCurso.Archivado)
-                return ResponseApiService.Response(StatusCodes.Status409Conflict, "No se puede matricular en un curso archivado");
+                return ResponseApiService.Response(StatusCodes.Status409Conflict, message: "No se puede matricular en un curso archivado");
 
             var alumnoIds = model.AlumnoIds.Distinct().ToList();
 
@@ -51,10 +51,10 @@ namespace BlossomInstitute.Application.DataBase.Curso.Commands.AsignarAlumnos
             {
                 var user = await _userManager.FindByIdAsync(aid.ToString());
                 if (user == null || !user.Activo)
-                    return ResponseApiService.Response(StatusCodes.Status409Conflict, $"El alumno {aid} está inactivo o no existe como usuario");
+                    return ResponseApiService.Response(StatusCodes.Status409Conflict, message: $"El alumno {aid} está inactivo o no existe como usuario");
 
                 if (!await _userManager.IsInRoleAsync(user, "Alumno"))
-                    return ResponseApiService.Response(StatusCodes.Status409Conflict, $"El usuario {aid} no tiene rol Alumno");
+                    return ResponseApiService.Response(StatusCodes.Status409Conflict, message: $"El usuario {aid} no tiene rol Alumno");
             }
 
             var existentes = await _db.Matriculas

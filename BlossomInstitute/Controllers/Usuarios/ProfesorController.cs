@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Profesor.Command.ActivarProfesor;
+using BlossomInstitute.Application.DataBase.Profesor.Command.ActivarProfesor;
 using BlossomInstitute.Application.DataBase.Profesor.Command.CreateProfesor;
 using BlossomInstitute.Application.DataBase.Profesor.Command.DeleteProfesor;
 using BlossomInstitute.Application.DataBase.Profesor.Command.UpdateProfesor;
@@ -42,7 +42,7 @@ namespace BlossomInstitute.Controllers.Usuarios
             [FromServices] IUpdateProfesorCommand command,
             [FromServices] IValidator<UpdateProfesorModel> validator)
         {
-            if (userId <= 0) return BadRequest(ResponseApiService.Response(400, "Id inválido"));
+            if (userId <= 0) return BadRequest(ResponseApiService.Response(400, message: "Id inválido"));
             var vr = await validator.ValidateAsync(model);
             if (!vr.IsValid) return BadRequest(ResponseApiService.Response(400, vr.Errors));
 
@@ -56,7 +56,7 @@ namespace BlossomInstitute.Controllers.Usuarios
             [FromServices] IDesactivarProfesorCommand command)
         {
             if (userId <= 0)
-                return BadRequest(ResponseApiService.Response(StatusCodes.Status400BadRequest, "Id inválido"));
+                return BadRequest(ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Id inválido"));
 
             var result = await command.Execute(userId);
             return StatusCode(result.StatusCode, result);
@@ -68,7 +68,7 @@ namespace BlossomInstitute.Controllers.Usuarios
          [FromServices] IActivarProfesorCommand command)
         {
             if (userId <= 0)
-                return BadRequest(ResponseApiService.Response(StatusCodes.Status400BadRequest, "Id inválido"));
+                return BadRequest(ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Id inválido"));
 
             var result = await command.Execute(userId);
             return StatusCode(result.StatusCode, result);
@@ -94,7 +94,7 @@ namespace BlossomInstitute.Controllers.Usuarios
             [FromRoute] int userId,
             [FromServices] IGetProfesorByIdQuery query)
         {
-            if (userId <= 0) return BadRequest(ResponseApiService.Response(400, "Id inválido"));
+            if (userId <= 0) return BadRequest(ResponseApiService.Response(400, message: "Id inválido"));
             var result = await query.Execute(userId);
             return StatusCode(result.StatusCode, result);
         }

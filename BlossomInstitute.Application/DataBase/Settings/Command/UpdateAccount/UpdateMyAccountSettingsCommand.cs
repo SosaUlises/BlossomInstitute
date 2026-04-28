@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Settings.Queries;
+using BlossomInstitute.Application.DataBase.Settings.Queries;
 using BlossomInstitute.Application.DataBase.Settings.Queries.GetMyAccount;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Usuario;
@@ -24,13 +24,13 @@ namespace BlossomInstitute.Application.DataBase.Settings.Command.UpdateAccount
             CancellationToken ct = default)
         {
             if (userId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "UserId inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "UserId inválido");
 
             var user = await _userManager.Users
                 .FirstOrDefaultAsync(x => x.Id == userId, ct);
 
             if (user == null)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Usuario no encontrado");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Usuario no encontrado");
 
             var normalizedEmail = _userManager.NormalizeEmail(model.Email.Trim());
 
@@ -39,14 +39,14 @@ namespace BlossomInstitute.Application.DataBase.Settings.Command.UpdateAccount
                 .AnyAsync(x => x.Id != userId && x.NormalizedEmail == normalizedEmail, ct);
 
             if (emailEnUso)
-                return ResponseApiService.Response(StatusCodes.Status409Conflict, "El email ya está en uso");
+                return ResponseApiService.Response(StatusCodes.Status409Conflict, message: "El email ya está en uso");
 
             var dniEnUso = await _userManager.Users
                 .AsNoTracking()
                 .AnyAsync(x => x.Id != userId && x.Dni == model.Dni, ct);
 
             if (dniEnUso)
-                return ResponseApiService.Response(StatusCodes.Status409Conflict, "El DNI ya está en uso");
+                return ResponseApiService.Response(StatusCodes.Status409Conflict, message: "El DNI ya está en uso");
 
             user.Nombre = model.Nombre.Trim();
             user.Apellido = model.Apellido.Trim();

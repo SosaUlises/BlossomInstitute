@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Dashboard.Queries.ProfesoresModels;
+using BlossomInstitute.Application.DataBase.Dashboard.Queries.ProfesoresModels;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Clase;
 using BlossomInstitute.Domain.Entidades.Tarea;
@@ -26,14 +26,14 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetProfesorDas
         public async Task<BaseResponseModel> Execute(int userId, CancellationToken ct = default)
         {
             if (userId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, "No autenticado");
+                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, message: "No autenticado");
 
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null || !user.Activo)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Usuario inválido o inactivo");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Usuario inválido o inactivo");
 
             if (!await _userManager.IsInRoleAsync(user, "Profesor"))
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Acceso denegado");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Acceso denegado");
 
             var profesor = await _db.Profesores
                 .AsNoTracking()
@@ -49,7 +49,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetProfesorDas
                 .FirstOrDefaultAsync(ct);
 
             if (profesor == null)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Profesor no encontrado");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Profesor no encontrado");
 
             TimeZoneInfo argentinaTimeZone;
 

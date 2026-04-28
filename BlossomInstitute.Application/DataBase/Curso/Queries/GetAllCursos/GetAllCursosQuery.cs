@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Common.Features;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -43,7 +43,7 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAllCursos
             if (estado.HasValue)
             {
                 if (estado.Value < 1 || estado.Value > 3)
-                    return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Estado inválido");
+                    return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Estado inválido");
 
                 query = query.Where(c => (int)c.Estado == estado.Value);
             }

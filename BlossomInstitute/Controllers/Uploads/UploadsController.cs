@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.CloudinaryService.Commands.UploadFile;
+using BlossomInstitute.Application.DataBase.CloudinaryService.Commands.UploadFile;
 using BlossomInstitute.Common.Features;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +20,7 @@ namespace BlossomInstitute.Controllers.Uploads
             CancellationToken ct)
         {
             if (request.File == null || request.File.Length == 0)
-                return BadRequest(ResponseApiService.Response(400, "Debe adjuntar un archivo"));
+                return BadRequest(ResponseApiService.Response(400, message: "Debe adjuntar un archivo"));
 
             var allowedExtensions = new[]
             {
@@ -32,7 +32,7 @@ namespace BlossomInstitute.Controllers.Uploads
             var extension = Path.GetExtension(request.File.FileName).ToLowerInvariant();
 
             if (!allowedExtensions.Contains(extension))
-                return BadRequest(ResponseApiService.Response(400, "Tipo de archivo no permitido"));
+                return BadRequest(ResponseApiService.Response(400, message: "Tipo de archivo no permitido"));
 
             var result = await storage.UploadAsync(
                 request.File,
@@ -53,7 +53,7 @@ namespace BlossomInstitute.Controllers.Uploads
             CancellationToken ct)
         {
             if (string.IsNullOrWhiteSpace(request.StorageKey))
-                return BadRequest(ResponseApiService.Response(400, "StorageKey inválido"));
+                return BadRequest(ResponseApiService.Response(400, message: "StorageKey inválido"));
 
             await storage.DeleteAsync(request.StorageKey, ct);
 

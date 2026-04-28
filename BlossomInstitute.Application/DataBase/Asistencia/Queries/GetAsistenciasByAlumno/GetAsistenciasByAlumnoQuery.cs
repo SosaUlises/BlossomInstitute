@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Common.Features;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Clase;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
@@ -18,14 +18,14 @@ namespace BlossomInstitute.Application.DataBase.Asistencia.Queries.GetAsistencia
         public async Task<BaseResponseModel> Execute(int alumnoId, int cursoId, DateOnly? from, DateOnly? to, CancellationToken ct = default)
         {
             if (alumnoId <= 0 || cursoId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Parámetros inválidos");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Parámetros inválidos");
 
             // validar matrícula
             var matriculado = await _db.Matriculas.AsNoTracking()
                 .AnyAsync(m => m.CursoId == cursoId && m.AlumnoId == alumnoId, ct);
 
             if (!matriculado)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "El alumno no está matriculado en el curso");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "El alumno no está matriculado en el curso");
 
             var clases = _db.Clases.AsNoTracking()
                 .Where(c => c.CursoId == cursoId);

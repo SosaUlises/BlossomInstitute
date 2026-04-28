@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.External;
+using BlossomInstitute.Application.External;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Usuario;
 using BlossomInstitute.Domain.Model;
@@ -30,13 +30,13 @@ namespace BlossomInstitute.Application.DataBase.Password.Command.ForgotPassword
             var email = model.Email?.Trim().ToLowerInvariant();
 
             if (string.IsNullOrWhiteSpace(email))
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "El email es obligatorio");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "El email es obligatorio");
 
             // Respuesta siempre OK para no filtrar si existe o no
             const string genericMsg = "Si el email existe en el sistema, te enviaremos instrucciones para restablecer la contraseña.";
 
             if (string.IsNullOrWhiteSpace(model.FrontendResetUrl))
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "FrontendResetUrl es obligatorio");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "FrontendResetUrl es obligatorio");
 
             var usuario = await _userManager.FindByEmailAsync(email);
 
