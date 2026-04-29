@@ -55,19 +55,19 @@ namespace BlossomInstitute.Application.Services.Export
             ws.Cell(row, 1).Value = "Total Quizzes";
             ws.Cell(row, 2).Value = resumen.TotalQuizzes;
             ws.Cell(row, 3).Value = "Quiz Avg";
-            ws.Cell(row, 4).Value = resumen.PromedioQuizzesCurso;
+            ws.Cell(row, 4).Value = FormatScoreForReport(TipoCalificacion.Quiz, resumen.PromedioQuizzesCurso);
             row++;
 
             ws.Cell(row, 1).Value = "Total Tests";
             ws.Cell(row, 2).Value = resumen.TotalTests;
             ws.Cell(row, 3).Value = "Test Avg";
-            ws.Cell(row, 4).Value = resumen.PromedioTestsCurso;
+            ws.Cell(row, 4).Value = FormatScoreForReport(TipoCalificacion.Test, resumen.PromedioTestsCurso);
             row++;
 
             ws.Cell(row, 1).Value = "Total Marks";
             ws.Cell(row, 2).Value = resumen.TotalMarks;
             ws.Cell(row, 3).Value = "General Avg";
-            ws.Cell(row, 4).Value = resumen.PromedioGeneralCurso;
+            ws.Cell(row, 4).Value = FormatScoreForReport(TipoCalificacion.Quiz, resumen.PromedioGeneralCurso);
             row += 2;
 
             var headerRow = row;
@@ -91,11 +91,11 @@ namespace BlossomInstitute.Application.Services.Export
                 ws.Cell(row, 2).Value = item.AlumnoDni;
                 ws.Cell(row, 3).Value = item.AlumnoEmail;
                 ws.Cell(row, 4).Value = item.QuizCount;
-                ws.Cell(row, 5).Value = item.QuizPromedio;
+                ws.Cell(row, 5).Value = FormatScoreForReport(TipoCalificacion.Quiz, item.QuizPromedio);
                 ws.Cell(row, 6).Value = item.TestCount;
-                ws.Cell(row, 7).Value = item.TestPromedio;
+                ws.Cell(row, 7).Value = FormatScoreForReport(TipoCalificacion.Test, item.TestPromedio);
                 ws.Cell(row, 8).Value = item.MarksCount;
-                ws.Cell(row, 9).Value = item.PromedioGeneral;
+                ws.Cell(row, 9).Value = FormatScoreForReport(TipoCalificacion.Quiz, item.PromedioGeneral);
                 row++;
             }
 
@@ -145,17 +145,17 @@ namespace BlossomInstitute.Application.Services.Export
                             table.Cell().Text("Total Quizzes").Bold();
                             table.Cell().Text(resumen.TotalQuizzes.ToString());
                             table.Cell().Text("Quiz Avg").Bold();
-                            table.Cell().Text(resumen.PromedioQuizzesCurso?.ToString("0.00") ?? "-");
+                            table.Cell().Text(FormatScoreForReport(TipoCalificacion.Quiz, resumen.PromedioQuizzesCurso));
 
                             table.Cell().Text("Total Tests").Bold();
                             table.Cell().Text(resumen.TotalTests.ToString());
                             table.Cell().Text("Test Avg").Bold();
-                            table.Cell().Text(resumen.PromedioTestsCurso?.ToString("0.00") ?? "-");
+                            table.Cell().Text(FormatScoreForReport(TipoCalificacion.Test, resumen.PromedioTestsCurso));
 
                             table.Cell().Text("Total Marks").Bold();
                             table.Cell().Text(resumen.TotalMarks.ToString());
                             table.Cell().Text("General Avg").Bold();
-                            table.Cell().Text(resumen.PromedioGeneralCurso?.ToString("0.00") ?? "-");
+                            table.Cell().Text(FormatScoreForReport(TipoCalificacion.Quiz, resumen.PromedioGeneralCurso));
                         });
 
                         column.Item().Table(table =>
@@ -191,11 +191,11 @@ namespace BlossomInstitute.Application.Services.Export
                                 table.Cell().Padding(4).Text(item.AlumnoDni.ToString());
                                 table.Cell().Padding(4).Text(item.AlumnoEmail ?? "-");
                                 table.Cell().Padding(4).Text(item.QuizCount.ToString());
-                                table.Cell().Padding(4).Text(item.QuizPromedio?.ToString("0.00") ?? "-");
+                                table.Cell().Padding(4).Text(FormatScoreForReport(TipoCalificacion.Quiz, item.QuizPromedio));
                                 table.Cell().Padding(4).Text(item.TestCount.ToString());
-                                table.Cell().Padding(4).Text(item.TestPromedio?.ToString("0.00") ?? "-");
+                                table.Cell().Padding(4).Text(FormatScoreForReport(TipoCalificacion.Test, item.TestPromedio));
                                 table.Cell().Padding(4).Text(item.MarksCount.ToString());
-                                table.Cell().Padding(4).Text(item.PromedioGeneral?.ToString("0.00") ?? "-");
+                                table.Cell().Padding(4).Text(FormatScoreForReport(TipoCalificacion.Quiz, item.PromedioGeneral));
                             }
                         });
                     });
@@ -441,7 +441,7 @@ namespace BlossomInstitute.Application.Services.Export
             ws.Cell(row, 1).Value = "Approved";
             ws.Cell(row, 2).Value = resumen.TotalAprobadas;
             ws.Cell(row, 3).Value = "Homework Avg";
-            ws.Cell(row, 4).Value = resumen.PromedioHomeworkCurso;
+            ws.Cell(row, 4).Value = FormatScoreForReport(TipoCalificacion.Homework, resumen.PromedioHomeworkCurso);
             row += 2;
 
             ws.Cell(row, 1).Value = "Student";
@@ -470,7 +470,7 @@ namespace BlossomInstitute.Application.Services.Export
                 ws.Cell(row, 7).Value = item.HomeworkPendientesCorreccion;
                 ws.Cell(row, 8).Value = item.HomeworkRehacer;
                 ws.Cell(row, 9).Value = item.HomeworkAprobadas;
-                ws.Cell(row, 10).Value = item.HomeworkPromedio;
+                ws.Cell(row, 10).Value = FormatScoreForReport(TipoCalificacion.Homework, item.HomeworkPromedio);
                 row++;
             }
 
@@ -530,7 +530,7 @@ namespace BlossomInstitute.Application.Services.Export
                             table.Cell().Text("Approved").Bold();
                             table.Cell().Text(resumen.TotalAprobadas.ToString());
                             table.Cell().Text("Homework Avg").Bold();
-                            table.Cell().Text(resumen.PromedioHomeworkCurso?.ToString("0.00") ?? "-");
+                            table.Cell().Text(FormatScoreForReport(TipoCalificacion.Homework, resumen.PromedioHomeworkCurso));
                         });
 
                         column.Item().Table(table =>
@@ -573,7 +573,7 @@ namespace BlossomInstitute.Application.Services.Export
                                 table.Cell().Padding(4).Text(item.HomeworkPendientesCorreccion.ToString());
                                 table.Cell().Padding(4).Text(item.HomeworkRehacer.ToString());
                                 table.Cell().Padding(4).Text(item.HomeworkAprobadas.ToString());
-                                table.Cell().Padding(4).Text(item.HomeworkPromedio?.ToString("0.00") ?? "-");
+                                table.Cell().Padding(4).Text(FormatScoreForReport(TipoCalificacion.Homework, item.HomeworkPromedio));
                             }
                         });
                     });
@@ -697,7 +697,7 @@ namespace BlossomInstitute.Application.Services.Export
                                          .Bold()
                                          .FontSize(12);
 
-                                    c.Item().Text($"Date: {item.Fecha:yyyy-MM-dd} | Grade: {item.Nota:0.##}");
+                                    c.Item().Text($"Date: {item.Fecha:yyyy-MM-dd} | Grade: {FormatScoreForReport(item.Tipo, item.Nota)}");
 
                                     if (!string.IsNullOrWhiteSpace(item.Descripcion))
                                         c.Item().Text($"Description: {item.Descripcion}");
@@ -774,6 +774,47 @@ namespace BlossomInstitute.Application.Services.Export
                 _ => tipo.ToString()
             };
         }
+
+        private static string FormatScoreForReport(TipoCalificacion tipo, decimal? nota)
+        {
+            if (tipo == TipoCalificacion.Participation || tipo == TipoCalificacion.Behaviour)
+            {
+                return nota switch
+                {
+                    100m => "E",
+                    90m => "VG",
+                    80m => "G",
+                    65m => "R",
+                    _ => "-"
+                };
+            }
+
+            return MapScoreToGrade(nota);
+        }
+
+        private static string MapScoreToGrade(decimal? score)
+        {
+            if (!score.HasValue)
+                return "-";
+
+            return score.Value switch
+            {
+                100 => "A+",
+                >= 95 => "A",
+                >= 90 => "A-",
+                >= 87 => "B+",
+                >= 84 => "B",
+                >= 80 => "B-",
+                >= 77 => "C+",
+                >= 74 => "C",
+                >= 70 => "C-",
+                >= 68 => "D+",
+                >= 66 => "D",
+                >= 65 => "D-",
+                _ => "F"
+            };
+        }
+
         public byte[] ExportStudentSummaryByCourseTermToPdf(
              ReporteStudentSummaryByCursoAndTermResponseModel data)
         {
@@ -911,19 +952,19 @@ namespace BlossomInstitute.Application.Services.Export
                                 table.Cell().Padding(2).Text(data.Marks.QuizCount.ToString());
 
                                 table.Cell().Padding(2).Text("Quiz Avg").Bold();
-                                table.Cell().Padding(2).Text(data.Marks.QuizPromedio?.ToString("0.00") ?? "-");
+                                table.Cell().Padding(2).Text(FormatScoreForReport(TipoCalificacion.Quiz, data.Marks.QuizPromedio));
 
                                 table.Cell().Padding(2).Text("Test Count").Bold();
                                 table.Cell().Padding(2).Text(data.Marks.TestCount.ToString());
 
                                 table.Cell().Padding(2).Text("Test Avg").Bold();
-                                table.Cell().Padding(2).Text(data.Marks.TestPromedio?.ToString("0.00") ?? "-");
+                                table.Cell().Padding(2).Text(FormatScoreForReport(TipoCalificacion.Test, data.Marks.TestPromedio));
 
                                 table.Cell().Padding(2).Text("Marks Count").Bold();
                                 table.Cell().Padding(2).Text(data.Marks.MarksCount.ToString());
 
                                 table.Cell().Padding(2).Text("General Avg").Bold();
-                                table.Cell().Padding(2).Text(data.Marks.PromedioGeneral?.ToString("0.00") ?? "-");
+                                table.Cell().Padding(2).Text(FormatScoreForReport(TipoCalificacion.Quiz, data.Marks.PromedioGeneral));
                             });
                         });
 

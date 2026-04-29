@@ -234,6 +234,13 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Commands.UpdateCali
             if ((model.Tipo == TipoCalificacion.Participation || model.Tipo == TipoCalificacion.Behaviour) && tieneDetalles)
                 return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Participation y Behaviour no admiten detalle por skills");
 
+            if ((model.Tipo == TipoCalificacion.Participation || model.Tipo == TipoCalificacion.Behaviour) &&
+                model.Nota.HasValue &&
+                model.Nota.Value is not (100m or 90m or 80m or 65m))
+            {
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Participation y Behaviour solo admiten notas 100, 90, 80 o 65");
+            }
+
             if (model.EntregaId.HasValue && !model.TareaId.HasValue && model.Tipo == TipoCalificacion.Homework)
                 return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Si se informa una entrega de homework, también debe informarse la tarea");
 
