@@ -7,12 +7,15 @@ using BlossomInstitute.Domain.Entidades.Calificacion;
 using ClosedXML.Excel;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
-
+using QuestPDF.Infrastructure;
+using System.Reflection;
 
 namespace BlossomInstitute.Application.Services.Export
 {
     public class ReporteExportService : IReporteExportService
     {
+        private const string LogoResourceName = "BlossomInstitute.Application.Assets.Reports.institute-logo.png";
+
         public byte[] ExportMarksByCourseTermToExcel(
             ReporteMarksByCursoAndTermResumenModel resumen,
             List<ReporteMarksByCursoAndTermItemModel> items)
@@ -22,8 +25,9 @@ namespace BlossomInstitute.Application.Services.Export
 
             var row = 1;
 
-            ws.Cell(row, 1).Value = "Blossom Institute";
-            ws.Range(row, 1, row, 8).Merge().Style.Font.SetBold().Font.SetFontSize(16);
+            AddExcelLogo(ws);
+            ws.Cell(row, 2).Value = "Blossom Institute";
+            ws.Range(row, 2, row, 8).Merge().Style.Font.SetBold().Font.SetFontSize(16);
             row++;
 
             ws.Cell(row, 1).Value = "Course";
@@ -114,12 +118,10 @@ namespace BlossomInstitute.Application.Services.Export
                     page.Size(PageSizes.A4.Landscape());
                     page.DefaultTextStyle(x => x.FontSize(10));
 
-                    page.Header().Column(column =>
-                    {
-                        column.Item().Text("Blossom Institute").Bold().FontSize(18);
-                        column.Item().Text($"Marks Report - {resumen.CursoNombre}");
-                        column.Item().Text($"Year {resumen.Year} - Term {resumen.Term} ({resumen.From:yyyy-MM-dd} to {resumen.To:yyyy-MM-dd})");
-                    });
+                    page.Header().Element(header => ComposePdfHeader(
+                        header,
+                        $"Marks Report - {resumen.CursoNombre}",
+                        $"Year {resumen.Year} - Term {resumen.Term} ({resumen.From:yyyy-MM-dd} to {resumen.To:yyyy-MM-dd})"));
 
                     page.Content().Column(column =>
                     {
@@ -222,8 +224,9 @@ namespace BlossomInstitute.Application.Services.Export
 
             var row = 1;
 
-            ws.Cell(row, 1).Value = "Blossom Institute";
-            ws.Range(row, 1, row, 8).Merge().Style.Font.SetBold().Font.SetFontSize(16);
+            AddExcelLogo(ws);
+            ws.Cell(row, 2).Value = "Blossom Institute";
+            ws.Range(row, 2, row, 8).Merge().Style.Font.SetBold().Font.SetFontSize(16);
             row++;
 
             ws.Cell(row, 1).Value = "Course";
@@ -301,12 +304,10 @@ namespace BlossomInstitute.Application.Services.Export
                     page.Size(PageSizes.A4.Landscape());
                     page.DefaultTextStyle(x => x.FontSize(10));
 
-                    page.Header().Column(column =>
-                    {
-                        column.Item().Text("Blossom Institute").Bold().FontSize(18);
-                        column.Item().Text($"Attendance Report - {resumen.CursoNombre}");
-                        column.Item().Text($"Year {resumen.Year} - Term {resumen.Term} ({resumen.From:yyyy-MM-dd} to {resumen.To:yyyy-MM-dd})");
-                    });
+                    page.Header().Element(header => ComposePdfHeader(
+                        header,
+                        $"Attendance Report - {resumen.CursoNombre}",
+                        $"Year {resumen.Year} - Term {resumen.Term} ({resumen.From:yyyy-MM-dd} to {resumen.To:yyyy-MM-dd})"));
 
                     page.Content().Column(column =>
                     {
@@ -398,8 +399,9 @@ namespace BlossomInstitute.Application.Services.Export
 
             var row = 1;
 
-            ws.Cell(row, 1).Value = "Blossom Institute";
-            ws.Range(row, 1, row, 10).Merge().Style.Font.SetBold().Font.SetFontSize(16);
+            AddExcelLogo(ws);
+            ws.Cell(row, 2).Value = "Blossom Institute";
+            ws.Range(row, 2, row, 10).Merge().Style.Font.SetBold().Font.SetFontSize(16);
             row++;
 
             ws.Cell(row, 1).Value = "Course";
@@ -491,12 +493,10 @@ namespace BlossomInstitute.Application.Services.Export
                     page.Size(PageSizes.A4.Landscape());
                     page.DefaultTextStyle(x => x.FontSize(10));
 
-                    page.Header().Column(column =>
-                    {
-                        column.Item().Text("Blossom Institute").Bold().FontSize(18);
-                        column.Item().Text($"Homework Report - {resumen.CursoNombre}");
-                        column.Item().Text($"Year {resumen.Year} - Term {resumen.Term} ({resumen.From:yyyy-MM-dd} to {resumen.To:yyyy-MM-dd})");
-                    });
+                    page.Header().Element(header => ComposePdfHeader(
+                        header,
+                        $"Homework Report - {resumen.CursoNombre}",
+                        $"Year {resumen.Year} - Term {resumen.Term} ({resumen.From:yyyy-MM-dd} to {resumen.To:yyyy-MM-dd})"));
 
                     page.Content().Column(column =>
                     {
@@ -603,21 +603,10 @@ namespace BlossomInstitute.Application.Services.Export
                     page.Size(PageSizes.A4);
                     page.DefaultTextStyle(x => x.FontSize(10));
 
-                    page.Header().Column(column =>
-                    {
-                        column.Spacing(4);
-
-                        column.Item()
-                            .Text("Blossom Institute")
-                            .Bold()
-                            .FontSize(18);
-
-                        column.Item()
-                            .Text($"Student Assessments Detail - {data.CursoNombre}");
-
-                        column.Item()
-                            .Text($"Year {data.Year} - Term {data.Term} ({data.From:yyyy-MM-dd} to {data.To:yyyy-MM-dd})");
-                    });
+                    page.Header().Element(header => ComposePdfHeader(
+                        header,
+                        $"Student Assessments Detail - {data.CursoNombre}",
+                        $"Year {data.Year} - Term {data.Term} ({data.From:yyyy-MM-dd} to {data.To:yyyy-MM-dd})"));
 
                     page.Content().Column(column =>
                     {
@@ -796,21 +785,10 @@ namespace BlossomInstitute.Application.Services.Export
                     page.Size(PageSizes.A4);
                     page.DefaultTextStyle(x => x.FontSize(10));
 
-                    page.Header().Column(column =>
-                    {
-                        column.Spacing(4);
-
-                        column.Item()
-                            .Text("Blossom Institute")
-                            .Bold()
-                            .FontSize(18);
-
-                        column.Item()
-                            .Text($"Student Summary Report - {data.CursoNombre}");
-
-                        column.Item()
-                            .Text($"Year {data.Year} - Term {data.Term} ({data.From:yyyy-MM-dd} to {data.To:yyyy-MM-dd})");
-                    });
+                    page.Header().Element(header => ComposePdfHeader(
+                        header,
+                        $"Student Summary Report - {data.CursoNombre}",
+                        $"Year {data.Year} - Term {data.Term} ({data.From:yyyy-MM-dd} to {data.To:yyyy-MM-dd})"));
 
                     page.Content().Column(column =>
                     {
@@ -910,8 +888,6 @@ namespace BlossomInstitute.Application.Services.Export
                                 table.Cell().Padding(2).Text("Approved").Bold();
                                 table.Cell().Padding(2).Text(data.Homework.HomeworkAprobadas.ToString());
 
-                                table.Cell().Padding(2).Text("Homework Avg").Bold();
-                                table.Cell().Padding(2).Text(data.Homework.HomeworkPromedio?.ToString("0.00") ?? "-");
                             });
                         });
 
@@ -1008,6 +984,41 @@ namespace BlossomInstitute.Application.Services.Export
             });
 
             return document.GeneratePdf();
+        }
+
+        private static void ComposePdfHeader(IContainer container, string title, string period)
+        {
+            container.Row(row =>
+            {
+                row.RelativeItem().Column(column =>
+                {
+                    column.Spacing(4);
+                    column.Item().Text("Blossom Institute").Bold().FontSize(18);
+                    column.Item().Text(title);
+                    column.Item().Text(period);
+                });
+
+                row.ConstantItem(70).Height(45).Image(GetLogoBytes()).FitArea();
+            });
+        }
+
+        private static void AddExcelLogo(IXLWorksheet ws)
+        {
+            using var stream = new MemoryStream(GetLogoBytes());
+            ws.Row(1).Height = 38;
+            ws.Column(1).Width = 12;
+            ws.AddPicture(stream, "Institute Logo")
+                .MoveTo(ws.Cell(1, 1))
+                .Scale(0.12);
+        }
+
+        private static byte[] GetLogoBytes()
+        {
+            using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(LogoResourceName)
+                ?? throw new InvalidOperationException($"Embedded resource not found: {LogoResourceName}");
+            using var memoryStream = new MemoryStream();
+            stream.CopyTo(memoryStream);
+            return memoryStream.ToArray();
         }
     }
 }
