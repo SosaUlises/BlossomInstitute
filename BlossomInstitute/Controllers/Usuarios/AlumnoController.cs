@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Alumno.Command.ActivarAlumno;
+using BlossomInstitute.Application.DataBase.Alumno.Command.ActivarAlumno;
 using BlossomInstitute.Application.DataBase.Alumno.Command.CreateAlumno;
 using BlossomInstitute.Application.DataBase.Alumno.Command.DesactivarAlumno;
 using BlossomInstitute.Application.DataBase.Alumno.Command.UpdateAlumno;
@@ -42,7 +42,7 @@ namespace BlossomInstitute.Controllers.Usuarios
             [FromServices] IUpdateAlumnoCommand command,
             [FromServices] IValidator<UpdateAlumnoModel> validator)
         {
-            if (userId <= 0) return BadRequest(ResponseApiService.Response(400, "Id inválido"));
+            if (userId <= 0) return BadRequest(ResponseApiService.Response(400, message: "Id inválido"));
             var vr = await validator.ValidateAsync(model);
             if (!vr.IsValid) return BadRequest(ResponseApiService.Response(400, vr.Errors));
 
@@ -56,7 +56,7 @@ namespace BlossomInstitute.Controllers.Usuarios
          [FromServices] IDesactivarAlumnoCommand command)
         {
             if (userId <= 0)
-                return BadRequest(ResponseApiService.Response(StatusCodes.Status400BadRequest, "Id inválido"));
+                return BadRequest(ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Id inválido"));
 
             var result = await command.Execute(userId);
             return StatusCode(result.StatusCode, result);
@@ -68,7 +68,7 @@ namespace BlossomInstitute.Controllers.Usuarios
          [FromServices] IActivarAlumnoCommand command)
         {
             if (userId <= 0)
-                return BadRequest(ResponseApiService.Response(StatusCodes.Status400BadRequest, "Id inválido"));
+                return BadRequest(ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Id inválido"));
 
             var result = await command.Execute(userId);
             return StatusCode(result.StatusCode, result);
@@ -94,7 +94,7 @@ namespace BlossomInstitute.Controllers.Usuarios
             [FromRoute] int userId,
             [FromServices] IGetAlumnoByIdQuery query)
         {
-            if (userId <= 0) return BadRequest(ResponseApiService.Response(400, "Id inválido"));
+            if (userId <= 0) return BadRequest(ResponseApiService.Response(400, message: "Id inválido"));
             var result = await query.Execute(userId);
             return StatusCode(result.StatusCode, result);
         }
@@ -108,7 +108,7 @@ namespace BlossomInstitute.Controllers.Usuarios
             [FromQuery] string? search = null)
         {
             if (cursoId <= 0)
-                return BadRequest(ResponseApiService.Response(StatusCodes.Status400BadRequest, "Curso inválido"));
+                return BadRequest(ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Curso inválido"));
 
             if (pageNumber <= 0) pageNumber = 1;
             if (pageSize <= 0) pageSize = 10;

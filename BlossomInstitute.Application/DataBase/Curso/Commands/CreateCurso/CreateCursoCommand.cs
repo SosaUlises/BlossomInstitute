@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Common.Features;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Curso;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
@@ -20,12 +20,12 @@ namespace BlossomInstitute.Application.DataBase.Curso.Commands.CreateCurso
             var nombre = model.Nombre?.Trim();
 
             if (string.IsNullOrWhiteSpace(nombre))
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Nombre inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Nombre inválido");
 
             // Evitar duplicado por Año+Nombre
             var existe = await _db.Cursos.AnyAsync(c => c.Anio == model.Anio && c.Nombre == nombre);
             if (existe)
-                return ResponseApiService.Response(StatusCodes.Status409Conflict, "Ya existe un curso con ese nombre para ese año");
+                return ResponseApiService.Response(StatusCodes.Status409Conflict, message: "Ya existe un curso con ese nombre para ese año");
 
             await using var tx = await _db.BeginTransactionAsync();
 

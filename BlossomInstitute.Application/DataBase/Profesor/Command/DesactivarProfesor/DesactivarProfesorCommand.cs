@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Common.Features;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Usuario;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
@@ -19,16 +19,16 @@ namespace BlossomInstitute.Application.DataBase.Profesor.Command.DeleteProfesor
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Profesor no encontrado");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Profesor no encontrado");
 
             if (!await _userManager.IsInRoleAsync(user, "Profesor"))
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Profesor no encontrado");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Profesor no encontrado");
 
             if (await _userManager.IsInRoleAsync(user, "Administrador"))
-                return ResponseApiService.Response(StatusCodes.Status409Conflict, "No se puede desactivar un Administrador");
+                return ResponseApiService.Response(StatusCodes.Status409Conflict, message: "No se puede desactivar un Administrador");
 
             if (!user.Activo)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "El profesor ya está desactivado");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "El profesor ya está desactivado");
 
             user.Activo = false;
 
@@ -42,7 +42,7 @@ namespace BlossomInstitute.Application.DataBase.Profesor.Command.DeleteProfesor
             // Invalida tokens existentes
             await _userManager.UpdateSecurityStampAsync(user);
 
-            return ResponseApiService.Response(StatusCodes.Status200OK, "Profesor desactivado correctamente");
+            return ResponseApiService.Response(StatusCodes.Status200OK, message: "Profesor desactivado correctamente");
         }
     }
 }

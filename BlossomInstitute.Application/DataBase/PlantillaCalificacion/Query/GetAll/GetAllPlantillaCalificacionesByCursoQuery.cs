@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Query.Models;
+using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Query.Models;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Usuario;
 using BlossomInstitute.Domain.Model;
@@ -30,7 +30,7 @@ namespace BlossomInstitute.Application.DataBase.PlantillaCalificacion.Query.GetA
             CancellationToken ct)
         {
             if (cursoId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Curso inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Curso inválido");
 
             if (pageNumber <= 0) pageNumber = 1;
             if (pageSize <= 0) pageSize = 10;
@@ -40,27 +40,27 @@ namespace BlossomInstitute.Application.DataBase.PlantillaCalificacion.Query.GetA
 
             var profesor = await _userManager.FindByIdAsync(profesorUserId.ToString());
             if (profesor == null)
-                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, "No autenticado");
+                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, message: "No autenticado");
 
             if (!profesor.Activo)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Usuario inactivo");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Usuario inactivo");
 
             if (!await _userManager.IsInRoleAsync(profesor, "Profesor"))
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "No autorizado");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "No autorizado");
 
             var cursoExiste = await _db.Cursos
                 .AsNoTracking()
                 .AnyAsync(x => x.Id == cursoId, ct);
 
             if (!cursoExiste)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Curso no encontrado");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Curso no encontrado");
 
             var profesorAsignado = await _db.CursoProfesores
                 .AsNoTracking()
                 .AnyAsync(x => x.CursoId == cursoId && x.ProfesorId == profesorUserId, ct);
 
             if (!profesorAsignado)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Profesor no asignado a este curso");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Profesor no asignado a este curso");
 
             var query = _db.PlantillaCalificaciones
                 .AsNoTracking()

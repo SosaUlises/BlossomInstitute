@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashboard;
+using BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashboard;
 using BlossomInstitute.Common.Features;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +22,7 @@ namespace BlossomInstitute.Controllers.Me.Admin
                 User.FindFirst("sub")?.Value;
 
             if (!int.TryParse(userIdClaim, out var userId))
-                return Unauthorized(ResponseApiService.Response(StatusCodes.Status401Unauthorized, "Usuario inválido"));
+                return Unauthorized(ResponseApiService.Response(StatusCodes.Status401Unauthorized, message: "Usuario inválido"));
 
             var isAdmin = User.IsInRole("Administrador");
 

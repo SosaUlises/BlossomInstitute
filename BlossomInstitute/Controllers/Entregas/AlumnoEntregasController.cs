@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Entregas.Commands.UpsertEntregaAlumno;
+using BlossomInstitute.Application.DataBase.Entregas.Commands.UpsertEntregaAlumno;
 using BlossomInstitute.Common.Features;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
@@ -28,7 +28,7 @@ namespace BlossomInstitute.Controllers.Entregas
             CancellationToken ct)
         {
             if (tareaId <= 0)
-                return BadRequest(ResponseApiService.Response(400, "TareaId inválido"));
+                return BadRequest(ResponseApiService.Response(400, message: "TareaId inválido"));
 
             var vr = await validator.ValidateAsync(model, ct);
             if (!vr.IsValid)
@@ -36,7 +36,7 @@ namespace BlossomInstitute.Controllers.Entregas
 
             var userId = GetUserId();
             if (userId <= 0)
-                return Unauthorized(ResponseApiService.Response(401, "No autenticado"));
+                return Unauthorized(ResponseApiService.Response(401, message: "No autenticado"));
 
             var result = await command.Execute(tareaId, userId, model, ct);
             return StatusCode(result.StatusCode, result);

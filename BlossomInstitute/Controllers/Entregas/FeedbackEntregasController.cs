@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Entregas.Commands.CreateFeedbackEntrega;
+using BlossomInstitute.Application.DataBase.Entregas.Commands.CreateFeedbackEntrega;
 using BlossomInstitute.Common.Features;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
@@ -31,7 +31,7 @@ namespace BlossomInstitute.Controllers.Entregas
             CancellationToken ct)
         {
             if (cursoId <= 0 || tareaId <= 0 || alumnoId <= 0)
-                return BadRequest(ResponseApiService.Response(400, "Parámetros inválidos"));
+                return BadRequest(ResponseApiService.Response(400, message: "Parámetros inválidos"));
 
             var vr = await validator.ValidateAsync(model, ct);
             if (!vr.IsValid)
@@ -39,7 +39,7 @@ namespace BlossomInstitute.Controllers.Entregas
 
             var profesorUserId = GetUserId();
             if (profesorUserId <= 0)
-                return Unauthorized(ResponseApiService.Response(401, "No autenticado"));
+                return Unauthorized(ResponseApiService.Response(401, message: "No autenticado"));
 
             var result = await command.Execute(cursoId, tareaId, alumnoId, profesorUserId, model, ct);
             return StatusCode(result.StatusCode, result);

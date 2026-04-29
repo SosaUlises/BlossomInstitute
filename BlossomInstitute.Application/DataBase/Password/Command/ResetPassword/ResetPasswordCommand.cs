@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Common.Features;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Usuario;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
@@ -25,26 +25,26 @@ namespace BlossomInstitute.Application.DataBase.Password.Command.ResetPassword
                 string.IsNullOrWhiteSpace(model.NewPassword) ||
                 string.IsNullOrWhiteSpace(model.ConfirmPassword))
             {
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Email, token y contraseñas son obligatorios");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Email, token y contraseñas son obligatorios");
             }
 
             if (model.NewPassword != model.ConfirmPassword)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Las contraseñas no coinciden");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Las contraseñas no coinciden");
 
             var usuario = await _userManager.FindByEmailAsync(email);
             if (usuario == null)
             {
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Token inválido o expirado");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Token inválido o expirado");
             }
 
             if (!usuario.Activo)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Usuario inactivo");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Usuario inactivo");
 
 
             var token = model.Token?.Trim();
 
             if (string.IsNullOrWhiteSpace(token))
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Token inválido o expirado");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Token inválido o expirado");
 
             var result = await _userManager.ResetPasswordAsync(usuario, token, model.NewPassword);
 

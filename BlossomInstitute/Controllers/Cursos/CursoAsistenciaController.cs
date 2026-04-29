@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Asistencia.Command.TomarAsistencia;
+using BlossomInstitute.Application.DataBase.Asistencia.Command.TomarAsistencia;
 using BlossomInstitute.Application.DataBase.Asistencia.Queries.GetAsistenciasByAlumno;
 using BlossomInstitute.Application.DataBase.Asistencia.Queries.GetAsistenciasByClase;
 using BlossomInstitute.Common.Features;
@@ -24,10 +24,10 @@ namespace BlossomInstitute.Controllers.Cursos
             CancellationToken ct)
         {
             if (cursoId <= 0)
-                return BadRequest(ResponseApiService.Response(400, "CursoId inválido"));
+                return BadRequest(ResponseApiService.Response(400, message: "CursoId inválido"));
 
             if (!DateOnly.TryParse(fecha, out var date))
-                return BadRequest(ResponseApiService.Response(400, "Fecha inválida. Formato esperado: yyyy-MM-dd"));
+                return BadRequest(ResponseApiService.Response(400, message: "Fecha inválida. Formato esperado: yyyy-MM-dd"));
 
             var vr = await validator.ValidateAsync(model, ct);
             if (!vr.IsValid)
@@ -47,10 +47,10 @@ namespace BlossomInstitute.Controllers.Cursos
             CancellationToken ct = default)
         {
             if (alumnoId <= 0)
-                return BadRequest(ResponseApiService.Response(400, "AlumnoId inválido"));
+                return BadRequest(ResponseApiService.Response(400, message: "AlumnoId inválido"));
 
             if (cursoId <= 0)
-                return BadRequest(ResponseApiService.Response(400, "cursoId es obligatorio"));
+                return BadRequest(ResponseApiService.Response(400, message: "cursoId es obligatorio"));
 
             DateOnly? fromDate = null;
             DateOnly? toDate = null;
@@ -58,19 +58,19 @@ namespace BlossomInstitute.Controllers.Cursos
             if (!string.IsNullOrWhiteSpace(from))
             {
                 if (!DateOnly.TryParse(from, out var d))
-                    return BadRequest(ResponseApiService.Response(400, "from inválido. Formato esperado: yyyy-MM-dd"));
+                    return BadRequest(ResponseApiService.Response(400, message: "from inválido. Formato esperado: yyyy-MM-dd"));
                 fromDate = d;
             }
 
             if (!string.IsNullOrWhiteSpace(to))
             {
                 if (!DateOnly.TryParse(to, out var d))
-                    return BadRequest(ResponseApiService.Response(400, "to inválido. Formato esperado: yyyy-MM-dd"));
+                    return BadRequest(ResponseApiService.Response(400, message: "to inválido. Formato esperado: yyyy-MM-dd"));
                 toDate = d;
             }
 
             if (fromDate.HasValue && toDate.HasValue && fromDate > toDate)
-                return BadRequest(ResponseApiService.Response(400, "El rango de fechas es inválido (from > to)"));
+                return BadRequest(ResponseApiService.Response(400, message: "El rango de fechas es inválido (from > to)"));
 
             var result = await query.Execute(alumnoId, cursoId, fromDate, toDate, ct);
             return StatusCode(result.StatusCode, result);
@@ -84,10 +84,10 @@ namespace BlossomInstitute.Controllers.Cursos
             CancellationToken ct = default)
         {
             if (cursoId <= 0)
-                return BadRequest(ResponseApiService.Response(400, "CursoId inválido"));
+                return BadRequest(ResponseApiService.Response(400, message: "CursoId inválido"));
 
             if (!DateOnly.TryParse(fecha, out var date))
-                return BadRequest(ResponseApiService.Response(400, "Fecha inválida. Formato esperado: yyyy-MM-dd"));
+                return BadRequest(ResponseApiService.Response(400, message: "Fecha inválida. Formato esperado: yyyy-MM-dd"));
 
             var result = await query.Execute(cursoId, date, ct);
             return StatusCode(result.StatusCode, result);

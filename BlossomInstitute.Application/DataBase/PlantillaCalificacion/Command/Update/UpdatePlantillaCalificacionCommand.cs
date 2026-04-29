@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Common.Features;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Calificacion;
 using BlossomInstitute.Domain.Entidades.Usuario;
 using BlossomInstitute.Domain.Model;
@@ -29,34 +29,34 @@ namespace BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Up
             CancellationToken ct)
         {
             if (cursoId <= 0 || plantillaId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Parámetros inválidos");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Parámetros inválidos");
 
             if (model == null)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Modelo inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Modelo inválido");
 
             var profesor = await _userManager.FindByIdAsync(profesorUserId.ToString());
             if (profesor == null)
-                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, "No autenticado");
+                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, message: "No autenticado");
 
             if (!profesor.Activo)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Usuario inactivo");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Usuario inactivo");
 
             if (!await _userManager.IsInRoleAsync(profesor, "Profesor"))
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "No autorizado");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "No autorizado");
 
             var cursoExiste = await _db.Cursos
                 .AsNoTracking()
                 .AnyAsync(x => x.Id == cursoId, ct);
 
             if (!cursoExiste)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Curso no encontrado");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Curso no encontrado");
 
             var profesorAsignado = await _db.CursoProfesores
                 .AsNoTracking()
                 .AnyAsync(x => x.CursoId == cursoId && x.ProfesorId == profesorUserId, ct);
 
             if (!profesorAsignado)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Profesor no asignado a este curso");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Profesor no asignado a este curso");
 
             var detalles = model.Detalles?
                 .Where(x => x != null)
@@ -71,7 +71,7 @@ namespace BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Up
                 .FirstOrDefaultAsync(x => x.Id == plantillaId && x.CursoId == cursoId, ct);
 
             if (plantilla == null)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Plantilla no encontrada");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Plantilla no encontrada");
 
 
 
@@ -86,7 +86,7 @@ namespace BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Up
                     ct);
 
             if (existeOtraConMismoTitulo)
-                return ResponseApiService.Response(StatusCodes.Status409Conflict, "Ya existe otra plantilla activa con el mismo título en este curso");
+                return ResponseApiService.Response(StatusCodes.Status409Conflict, message: "Ya existe otra plantilla activa con el mismo título en este curso");
 
             plantilla.Tipo = model.Tipo;
             plantilla.Titulo = tituloNormalizado;
@@ -110,7 +110,7 @@ namespace BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Up
             {
                 var ok = await _db.SaveAsync(ct);
                 if (!ok)
-                    return ResponseApiService.Response(StatusCodes.Status500InternalServerError, "No se pudo actualizar la plantilla");
+                    return ResponseApiService.Response(StatusCodes.Status500InternalServerError, message: "No se pudo actualizar la plantilla");
 
                 return ResponseApiService.Response(StatusCodes.Status200OK, new
                 {
@@ -129,7 +129,7 @@ namespace BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Up
             }
             catch (DbUpdateException)
             {
-                return ResponseApiService.Response(StatusCodes.Status409Conflict, "No se pudo actualizar la plantilla por conflicto de datos");
+                return ResponseApiService.Response(StatusCodes.Status409Conflict, message: "No se pudo actualizar la plantilla por conflicto de datos");
             }
         }
 
@@ -138,19 +138,19 @@ namespace BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Up
             List<UpdatePlantillaCalificacionDetalleModel> detalles)
         {
             if (string.IsNullOrWhiteSpace(model.Titulo))
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "El título es obligatorio");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "El título es obligatorio");
 
             if (model.Titulo.Trim().Length > 100)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "El título no puede superar los 100 caracteres");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "El título no puede superar los 100 caracteres");
 
             if (!string.IsNullOrWhiteSpace(model.Descripcion) && model.Descripcion.Trim().Length > 500)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "La descripción no puede superar los 500 caracteres");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "La descripción no puede superar los 500 caracteres");
 
             if (model.Tipo != TipoCalificacion.Quiz && model.Tipo != TipoCalificacion.Test)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "La plantilla solo puede ser de tipo Quiz o Test");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "La plantilla solo puede ser de tipo Quiz o Test");
 
             if (detalles.Count == 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "La plantilla debe incluir al menos una skill");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "La plantilla debe incluir al menos una skill");
 
             var skillsDuplicadas = detalles
                 .GroupBy(x => x.Skill)
@@ -159,10 +159,10 @@ namespace BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Up
                 .ToList();
 
             if (skillsDuplicadas.Count > 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "No se puede repetir la misma skill dentro de una misma plantilla");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "No se puede repetir la misma skill dentro de una misma plantilla");
 
             if (detalles.Any(x => x.PuntajeMaximo <= 0))
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "El puntaje máximo debe ser mayor a cero");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "El puntaje máximo debe ser mayor a cero");
 
             return null;
         }

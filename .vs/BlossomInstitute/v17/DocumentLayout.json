@@ -1,16 +1,7 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\dashboard\\queries\\getadmindashboard\\getadmindashboardresponsemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\dashboard\\queries\\getadmindashboard\\getadmindashboardresponsemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|c:\\users\\ulipv\\source\\repos\\blossom-institute-api\\blossominstitute.application\\database\\dashboard\\queries\\getadmindashboard\\getadmindashboardquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{54F7C6AA-E084-418E-85CB-ACD92439FDD4}|BlossomInstitute.Application\\BlossomInstitute.Application.csproj|solutionrelative:blossominstitute.application\\database\\dashboard\\queries\\getadmindashboard\\getadmindashboardquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 1,
@@ -18,7 +9,7 @@
       "DocumentGroups": [
         {
           "DockedHeight": 422,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": -1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -27,40 +18,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "GetAdminDashboardResponseModel.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Dashboard\\Queries\\GetAdminDashboard\\GetAdminDashboardResponseModel.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Dashboard\\Queries\\GetAdminDashboard\\GetAdminDashboardResponseModel.cs",
-              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Dashboard\\Queries\\GetAdminDashboard\\GetAdminDashboardResponseModel.cs",
-              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Dashboard\\Queries\\GetAdminDashboard\\GetAdminDashboardResponseModel.cs",
-              "ViewState": "AgIAADQAAAAAAAAAAADwvw8AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-17T22:01:57.77Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "GetAdminDashboardQuery.cs",
-              "DocumentMoniker": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Dashboard\\Queries\\GetAdminDashboard\\GetAdminDashboardQuery.cs",
-              "RelativeDocumentMoniker": "BlossomInstitute.Application\\DataBase\\Dashboard\\Queries\\GetAdminDashboard\\GetAdminDashboardQuery.cs",
-              "ToolTip": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.Application\\DataBase\\Dashboard\\Queries\\GetAdminDashboard\\GetAdminDashboardQuery.cs",
-              "RelativeToolTip": "BlossomInstitute.Application\\DataBase\\Dashboard\\Queries\\GetAdminDashboard\\GetAdminDashboardQuery.cs",
-              "ViewState": "AgIAACMBAAAAAAAAAAAowMEAAABAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-17T19:35:07.746Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
             }
           ]
         }

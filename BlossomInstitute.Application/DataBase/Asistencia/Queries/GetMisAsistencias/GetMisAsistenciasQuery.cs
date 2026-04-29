@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Common.Features;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Usuario;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
@@ -30,14 +30,14 @@ namespace BlossomInstitute.Application.DataBase.Asistencia.Queries.GetMisAsisten
             CancellationToken ct = default)
         {
             if (userId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, "No autenticado");
+                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, message: "No autenticado");
 
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null || !user.Activo)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Usuario inválido o inactivo");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Usuario inválido o inactivo");
 
             if (!await _userManager.IsInRoleAsync(user, "Alumno"))
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Acceso denegado");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Acceso denegado");
 
             var alumnoId = userId;
 

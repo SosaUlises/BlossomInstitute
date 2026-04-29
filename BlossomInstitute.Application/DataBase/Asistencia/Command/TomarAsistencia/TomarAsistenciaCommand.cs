@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Common.Features;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Clase;
 using BlossomInstitute.Domain.Entidades.Curso;
 using BlossomInstitute.Domain.Model;
@@ -19,21 +19,21 @@ namespace BlossomInstitute.Application.DataBase.Asistencia.Command.TomarAsistenc
         public async Task<BaseResponseModel> Execute(int cursoId, DateOnly fecha, TomarAsistenciaModel model, CancellationToken ct = default)
         {
             if (cursoId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "CursoId inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "CursoId inválido");
 
             if (model.Asistencias == null || model.Asistencias.Count == 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Debe enviar asistencias");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Debe enviar asistencias");
 
             var curso = await _db.Cursos.FirstOrDefaultAsync(c => c.Id == cursoId, ct);
             if (curso == null)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Curso no encontrado");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Curso no encontrado");
 
             if (curso.Estado == EstadoCurso.Inactivo || curso.Estado == EstadoCurso.Archivado)
-                return ResponseApiService.Response(StatusCodes.Status409Conflict, "No se puede tomar asistencia en un curso inactivo/archivado");
+                return ResponseApiService.Response(StatusCodes.Status409Conflict, message: "No se puede tomar asistencia en un curso inactivo/archivado");
 
             var alumnoIds = model.Asistencias.Select(x => x.AlumnoId).Distinct().ToList();
             if (alumnoIds.Any(id => id <= 0))
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "AlumnoId inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "AlumnoId inválido");
 
             // validar que estén matriculados en el curso
             var matriculados = await _db.Matriculas
@@ -71,7 +71,7 @@ namespace BlossomInstitute.Application.DataBase.Asistencia.Command.TomarAsistenc
                 if (clase.Estado == EstadoClase.Cancelada)
                 {
                     await tx.RollbackAsync(ct);
-                    return ResponseApiService.Response(StatusCodes.Status409Conflict, "La clase está cancelada. No se puede cargar asistencia.");
+                    return ResponseApiService.Response(StatusCodes.Status409Conflict, message: "La clase está cancelada. No se puede cargar asistencia.");
                 }
 
                 // actualizar descripción si viene

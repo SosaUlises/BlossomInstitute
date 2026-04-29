@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Common.Features;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Usuario;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
@@ -19,16 +19,16 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Command.DesactivarAlumno
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Alumno no encontrado");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Alumno no encontrado");
 
             if (!await _userManager.IsInRoleAsync(user, "Alumno"))
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Alumno no encontrado");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Alumno no encontrado");
 
             if (await _userManager.IsInRoleAsync(user, "Administrador"))
-                return ResponseApiService.Response(StatusCodes.Status409Conflict, "No se puede desactivar un Administrador");
+                return ResponseApiService.Response(StatusCodes.Status409Conflict, message: "No se puede desactivar un Administrador");
 
             if (!user.Activo)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "El alumno ya está desactivado");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "El alumno ya está desactivado");
 
             user.Activo = false;
 
@@ -42,7 +42,7 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Command.DesactivarAlumno
             // Invalida tokens existentes
             await _userManager.UpdateSecurityStampAsync(user);
 
-            return ResponseApiService.Response(StatusCodes.Status200OK, "Alumno desactivado correctamente");
+            return ResponseApiService.Response(StatusCodes.Status200OK, message: "Alumno desactivado correctamente");
         }
     }
 }

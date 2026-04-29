@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Dashboard.Queries.Models;
+using BlossomInstitute.Application.DataBase.Dashboard.Queries.Models;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Clase;
 using BlossomInstitute.Domain.Entidades.Entrega;
@@ -27,14 +27,14 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAlumnoDashb
         public async Task<BaseResponseModel> Execute(int userId, CancellationToken ct = default)
         {
             if (userId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, "No autenticado");
+                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, message: "No autenticado");
 
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null || !user.Activo)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Usuario inválido o inactivo");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Usuario inválido o inactivo");
 
             if (!await _userManager.IsInRoleAsync(user, "Alumno"))
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Acceso denegado");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Acceso denegado");
 
             var alumno = await _db.Alumnos
                 .AsNoTracking()
@@ -50,7 +50,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAlumnoDashb
                 .FirstOrDefaultAsync(ct);
 
             if (alumno == null)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Alumno no encontrado");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Alumno no encontrado");
 
             var hoy = DateOnly.FromDateTime(DateTime.Now);
             var ahoraLocal = DateTime.Now;

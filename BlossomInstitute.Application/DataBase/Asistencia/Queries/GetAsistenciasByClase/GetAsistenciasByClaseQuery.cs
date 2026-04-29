@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Common.Features;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -17,11 +17,11 @@ namespace BlossomInstitute.Application.DataBase.Asistencia.Queries.GetAsistencia
         public async Task<BaseResponseModel> Execute(int cursoId, DateOnly fecha, CancellationToken ct = default)
         {
             if (cursoId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "CursoId inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "CursoId inválido");
 
             var curso = await _db.Cursos.AsNoTracking().FirstOrDefaultAsync(x => x.Id == cursoId, ct);
             if (curso == null)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Curso no encontrado");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Curso no encontrado");
 
             var clase = await _db.Clases.AsNoTracking()
                 .FirstOrDefaultAsync(x => x.CursoId == cursoId && x.Fecha == fecha, ct);
@@ -29,7 +29,7 @@ namespace BlossomInstitute.Application.DataBase.Asistencia.Queries.GetAsistencia
             if (clase == null)
             {
                 // No hay clase creada => nadie tomó asistencia ese día
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "No existe clase registrada para esa fecha");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "No existe clase registrada para esa fecha");
             }
 
             // Traer alumnos matriculados

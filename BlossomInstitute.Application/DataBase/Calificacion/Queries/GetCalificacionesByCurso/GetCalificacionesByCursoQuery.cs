@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Calificacion.Queries.Model;
+using BlossomInstitute.Application.DataBase.Calificacion.Queries.Model;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Calificacion;
 using BlossomInstitute.Domain.Model;
@@ -32,30 +32,30 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalifica
             CancellationToken ct)
         {
             if (cursoId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "CursoId inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "CursoId inválido");
 
             if (pageNumber <= 0) pageNumber = 1;
             if (pageSize <= 0) pageSize = 10;
             if (pageSize > 100) pageSize = 100;
 
             if (tipo.HasValue && !Enum.IsDefined(typeof(TipoCalificacion), tipo.Value))
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Tipo de calificación inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Tipo de calificación inválido");
 
             if (year.HasValue && (year.Value < 2000 || year.Value > 2100))
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Year inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Year inválido");
 
             if (term.HasValue && (term.Value < 1 || term.Value > 3))
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Term inválido. Valores permitidos: 1, 2 o 3.");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Term inválido. Valores permitidos: 1, 2 o 3.");
 
             if (term.HasValue && !year.HasValue)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Si se informa term, también debe informarse year.");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Si se informa term, también debe informarse year.");
 
             var cursoExiste = await _db.Cursos
                 .AsNoTracking()
                 .AnyAsync(x => x.Id == cursoId, ct);
 
             if (!cursoExiste)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Curso no encontrado");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Curso no encontrado");
 
             if (!isAdmin)
             {
@@ -64,7 +64,7 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalifica
                     .AnyAsync(x => x.CursoId == cursoId && x.ProfesorId == profesorUserId, ct);
 
                 if (!profesorAsignado)
-                    return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Profesor no asignado a este curso");
+                    return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Profesor no asignado a este curso");
             }
 
             // Resolver rango final de fechas
@@ -85,7 +85,7 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalifica
             }
 
             if (finalFrom.HasValue && finalTo.HasValue && finalTo.Value < finalFrom.Value)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Rango de fechas inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Rango de fechas inválido");
 
             var q = _db.Calificaciones
                 .AsNoTracking()

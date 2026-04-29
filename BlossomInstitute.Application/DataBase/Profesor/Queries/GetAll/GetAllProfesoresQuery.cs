@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Common.Features;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +28,7 @@ namespace BlossomInstitute.Application.DataBase.Profesor.Queries.GetAllProfesore
                 .FirstOrDefaultAsync();
 
             if (rolProfesorId == 0)
-                return ResponseApiService.Response(StatusCodes.Status500InternalServerError, "Rol Profesor no existe");
+                return ResponseApiService.Response(StatusCodes.Status500InternalServerError, message: "Rol Profesor no existe");
 
             // Usuarios que son Profesor
             var query = from u in _db.Usuarios.AsNoTracking()

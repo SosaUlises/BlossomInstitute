@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Common.Features;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Calificacion;
 using BlossomInstitute.Domain.Entidades.Calificaciones;
 using BlossomInstitute.Domain.Entidades.Usuario;
@@ -30,34 +30,34 @@ namespace BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Ap
             CancellationToken ct)
         {
             if (cursoId <= 0 || plantillaId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Parámetros inválidos");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Parámetros inválidos");
 
             if (model == null)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Modelo inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Modelo inválido");
 
             var profesor = await _userManager.FindByIdAsync(profesorUserId.ToString());
             if (profesor == null)
-                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, "No autenticado");
+                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, message: "No autenticado");
 
             if (!profesor.Activo)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Usuario inactivo");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Usuario inactivo");
 
             if (!await _userManager.IsInRoleAsync(profesor, "Profesor"))
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "No autorizado");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "No autorizado");
 
             var cursoExiste = await _db.Cursos
                 .AsNoTracking()
                 .AnyAsync(c => c.Id == cursoId, ct);
 
             if (!cursoExiste)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Curso no encontrado");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Curso no encontrado");
 
             var profesorAsignado = await _db.CursoProfesores
                 .AsNoTracking()
                 .AnyAsync(x => x.CursoId == cursoId && x.ProfesorId == profesorUserId, ct);
 
             if (!profesorAsignado)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Profesor no asignado a este curso");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Profesor no asignado a este curso");
 
             var plantilla = await _db.PlantillaCalificaciones
                 .AsNoTracking()
@@ -83,27 +83,27 @@ namespace BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Ap
                 .FirstOrDefaultAsync(ct);
 
             if (plantilla == null)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Plantilla no encontrada");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Plantilla no encontrada");
 
             if (plantilla.Tipo != TipoCalificacion.Quiz && plantilla.Tipo != TipoCalificacion.Test)
-                return ResponseApiService.Response(StatusCodes.Status409Conflict, "Solo se pueden aplicar plantillas de tipo Quiz o Test");
+                return ResponseApiService.Response(StatusCodes.Status409Conflict, message: "Solo se pueden aplicar plantillas de tipo Quiz o Test");
 
             if (model.Alumnos == null || model.Alumnos.Count == 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Debe informar al menos un alumno");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Debe informar al menos un alumno");
 
             var plantillaSkills = plantilla.Detalles
                 .OrderBy(x => (int)x.Skill)
                 .ToList();
 
             if (plantillaSkills.Count == 0)
-                return ResponseApiService.Response(StatusCodes.Status409Conflict, "La plantilla no tiene skills configuradas");
+                return ResponseApiService.Response(StatusCodes.Status409Conflict, message: "La plantilla no tiene skills configuradas");
 
             var alumnosIds = model.Alumnos
                 .Select(x => x.AlumnoId)
                 .ToList();
 
             if (alumnosIds.Any(x => x <= 0))
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Hay alumnos inválidos en la solicitud");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Hay alumnos inválidos en la solicitud");
 
             var alumnosDuplicados = alumnosIds
                 .GroupBy(x => x)
@@ -112,7 +112,7 @@ namespace BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Ap
                 .ToList();
 
             if (alumnosDuplicados.Count > 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "No se puede repetir el mismo alumno dentro de la misma aplicación");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "No se puede repetir el mismo alumno dentro de la misma aplicación");
 
             var alumnosMatriculados = await _db.Matriculas
                 .AsNoTracking()
@@ -125,7 +125,7 @@ namespace BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Ap
                 .ToList();
 
             if (alumnosNoMatriculados.Count > 0)
-                return ResponseApiService.Response(StatusCodes.Status409Conflict, "Hay alumnos que no están matriculados en el curso");
+                return ResponseApiService.Response(StatusCodes.Status409Conflict, message: "Hay alumnos que no están matriculados en el curso");
 
             foreach (var alumno in model.Alumnos)
             {
@@ -236,7 +236,7 @@ namespace BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Ap
                 if (!ok)
                 {
                     await tx.RollbackAsync(ct);
-                    return ResponseApiService.Response(StatusCodes.Status500InternalServerError, "No se pudieron guardar las calificaciones");
+                    return ResponseApiService.Response(StatusCodes.Status500InternalServerError, message: "No se pudieron guardar las calificaciones");
                 }
 
                 await tx.CommitAsync(ct);
@@ -260,7 +260,7 @@ namespace BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Ap
             catch (DbUpdateException)
             {
                 await tx.RollbackAsync(ct);
-                return ResponseApiService.Response(StatusCodes.Status409Conflict, "No se pudieron guardar las calificaciones por conflicto de datos");
+                return ResponseApiService.Response(StatusCodes.Status409Conflict, message: "No se pudieron guardar las calificaciones por conflicto de datos");
             }
             catch
             {

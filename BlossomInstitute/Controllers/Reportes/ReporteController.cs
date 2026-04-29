@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalificacionesByCurso;
+using BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalificacionesByCurso;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteAsistenciaByClase;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteAttendanceByCursoAndTerm;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteEntregaByTarea;
@@ -10,16 +10,37 @@ using BlossomInstitute.Application.Services.Export;
 using BlossomInstitute.Common.Features;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using System.Security.Claims;
 
 namespace BlossomInstitute.Controllers.Reportes
 {
     [ApiController]
     [Route("api/v1/reportes")]
     [Authorize(Roles = "Profesor,Administrador")]
-    public class ReporteController : ControllerBase
+    public class ReporteController : ControllerBase, IActionFilter
     {
-        private int GetUserId() => int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value);
+        private int _userId;
+        private int GetUserId() => _userId;
         private bool IsAdmin() => User.IsInRole("Administrador");
+
+        [NonAction]
+        public void OnActionExecuting(ActionExecutingContext context)
+        {
+            var value = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!int.TryParse(value, out _userId) || _userId <= 0)
+            {
+                context.Result = Unauthorized(ResponseApiService.Response(
+                    StatusCodes.Status401Unauthorized,
+                    message: "Usuario inválido"));
+            }
+        }
+
+        [NonAction]
+        public void OnActionExecuted(ActionExecutedContext context)
+        {
+        }
 
         [HttpGet("cursos/{cursoId:int}/tareas/{tareaId:int}/entregas")]
         public async Task<IActionResult> GetReporteEntregasByTarea(
@@ -60,10 +81,10 @@ namespace BlossomInstitute.Controllers.Reportes
             CancellationToken ct = default)
         {
             if (cursoId <= 0)
-                return BadRequest(ResponseApiService.Response(400, "CursoId inválido"));
+                return BadRequest(ResponseApiService.Response(400, message: "CursoId inválido"));
 
             if (to < from)
-                return BadRequest(ResponseApiService.Response(400, "Rango de fechas inválido"));
+                return BadRequest(ResponseApiService.Response(400, message: "Rango de fechas inválido"));
 
             if (pageNumber <= 0) pageNumber = 1;
             if (pageSize <= 0) pageSize = 10;
@@ -226,7 +247,13 @@ namespace BlossomInstitute.Controllers.Reportes
             if (result.StatusCode != StatusCodes.Status200OK)
                 return StatusCode(result.StatusCode, result);
 
-            var data = (ReporteMarksByCursoAndTermResponseModel)result.Data;
+            if (result.Data is not ReporteMarksByCursoAndTermResponseModel data)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                    ResponseApiService.Response(
+                        StatusCodes.Status404NotFound,
+                        message: "No se encontraron datos para exportar"));
+            }
 
             var bytes = exportService.ExportMarksByCourseTermToExcel(
                 data.Resumen,
@@ -264,7 +291,13 @@ namespace BlossomInstitute.Controllers.Reportes
             if (result.StatusCode != StatusCodes.Status200OK)
                 return StatusCode(result.StatusCode, result);
 
-            var data = (ReporteMarksByCursoAndTermResponseModel)result.Data;
+            if (result.Data is not ReporteMarksByCursoAndTermResponseModel data)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                    ResponseApiService.Response(
+                        StatusCodes.Status404NotFound,
+                        message: "No se encontraron datos para exportar"));
+            }
 
             var bytes = exportService.ExportMarksByCourseTermToPdf(
                 data.Resumen,
@@ -300,7 +333,13 @@ namespace BlossomInstitute.Controllers.Reportes
             if (result.StatusCode != StatusCodes.Status200OK)
                 return StatusCode(result.StatusCode, result);
 
-            var data = (ReporteAttendanceByCursoAndTermResponseModel)result.Data;
+            if (result.Data is not ReporteAttendanceByCursoAndTermResponseModel data)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                    ResponseApiService.Response(
+                        StatusCodes.Status404NotFound,
+                        message: "No se encontraron datos para exportar"));
+            }
 
             var bytes = exportService.ExportAttendanceByCourseTermToExcel(
                 data.Resumen,
@@ -339,7 +378,13 @@ namespace BlossomInstitute.Controllers.Reportes
             if (result.StatusCode != StatusCodes.Status200OK)
                 return StatusCode(result.StatusCode, result);
 
-            var data = (ReporteAttendanceByCursoAndTermResponseModel)result.Data;
+            if (result.Data is not ReporteAttendanceByCursoAndTermResponseModel data)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                    ResponseApiService.Response(
+                        StatusCodes.Status404NotFound,
+                        message: "No se encontraron datos para exportar"));
+            }
 
             var bytes = exportService.ExportAttendanceByCourseTermToPdf(
                 data.Resumen,
@@ -375,7 +420,13 @@ namespace BlossomInstitute.Controllers.Reportes
             if (result.StatusCode != StatusCodes.Status200OK)
                 return StatusCode(result.StatusCode, result);
 
-            var data = (ReporteHomeworkByCursoAndTermResponseModel)result.Data;
+            if (result.Data is not ReporteHomeworkByCursoAndTermResponseModel data)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                    ResponseApiService.Response(
+                        StatusCodes.Status404NotFound,
+                        message: "No se encontraron datos para exportar"));
+            }
 
             var bytes = exportService.ExportHomeworkByCourseTermToExcel(
                 data.Resumen,
@@ -414,7 +465,13 @@ namespace BlossomInstitute.Controllers.Reportes
             if (result.StatusCode != StatusCodes.Status200OK)
                 return StatusCode(result.StatusCode, result);
 
-            var data = (ReporteHomeworkByCursoAndTermResponseModel)result.Data;
+            if (result.Data is not ReporteHomeworkByCursoAndTermResponseModel data)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                    ResponseApiService.Response(
+                        StatusCodes.Status404NotFound,
+                        message: "No se encontraron datos para exportar"));
+            }
 
             var bytes = exportService.ExportHomeworkByCourseTermToPdf(
                 data.Resumen,
@@ -448,7 +505,13 @@ namespace BlossomInstitute.Controllers.Reportes
             if (result.StatusCode != StatusCodes.Status200OK)
                 return StatusCode(result.StatusCode, result);
 
-            var data = (ReporteStudentSummaryByCursoAndTermResponseModel)result.Data;
+            if (result.Data is not ReporteStudentSummaryByCursoAndTermResponseModel data)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                    ResponseApiService.Response(
+                        StatusCodes.Status404NotFound,
+                        message: "No se encontraron datos para exportar"));
+            }
 
             var bytes = exportService.ExportStudentSummaryByCourseTermToPdf(data);
 
@@ -505,7 +568,13 @@ namespace BlossomInstitute.Controllers.Reportes
             if (result.StatusCode != StatusCodes.Status200OK)
                 return StatusCode(result.StatusCode, result);
 
-            var data = (ReporteStudentMarksDetailResponseModel)result.Data;
+            if (result.Data is not ReporteStudentMarksDetailResponseModel data)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                    ResponseApiService.Response(
+                        StatusCodes.Status404NotFound,
+                        message: "No se encontraron datos para exportar"));
+            }
 
             var bytes = exportService.ExportStudentAssessmentsDetailByCourseTermToPdf(data);
 

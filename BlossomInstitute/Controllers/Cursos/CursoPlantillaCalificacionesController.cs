@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Apply;
+using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Apply;
 using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Archive;
 using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.CreatePlantilla;
 using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Update;
@@ -89,7 +89,7 @@ namespace BlossomInstitute.Controllers.Cursos
             CancellationToken ct)
         {
             if (cursoId <= 0)
-                return BadRequest(ResponseApiService.Response(StatusCodes.Status400BadRequest, "Curso inválido"));
+                return BadRequest(ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Curso inválido"));
 
 
             var result = await query.Execute(cursoId, GetUserId(), pageNumber, pageSize, search, ct);
@@ -104,7 +104,7 @@ namespace BlossomInstitute.Controllers.Cursos
             CancellationToken ct)
         {
             if (cursoId <= 0 || plantillaId <= 0)
-                return BadRequest(ResponseApiService.Response(StatusCodes.Status400BadRequest, "Parámetros inválidos"));
+                return BadRequest(ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Parámetros inválidos"));
 
             var result = await query.Execute(cursoId, plantillaId, GetUserId(), ct);
             return StatusCode(result.StatusCode, result);

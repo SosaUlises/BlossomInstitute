@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Common.Features;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Entrega;
 using BlossomInstitute.Domain.Entidades.Tarea;
 using BlossomInstitute.Domain.Entidades.Usuario;
@@ -23,17 +23,17 @@ namespace BlossomInstitute.Application.DataBase.Entregas.Commands.UpsertEntregaA
         public async Task<BaseResponseModel> Execute(int tareaId, int userId, UpsertEntregaAlumnoModel model, CancellationToken ct)
         {
             if (tareaId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "TareaId inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "TareaId inválido");
 
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
-                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, "No autenticado");
+                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, message: "No autenticado");
 
             if (!user.Activo)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Usuario inactivo");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Usuario inactivo");
 
             if (!await _userManager.IsInRoleAsync(user, "Alumno"))
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "No autorizado");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "No autorizado");
 
             var alumnoId = user.Id;
 
@@ -42,13 +42,13 @@ namespace BlossomInstitute.Application.DataBase.Entregas.Commands.UpsertEntregaA
                 .FirstOrDefaultAsync(t => t.Id == tareaId, ct);
 
             if (tarea == null)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Tarea no encontrada");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Tarea no encontrada");
 
             if (tarea.Estado == EstadoTarea.Archivada)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "Tarea archivada");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Tarea archivada");
 
             if (tarea.Estado != EstadoTarea.Publicada)
-                return ResponseApiService.Response(StatusCodes.Status409Conflict, "La tarea no está publicada");
+                return ResponseApiService.Response(StatusCodes.Status409Conflict, message: "La tarea no está publicada");
 
             if (!tarea.FechaEntregaUtc.HasValue)
                 return ResponseApiService.Response(
@@ -60,7 +60,7 @@ namespace BlossomInstitute.Application.DataBase.Entregas.Commands.UpsertEntregaA
                 .AnyAsync(m => m.CursoId == tarea.CursoId && m.AlumnoId == alumnoId, ct);
 
             if (!estaMatriculado)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "No estás matriculado en este curso");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "No estás matriculado en este curso");
 
             var nowUtc = DateTime.UtcNow;
             var deadlineUtc = tarea.FechaEntregaUtc;
@@ -110,7 +110,7 @@ namespace BlossomInstitute.Application.DataBase.Entregas.Commands.UpsertEntregaA
                     if (!ok)
                     {
                         await tx.RollbackAsync(ct);
-                        return ResponseApiService.Response(StatusCodes.Status500InternalServerError, "No se pudo registrar la entrega");
+                        return ResponseApiService.Response(StatusCodes.Status500InternalServerError, message: "No se pudo registrar la entrega");
                     }
 
                     foreach (var a in adjuntos)
@@ -135,7 +135,7 @@ namespace BlossomInstitute.Application.DataBase.Entregas.Commands.UpsertEntregaA
                         if (!okAdjuntos)
                         {
                             await tx.RollbackAsync(ct);
-                            return ResponseApiService.Response(StatusCodes.Status500InternalServerError, "No se pudieron guardar los adjuntos de la entrega");
+                            return ResponseApiService.Response(StatusCodes.Status500InternalServerError, message: "No se pudieron guardar los adjuntos de la entrega");
                         }
                     }
                 }
@@ -185,7 +185,7 @@ namespace BlossomInstitute.Application.DataBase.Entregas.Commands.UpsertEntregaA
                     if (!saved)
                     {
                         await tx.RollbackAsync(ct);
-                        return ResponseApiService.Response(StatusCodes.Status500InternalServerError, "No se pudo guardar la entrega");
+                        return ResponseApiService.Response(StatusCodes.Status500InternalServerError, message: "No se pudo guardar la entrega");
                     }
                 }
 

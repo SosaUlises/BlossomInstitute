@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Common.Features;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -21,10 +21,10 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetCursoById
             CancellationToken ct = default)
         {
             if (cursoId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Id inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Id inválido");
 
             if (userId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, "Usuario no autenticado");
+                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, message: "Usuario no autenticado");
 
             var query = _db.Cursos
                 .AsNoTracking()

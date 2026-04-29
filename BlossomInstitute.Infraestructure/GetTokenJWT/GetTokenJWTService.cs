@@ -23,12 +23,17 @@ namespace BlossomInstitute.Infraestructure.GetTokenJWT
             var jwtIssuer = _configuration["Jwt_Issuer"];
             var jwtAudience = _configuration["Jwt_Audience"];
 
-            if (string.IsNullOrEmpty(jwtKey) ||
-                string.IsNullOrEmpty(jwtIssuer) ||
-                string.IsNullOrEmpty(jwtAudience))
-            {
-                throw new InvalidOperationException("JWT mal configurado.");
-            }
+            if (string.IsNullOrWhiteSpace(jwtKey))
+                throw new InvalidOperationException("Jwt_Key no está configurado.");
+
+            if (jwtKey.Length < 32)
+                throw new InvalidOperationException("Jwt_Key debe tener al menos 32 caracteres.");
+
+            if (string.IsNullOrWhiteSpace(jwtIssuer))
+                throw new InvalidOperationException("Jwt_Issuer no está configurado.");
+
+            if (string.IsNullOrWhiteSpace(jwtAudience))
+                throw new InvalidOperationException("Jwt_Audience no está configurado.");
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));

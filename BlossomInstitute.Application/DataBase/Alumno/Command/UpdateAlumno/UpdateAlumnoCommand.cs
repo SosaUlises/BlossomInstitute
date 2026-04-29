@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Profesor.Command.UpdateProfesor;
+using BlossomInstitute.Application.DataBase.Profesor.Command.UpdateProfesor;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Usuario;
 using BlossomInstitute.Domain.Model;
@@ -25,24 +25,24 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Command.UpdateAlumno
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Alumno no encontrado");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Alumno no encontrado");
 
             if (!await _userManager.IsInRoleAsync(user, "Alumno"))
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "El usuario no es Alumno");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "El usuario no es Alumno");
 
             var email = model.Email?.Trim().ToLowerInvariant();
             if (string.IsNullOrWhiteSpace(email))
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Email inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Email inválido");
 
             var normalizedEmail = _userManager.NormalizeEmail(email);
             var existeEmail = await _userManager.Users
                 .AnyAsync(x => x.NormalizedEmail == normalizedEmail && x.Id != user.Id);
             if (existeEmail)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, $"Ya existe un usuario con el email {email}");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: $"Ya existe un usuario con el email {email}");
 
             var existeDni = await _userManager.Users.AnyAsync(x => x.Dni == model.Dni && x.Id != user.Id);
             if (existeDni)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, $"Ya existe un usuario con el DNI {model.Dni}");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: $"Ya existe un usuario con el DNI {model.Dni}");
 
             await using var tx = await _dataBaseService.BeginTransactionAsync();
 
@@ -84,7 +84,7 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Command.UpdateAlumno
             }
 
             await tx.CommitAsync();
-            return ResponseApiService.Response(StatusCodes.Status200OK, "Alumno actualizado correctamente");
+            return ResponseApiService.Response(StatusCodes.Status200OK, message: "Alumno actualizado correctamente");
         }
     }
 }

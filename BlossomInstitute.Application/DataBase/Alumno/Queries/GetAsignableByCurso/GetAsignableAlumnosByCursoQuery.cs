@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Common.Features;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -38,7 +38,7 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAsignableByCur
                 .FirstOrDefaultAsync();
 
             if (curso == null)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, "Curso no encontrado");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Curso no encontrado");
 
             var rolAlumnoId = await _db.Roles
                 .Where(r => r.Name == "Alumno")
@@ -46,7 +46,7 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAsignableByCur
                 .FirstOrDefaultAsync();
 
             if (rolAlumnoId == 0)
-                return ResponseApiService.Response(StatusCodes.Status500InternalServerError, "Rol Alumno no existe");
+                return ResponseApiService.Response(StatusCodes.Status500InternalServerError, message: "Rol Alumno no existe");
 
             var alumnosYaMatriculadosEnEseAnio = await _db.Matriculas
                 .AsNoTracking()

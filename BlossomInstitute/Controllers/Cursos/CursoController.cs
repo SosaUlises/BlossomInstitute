@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Curso.Commands.ActivarCurso;
+using BlossomInstitute.Application.DataBase.Curso.Commands.ActivarCurso;
 using BlossomInstitute.Application.DataBase.Curso.Commands.ArchivarCurso;
 using BlossomInstitute.Application.DataBase.Curso.Commands.CreateCurso;
 using BlossomInstitute.Application.DataBase.Curso.Commands.DesactivarCurso;
@@ -54,7 +54,7 @@ namespace BlossomInstitute.Controllers.Cursos
             [FromServices] IValidator<UpdateCursoModel> validator)
         {
             if (cursoId <= 0)
-                return BadRequest(ResponseApiService.Response(400, "Id inválido"));
+                return BadRequest(ResponseApiService.Response(400, message: "Id inválido"));
 
             var vr = await validator.ValidateAsync(model);
             if (!vr.IsValid)
@@ -71,7 +71,7 @@ namespace BlossomInstitute.Controllers.Cursos
             [FromServices] IDesactivateCursoCommand command)
         {
             if (cursoId <= 0)
-                return BadRequest(ResponseApiService.Response(400, "Id inválido"));
+                return BadRequest(ResponseApiService.Response(400, message: "Id inválido"));
 
             var result = await command.Execute(cursoId);
             return StatusCode(result.StatusCode, result);
@@ -84,7 +84,7 @@ namespace BlossomInstitute.Controllers.Cursos
             [FromServices] IActivateCursoCommand command)
         {
             if (cursoId <= 0)
-                return BadRequest(ResponseApiService.Response(400, "Id inválido"));
+                return BadRequest(ResponseApiService.Response(400, message: "Id inválido"));
 
             var result = await command.Execute(cursoId);
             return StatusCode(result.StatusCode, result);
@@ -97,7 +97,7 @@ namespace BlossomInstitute.Controllers.Cursos
             [FromServices] IArchiveCursoCommand command)
         {
             if (cursoId <= 0)
-                return BadRequest(ResponseApiService.Response(400, "Id inválido"));
+                return BadRequest(ResponseApiService.Response(400, message: "Id inválido"));
 
             var result = await command.Execute(cursoId);
             return StatusCode(result.StatusCode, result);
@@ -125,11 +125,11 @@ namespace BlossomInstitute.Controllers.Cursos
             CancellationToken ct)
         {
             if (cursoId <= 0)
-                return BadRequest(ResponseApiService.Response(400, "Id inválido"));
+                return BadRequest(ResponseApiService.Response(400, message: "Id inválido"));
 
             var userId = GetUserId();
             if (userId <= 0)
-                return Unauthorized(ResponseApiService.Response(401, "Token inválido"));
+                return Unauthorized(ResponseApiService.Response(401, message: "Token inválido"));
 
             var result = await query.Execute(cursoId, userId, IsAdmin(), ct);
             return StatusCode(result.StatusCode, result);

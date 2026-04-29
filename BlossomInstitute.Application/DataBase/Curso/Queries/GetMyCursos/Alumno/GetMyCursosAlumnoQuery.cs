@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Common.Features;
+using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +17,7 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetMyCursos.Alumno
         public async Task<BaseResponseModel> Execute(int userId, int pageNumber, int pageSize, string? search, int? anio, int? estado)
         {
             if (userId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, "Usuario inválido");
+                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, message: "Usuario inválido");
 
             if (pageNumber <= 0) pageNumber = 1;
             if (pageSize <= 0) pageSize = 10;
@@ -26,7 +26,7 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetMyCursos.Alumno
             // Confirmar que el usuario sea alumno (PK compartida)
             var existeAlumno = await _db.Alumnos.AsNoTracking().AnyAsync(a => a.Id == userId);
             if (!existeAlumno)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, "No sos Alumno");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "No sos Alumno");
 
             var q = _db.Cursos
                 .AsNoTracking()
@@ -45,7 +45,7 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetMyCursos.Alumno
             if (estado.HasValue)
             {
                 if (estado.Value < 1 || estado.Value > 3)
-                    return ResponseApiService.Response(StatusCodes.Status400BadRequest, "Estado inválido");
+                    return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Estado inválido");
 
                 q = q.Where(c => (int)c.Estado == estado.Value);
             }

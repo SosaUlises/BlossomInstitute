@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Asistencia.Queries.GetMisAsistencias;
+using BlossomInstitute.Application.DataBase.Asistencia.Queries.GetMisAsistencias;
 using BlossomInstitute.Common.Features;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +24,7 @@ namespace BlossomInstitute.Controllers.Me.Alumnos
         {
             var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (!int.TryParse(userIdStr, out var userId) || userId <= 0)
-                return Unauthorized(ResponseApiService.Response(401, "Token inválido"));
+                return Unauthorized(ResponseApiService.Response(401, message: "Token inválido"));
 
             DateOnly? fromDate = null;
             DateOnly? toDate = null;
@@ -32,14 +32,14 @@ namespace BlossomInstitute.Controllers.Me.Alumnos
             if (!string.IsNullOrWhiteSpace(from))
             {
                 if (!DateOnly.TryParse(from, out var d))
-                    return BadRequest(ResponseApiService.Response(400, "from inválido. Formato esperado: yyyy-MM-dd"));
+                    return BadRequest(ResponseApiService.Response(400, message: "from inválido. Formato esperado: yyyy-MM-dd"));
                 fromDate = d;
             }
 
             if (!string.IsNullOrWhiteSpace(to))
             {
                 if (!DateOnly.TryParse(to, out var d))
-                    return BadRequest(ResponseApiService.Response(400, "to inválido. Formato esperado: yyyy-MM-dd"));
+                    return BadRequest(ResponseApiService.Response(400, message: "to inválido. Formato esperado: yyyy-MM-dd"));
                 toDate = d;
             }
 
