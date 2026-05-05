@@ -72,6 +72,7 @@ using BlossomInstitute.Application.DataBase.Settings.Queries.GetMyAccount;
 using BlossomInstitute.Application.DataBase.Tarea.Commands.ArchivarTarea;
 using BlossomInstitute.Application.DataBase.Tarea.Commands.CreateTarea;
 using BlossomInstitute.Application.DataBase.Tarea.Commands.UpdateTarea;
+using BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasAlumno;
 using BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasByCurso;
 using BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasById;
 using BlossomInstitute.Application.Services.Export;
@@ -156,6 +157,8 @@ namespace BlossomInstitute.Application
             services.AddTransient<IArchivarTareaCommand, ArchivarTareaCommand>();
             services.AddTransient<IGetTareaByIdQuery, GetTareaByIdQuery>();
             services.AddTransient<IGetTareasByCursoQuery, GetTareasByCursoQuery>();
+            services.AddTransient<IGetTareasAlumnoByCursoQuery, GetTareasAlumnoByCursoQuery>();
+            services.AddTransient<IGetTareaAlumnoByIdQuery, GetTareaAlumnoByIdQuery>();
 
             // Entrega
             services.AddTransient<IUpsertEntregaAlumnoCommand, UpsertEntregaAlumnoCommand>();
