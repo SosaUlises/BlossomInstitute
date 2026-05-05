@@ -33,6 +33,7 @@ using BlossomInstitute.Application.DataBase.Curso.Queries.GetAlumnosByCurso;
 using BlossomInstitute.Application.DataBase.Curso.Queries.GetCursoById;
 using BlossomInstitute.Application.DataBase.Curso.Queries.GetMyCursos.Alumno;
 using BlossomInstitute.Application.DataBase.Curso.Queries.GetMyCursos.Profesor;
+using BlossomInstitute.Application.DataBase.Curso.Queries.GetPersonasAlumnoCurso;
 using BlossomInstitute.Application.DataBase.Curso.Queries.GetProfesoresByCurso;
 using BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashboard;
 using BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAlumnoDashboard;
@@ -72,6 +73,7 @@ using BlossomInstitute.Application.DataBase.Settings.Queries.GetMyAccount;
 using BlossomInstitute.Application.DataBase.Tarea.Commands.ArchivarTarea;
 using BlossomInstitute.Application.DataBase.Tarea.Commands.CreateTarea;
 using BlossomInstitute.Application.DataBase.Tarea.Commands.UpdateTarea;
+using BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasAlumno;
 using BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasByCurso;
 using BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasById;
 using BlossomInstitute.Application.Services.Export;
@@ -131,6 +133,8 @@ namespace BlossomInstitute.Application
             services.AddTransient<IGetCursoByIdQuery, GetCursoByIdQuery>();
             services.AddTransient<IGetMyCursosProfesorQuery, GetMyCursosProfesorQuery>();
             services.AddTransient<IGetMyCursosAlumnoQuery, GetMyCursosAlumnoQuery>();
+            services.AddTransient<IGetMyCursoDetalleAlumnoQuery, GetMyCursoDetalleAlumnoQuery>();
+            services.AddTransient<IGetPersonasAlumnoCursoQuery, GetPersonasAlumnoCursoQuery>();
             services.AddTransient<IAssignProfesoresToCursoCommand, AssignProfesoresToCursoCommand>();
             services.AddTransient<IRemoveProfesorFromCursoCommand, RemoveProfesorFromCursoCommand>();
             services.AddTransient<IMatricularAlumnosCommand, MatricularAlumnosCommand>();
@@ -155,6 +159,8 @@ namespace BlossomInstitute.Application
             services.AddTransient<IArchivarTareaCommand, ArchivarTareaCommand>();
             services.AddTransient<IGetTareaByIdQuery, GetTareaByIdQuery>();
             services.AddTransient<IGetTareasByCursoQuery, GetTareasByCursoQuery>();
+            services.AddTransient<IGetTareasAlumnoByCursoQuery, GetTareasAlumnoByCursoQuery>();
+            services.AddTransient<IGetTareaAlumnoByIdQuery, GetTareaAlumnoByIdQuery>();
 
             // Entrega
             services.AddTransient<IUpsertEntregaAlumnoCommand, UpsertEntregaAlumnoCommand>();

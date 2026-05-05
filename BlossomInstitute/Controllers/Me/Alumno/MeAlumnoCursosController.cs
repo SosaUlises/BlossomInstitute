@@ -30,5 +30,19 @@ namespace BlossomInstitute.Controllers.Me.Alumnos
             return StatusCode(result.StatusCode, result);
         }
 
+        [HttpGet("alumno/cursos/{cursoId:int}")]
+        public async Task<IActionResult> GetMyCursoDetalleAlumno(
+            [FromRoute] int cursoId,
+            [FromServices] IGetMyCursoDetalleAlumnoQuery query,
+            CancellationToken ct)
+        {
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!int.TryParse(userIdStr, out var userId) || userId <= 0)
+                return Unauthorized(ResponseApiService.Response(401, message: "Token invÃ¡lido"));
+
+            var result = await query.Execute(userId, cursoId, ct);
+            return StatusCode(result.StatusCode, result);
+        }
+
     }
 }

@@ -1,5 +1,6 @@
 using BlossomInstitute.Application.DataBase.Entregas.Queries.Models;
 using BlossomInstitute.Common.Features;
+using BlossomInstitute.Domain.Entidades.Tarea;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +29,7 @@ namespace BlossomInstitute.Application.DataBase.Entregas.Queries.Alumno.GetMisEn
 
             // Lista tareas del curso + mi entrega (si existe) con feedback vigente
             var q = _db.Tareas.AsNoTracking()
-                .Where(t => t.CursoId == cursoId)
+                .Where(t => t.CursoId == cursoId && t.Estado == EstadoTarea.Publicada)
                 .Select(t => new
                 {
                     t.Id,
