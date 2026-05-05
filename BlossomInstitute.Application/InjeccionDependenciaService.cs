@@ -33,6 +33,7 @@ using BlossomInstitute.Application.DataBase.Curso.Queries.GetAlumnosByCurso;
 using BlossomInstitute.Application.DataBase.Curso.Queries.GetCursoById;
 using BlossomInstitute.Application.DataBase.Curso.Queries.GetMyCursos.Alumno;
 using BlossomInstitute.Application.DataBase.Curso.Queries.GetMyCursos.Profesor;
+using BlossomInstitute.Application.DataBase.Curso.Queries.GetPersonasAlumnoCurso;
 using BlossomInstitute.Application.DataBase.Curso.Queries.GetProfesoresByCurso;
 using BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashboard;
 using BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAlumnoDashboard;
@@ -133,6 +134,7 @@ namespace BlossomInstitute.Application
             services.AddTransient<IGetMyCursosProfesorQuery, GetMyCursosProfesorQuery>();
             services.AddTransient<IGetMyCursosAlumnoQuery, GetMyCursosAlumnoQuery>();
             services.AddTransient<IGetMyCursoDetalleAlumnoQuery, GetMyCursoDetalleAlumnoQuery>();
+            services.AddTransient<IGetPersonasAlumnoCursoQuery, GetPersonasAlumnoCursoQuery>();
             services.AddTransient<IAssignProfesoresToCursoCommand, AssignProfesoresToCursoCommand>();
             services.AddTransient<IRemoveProfesorFromCursoCommand, RemoveProfesorFromCursoCommand>();
             services.AddTransient<IMatricularAlumnosCommand, MatricularAlumnosCommand>();
