@@ -131,6 +131,7 @@ namespace BlossomInstitute.Application
             services.AddTransient<IGetCursoByIdQuery, GetCursoByIdQuery>();
             services.AddTransient<IGetMyCursosProfesorQuery, GetMyCursosProfesorQuery>();
             services.AddTransient<IGetMyCursosAlumnoQuery, GetMyCursosAlumnoQuery>();
+            services.AddTransient<IGetMyCursoDetalleAlumnoQuery, GetMyCursoDetalleAlumnoQuery>();
             services.AddTransient<IAssignProfesoresToCursoCommand, AssignProfesoresToCursoCommand>();
             services.AddTransient<IRemoveProfesorFromCursoCommand, RemoveProfesorFromCursoCommand>();
             services.AddTransient<IMatricularAlumnosCommand, MatricularAlumnosCommand>();
