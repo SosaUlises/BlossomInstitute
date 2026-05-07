@@ -26,10 +26,13 @@ namespace BlossomInstitute.Application.Validator.Entrega
             When(x => x.Tipo == TipoAdjunto.Archivo, () =>
             {
                 RuleFor(x => x.Url)
-                    .NotEmpty()
                     .MaximumLength(2000)
-                    .Must(url => Uri.TryCreate(url, UriKind.Absolute, out _))
+                    .Must(url => string.IsNullOrWhiteSpace(url) || Uri.TryCreate(url, UriKind.Absolute, out _))
                     .WithMessage("La URL del archivo es inválida.");
+
+                RuleFor(x => x)
+                    .Must(x => !string.IsNullOrWhiteSpace(x.Url) || !string.IsNullOrWhiteSpace(x.StorageKey))
+                    .WithMessage("El archivo debe tener URL o StorageKey.");
 
                 RuleFor(x => x.StorageProvider)
                     .NotNull()

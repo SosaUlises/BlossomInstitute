@@ -13,7 +13,10 @@ namespace BlossomInstitute.Application.Validator.Entrega
             RuleFor(x => x)
                 .Must(x =>
                     !string.IsNullOrWhiteSpace(x.Texto) ||
-                    (x.Adjuntos != null && x.Adjuntos.Any(a => !string.IsNullOrWhiteSpace(a.Url))))
+                    (x.Adjuntos != null && x.Adjuntos.Any(a =>
+                        a.Tipo == Domain.Entidades.Entrega.TipoAdjunto.Link
+                            ? !string.IsNullOrWhiteSpace(a.Url)
+                            : !string.IsNullOrWhiteSpace(a.Url) || !string.IsNullOrWhiteSpace(a.StorageKey))))
                 .WithMessage("La entrega debe tener texto o al menos un adjunto.");
 
             RuleForEach(x => x.Adjuntos)
