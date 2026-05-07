@@ -72,7 +72,10 @@ namespace BlossomInstitute.Application.DataBase.Entregas.Commands.UpsertEntregaA
             var adjuntos = model.Adjuntos ?? new List<UpsertEntregaAdjuntoModel>();
 
             adjuntos = adjuntos
-                .Where(a => !string.IsNullOrWhiteSpace(a.Url))
+                .Where(a =>
+                    a.Tipo == TipoAdjunto.Link
+                        ? !string.IsNullOrWhiteSpace(a.Url)
+                        : !string.IsNullOrWhiteSpace(a.Url) || !string.IsNullOrWhiteSpace(a.StorageKey))
                 .GroupBy(a =>
                     a.Tipo == TipoAdjunto.Archivo
                         ? (a.StorageKey ?? a.Url)!.Trim().ToLowerInvariant()
@@ -119,7 +122,7 @@ namespace BlossomInstitute.Application.DataBase.Entregas.Commands.UpsertEntregaA
                         {
                             EntregaId = entrega.Id,
                             Tipo = a.Tipo,
-                            Url = a.Url!.Trim(),
+                            Url = (a.Url ?? a.StorageKey)!.Trim(),
                             Nombre = string.IsNullOrWhiteSpace(a.Nombre) ? null : a.Nombre.Trim(),
                             StorageProvider = a.Tipo == TipoAdjunto.Archivo ? a.StorageProvider : null,
                             StorageKey = a.Tipo == TipoAdjunto.Archivo ? a.StorageKey?.Trim() : null,
@@ -155,7 +158,7 @@ namespace BlossomInstitute.Application.DataBase.Entregas.Commands.UpsertEntregaA
                         {
                             EntregaId = entrega.Id,
                             Tipo = a.Tipo,
-                            Url = a.Url!.Trim(),
+                            Url = (a.Url ?? a.StorageKey)!.Trim(),
                             Nombre = string.IsNullOrWhiteSpace(a.Nombre) ? null : a.Nombre.Trim(),
                             StorageProvider = a.Tipo == TipoAdjunto.Archivo ? a.StorageProvider : null,
                             StorageKey = a.Tipo == TipoAdjunto.Archivo ? a.StorageKey?.Trim() : null,
