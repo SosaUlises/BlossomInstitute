@@ -50,9 +50,16 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasAlumno
                 {
                     tareaId = t.Id,
                     t.CursoId,
+                    t.ProfesorId,
+                    profesorNombre = t.Profesor.Usuario.Nombre,
+                    profesorApellido = t.Profesor.Usuario.Apellido,
                     t.Titulo,
                     descripcion = t.Consigna,
                     t.FechaEntregaUtc,
+                    t.CreatedAtUtc,
+                    esAnuncio = !t.FechaEntregaUtc.HasValue,
+                    recursosCount = t.Recursos.Count,
+                    tieneRecursos = t.Recursos.Count > 0,
                     vencida = t.FechaEntregaUtc.HasValue && t.FechaEntregaUtc.Value < nowUtc,
                     tieneEntrega = _db.Entregas.Any(e => e.TareaId == t.Id && e.AlumnoId == alumnoUserId),
                     estadoEntrega = _db.Entregas
