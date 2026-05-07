@@ -24,6 +24,7 @@
         public List<DashboardTareaPendienteItemModel> TareasPendientes { get; set; } = new();
         public List<DashboardUltimaEntregaItemModel> UltimasEntregas { get; set; } = new();
         public List<DashboardUltimaCalificacionItemModel> UltimasCalificaciones { get; set; } = new();
+        public List<DashboardFeedbackRecienteItemModel> FeedbacksRecientes { get; set; } = new();
         public List<DashboardResumenCursoItemModel> ResumenPorCurso { get; set; } = new();
     }
 }

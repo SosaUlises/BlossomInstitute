@@ -77,7 +77,21 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasAlumno
                                     estado = (int)f.Estado,
                                     f.Nota,
                                     f.Comentario,
-                                    f.FechaCorreccionUtc
+                                    f.FechaCorreccionUtc,
+                                    adjuntos = f.Adjuntos
+                                        .OrderBy(a => a.CreatedAtUtc)
+                                        .Select(a => new
+                                        {
+                                            a.Id,
+                                            tipo = (int)a.Tipo,
+                                            a.Url,
+                                            a.Nombre,
+                                            storageProvider = a.StorageProvider.HasValue ? (int)a.StorageProvider.Value : (int?)null,
+                                            a.StorageKey,
+                                            a.ContentType,
+                                            a.SizeBytes
+                                        })
+                                        .ToList()
                                 })
                                 .FirstOrDefault()
                         })

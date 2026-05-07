@@ -59,8 +59,23 @@ namespace BlossomInstitute.Application.DataBase.Entregas.Queries.Alumno.GetMiEnt
                         {
                             FeedbackId = f.Id,
                             Estado = (int)f.Estado,
+                            Comentario = f.Comentario,
                             Nota = f.Nota,
-                            FechaCorreccionUtc = f.FechaCorreccionUtc
+                            FechaCorreccionUtc = f.FechaCorreccionUtc,
+                            Adjuntos = f.Adjuntos
+                                .OrderBy(a => a.CreatedAtUtc)
+                                .Select(a => new FeedbackAdjuntoItemModel
+                                {
+                                    Id = a.Id,
+                                    Tipo = (int)a.Tipo,
+                                    Url = a.Url,
+                                    Nombre = a.Nombre,
+                                    StorageProvider = a.StorageProvider.HasValue ? (int)a.StorageProvider.Value : null,
+                                    StorageKey = a.StorageKey,
+                                    ContentType = a.ContentType,
+                                    SizeBytes = a.SizeBytes
+                                })
+                                .ToList()
                         }).FirstOrDefault(),
                     FeedbackHistorial = e.Feedbacks
                         .OrderByDescending(f => f.FechaCorreccionUtc)

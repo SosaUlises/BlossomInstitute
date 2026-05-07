@@ -230,6 +230,29 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAlumnoDashb
 
             var feedbacksPendientesAccionCount = feedbacksRehacerCount;
 
+            var feedbacksRecientes = await _db.EntregaFeedbacks
+                .AsNoTracking()
+                .Where(x =>
+                    x.EsVigente &&
+                    x.Entrega.AlumnoId == alumno.Id &&
+                    cursoIds.Contains(x.Entrega.Tarea.CursoId))
+                .OrderByDescending(x => x.FechaCorreccionUtc)
+                .Take(5)
+                .Select(x => new DashboardFeedbackRecienteItemModel
+                {
+                    CursoId = x.Entrega.Tarea.CursoId,
+                    CursoNombre = x.Entrega.Tarea.Curso.Nombre,
+                    TareaId = x.Entrega.TareaId,
+                    TituloTarea = x.Entrega.Tarea.Titulo,
+                    EntregaId = x.EntregaId,
+                    FeedbackId = x.Id,
+                    Estado = (int)x.Estado,
+                    Comentario = x.Comentario,
+                    Nota = x.Nota,
+                    FechaCorreccionUtc = x.FechaCorreccionUtc
+                })
+                .ToListAsync(ct);
+
             var calificacionesBaseQuery = _db.Calificaciones
                 .AsNoTracking()
                 .Where(x =>
@@ -361,6 +384,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAlumnoDashb
                 TareasPendientes = tareasPendientes,
                 UltimasEntregas = ultimasEntregas,
                 UltimasCalificaciones = ultimasCalificaciones,
+                FeedbacksRecientes = feedbacksRecientes,
                 ResumenPorCurso = resumenPorCurso
             };
 
