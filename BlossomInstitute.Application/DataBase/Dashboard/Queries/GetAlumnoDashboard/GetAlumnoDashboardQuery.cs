@@ -162,13 +162,14 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAlumnoDashb
                     x.Estado == EstadoTarea.Publicada);
 
             var tareasPendientesBaseQuery = tareasPublicadasBaseQuery
-                .Where(x => !_db.Entregas.Any(e => e.TareaId == x.Id && e.AlumnoId == alumno.Id));
+                .Where(x =>
+                    x.FechaEntregaUtc.HasValue &&
+                    !_db.Entregas.Any(e => e.TareaId == x.Id && e.AlumnoId == alumno.Id));
 
             var tareasPendientesCount = await tareasPendientesBaseQuery.CountAsync(ct);
 
             var tareasPendientes = await tareasPendientesBaseQuery
-                .OrderBy(x => x.FechaEntregaUtc.HasValue ? 0 : 1)
-                .ThenBy(x => x.FechaEntregaUtc)
+                .OrderBy(x => x.FechaEntregaUtc)
                 .ThenBy(x => x.Titulo)
                 .Take(5)
                 .Select(x => new DashboardTareaPendienteItemModel
