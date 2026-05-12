@@ -116,7 +116,20 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalifica
                     Nota = x.Nota,
                     Fecha = x.Fecha,
                     TareaId = x.TareaId,
-                    EntregaId = x.EntregaId
+                    EntregaId = x.EntregaId,
+                    TieneDetalleSkills = x.TieneDetalleSkills,
+                    Detalles = x.Detalles
+                        .OrderBy(d => d.Skill)
+                        .Select(d => new CalificacionListDetalleItemModel
+                        {
+                            Skill = d.Skill,
+                            PuntajeObtenido = d.PuntajeObtenido,
+                            PuntajeMaximo = d.PuntajeMaximo,
+                            Porcentaje = d.PuntajeMaximo > 0
+                                ? Math.Round(d.PuntajeObtenido * 100 / d.PuntajeMaximo, 2)
+                                : null
+                        })
+                        .ToList()
                 })
                 .ToListAsync(ct);
 

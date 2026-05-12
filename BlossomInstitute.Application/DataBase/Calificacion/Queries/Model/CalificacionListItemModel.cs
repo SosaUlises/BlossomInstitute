@@ -22,5 +22,16 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Queries.Model
 
         public int? TareaId { get; set; }
         public int? EntregaId { get; set; }
+
+        public bool TieneDetalleSkills { get; set; }
+        public List<CalificacionListDetalleItemModel> Detalles { get; set; } = new();
+    }
+
+    public class CalificacionListDetalleItemModel
+    {
+        public SkillEvaluada Skill { get; set; }
+        public decimal PuntajeObtenido { get; set; }
+        public decimal PuntajeMaximo { get; set; }
+        public decimal? Porcentaje { get; set; }
     }
 }
