@@ -63,6 +63,7 @@ namespace BlossomInstitute.Application.DataBase.Login.Command
                     usuario.Email,
                     usuario.Nombre,
                     usuario.Apellido,
+                    usuario.AvatarUrl,
                     roles
                 }
             }, "Login exitoso");

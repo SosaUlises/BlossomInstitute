@@ -64,6 +64,45 @@ namespace BlossomInstitute.Application.DataBase.CloudinaryService.Commands.Uploa
             };
         }
 
+        public async Task<UploadFileResponseModel> UploadAvatarAsync(
+            IFormFile file,
+            CancellationToken ct = default)
+        {
+            if (file == null || file.Length == 0)
+                throw new InvalidOperationException("Archivo inválido");
+
+            await using var stream = file.OpenReadStream();
+
+            var uploadParams = new ImageUploadParams
+            {
+                File = new FileDescription(file.FileName, stream),
+                Folder = $"{_options.Folder}/avatars",
+                UseFilename = true,
+                UniqueFilename = true,
+                Overwrite = false,
+                Transformation = new Transformation()
+                    .Width(512)
+                    .Height(512)
+                    .Crop("fill")
+                    .Gravity("auto")
+            };
+
+            var result = await _cloudinary.UploadAsync(uploadParams);
+
+            if (result.Error != null)
+                throw new InvalidOperationException(result.Error.Message);
+
+            return new UploadFileResponseModel
+            {
+                Url = result.SecureUrl?.ToString() ?? result.Url?.ToString() ?? "",
+                Nombre = file.FileName,
+                StorageProvider = StorageProviderType.Cloudinary,
+                StorageKey = result.PublicId,
+                ContentType = file.ContentType,
+                SizeBytes = file.Length
+            };
+        }
+
         public async Task DeleteAsync(string storageKey, CancellationToken ct = default)
         {
             if (string.IsNullOrWhiteSpace(storageKey))
@@ -72,6 +111,25 @@ namespace BlossomInstitute.Application.DataBase.CloudinaryService.Commands.Uploa
             var deleteParams = new DeletionParams(storageKey)
             {
                 ResourceType = ResourceType.Raw
+            };
+
+            var result = await _cloudinary.DestroyAsync(deleteParams);
+
+            if (result.Error != null)
+                throw new InvalidOperationException(result.Error.Message);
+
+            if (result.Result != "ok" && result.Result != "not found")
+                throw new InvalidOperationException($"No se pudo eliminar el archivo. Resultado: {result.Result}");
+        }
+
+        public async Task DeleteFileAsync(string storageKey, CancellationToken ct = default)
+        {
+            if (string.IsNullOrWhiteSpace(storageKey))
+                throw new InvalidOperationException("StorageKey inválido");
+
+            var deleteParams = new DeletionParams(storageKey)
+            {
+                ResourceType = ResourceType.Image
             };
 
             var result = await _cloudinary.DestroyAsync(deleteParams);

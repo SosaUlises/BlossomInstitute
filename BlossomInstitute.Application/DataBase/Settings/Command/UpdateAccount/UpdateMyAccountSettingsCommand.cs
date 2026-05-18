@@ -74,6 +74,7 @@ namespace BlossomInstitute.Application.DataBase.Settings.Command.UpdateAccount
                 Email = user.Email ?? "",
                 Telefono = user.PhoneNumber,
                 Dni = user.Dni,
+                AvatarUrl = user.AvatarUrl,
                 Activo = user.Activo,
                 Roles = roles.ToList()
             };

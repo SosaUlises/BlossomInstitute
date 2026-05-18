@@ -646,6 +646,12 @@ namespace BlossomInstitute.Infraestructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("AvatarPublicId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("AvatarUrl")
+                        .HasColumnType("text");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");

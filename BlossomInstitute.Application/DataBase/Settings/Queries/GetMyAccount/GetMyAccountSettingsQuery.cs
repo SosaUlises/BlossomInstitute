@@ -38,6 +38,7 @@ namespace BlossomInstitute.Application.DataBase.Settings.Queries.GetMyAccount
                 Email = user.Email ?? "",
                 Telefono = user.PhoneNumber,
                 Dni = user.Dni,
+                AvatarUrl = user.AvatarUrl,
                 Activo = user.Activo,
                 Roles = roles.ToList()
             };

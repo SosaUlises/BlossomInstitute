@@ -68,7 +68,9 @@ using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteMarksByCurso
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteStudentMarksDetail;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteStudentSummaryByCursoAndTerm;
 using BlossomInstitute.Application.DataBase.Settings.Command.ChangePassword;
+using BlossomInstitute.Application.DataBase.Settings.Command.DeleteAvatar;
 using BlossomInstitute.Application.DataBase.Settings.Command.UpdateAccount;
+using BlossomInstitute.Application.DataBase.Settings.Command.UpdateAvatar;
 using BlossomInstitute.Application.DataBase.Settings.Queries.GetMyAccount;
 using BlossomInstitute.Application.DataBase.Tarea.Commands.ArchivarTarea;
 using BlossomInstitute.Application.DataBase.Tarea.Commands.CreateTarea;
@@ -209,6 +211,8 @@ namespace BlossomInstitute.Application
             services.AddTransient<IGetMyAccountSettingsQuery, GetMyAccountSettingsQuery>();
             services.AddTransient<IUpdateMyAccountSettingsCommand, UpdateMyAccountSettingsCommand>();
             services.AddTransient<IChangeMyPasswordCommand, ChangeMyPasswordCommand>();
+            services.AddTransient<IUpdateMyAvatarCommand, UpdateMyAvatarCommand>();
+            services.AddTransient<IDeleteMyAvatarCommand, DeleteMyAvatarCommand>();
 
             // Cloudinary
             services.AddTransient<IFileStorageService, CloudinaryFileStorageService>();
@@ -238,6 +242,7 @@ namespace BlossomInstitute.Application
             services.AddScoped<IValidator<UpdateCalificacionModel>, UpdateCalificacionValidator>();
             services.AddScoped<IValidator<UpdateMyAccountSettingsModel>, UpdateMyAccountSettingsModelValidator>();
             services.AddScoped<IValidator<ChangeMyPasswordModel>, ChangeMyPasswordModelValidator>();
+            services.AddScoped<IValidator<UpdateAvatarRequest>, UpdateAvatarRequestValidator>();
             services.AddScoped<IValidator<ApplyPlantillaCalificacionModel>, ApplyPlantillaCalificacionModelValidator>();
 
 

@@ -9,6 +9,12 @@ namespace BlossomInstitute.Application.DataBase.CloudinaryService.Commands.Uploa
             string folder,
             CancellationToken ct = default);
 
+        Task<UploadFileResponseModel> UploadAvatarAsync(
+            IFormFile file,
+            CancellationToken ct = default);
+
         Task DeleteAsync(string storageKey, CancellationToken ct = default);
+
+        Task DeleteFileAsync(string storageKey, CancellationToken ct = default);
     }
 }

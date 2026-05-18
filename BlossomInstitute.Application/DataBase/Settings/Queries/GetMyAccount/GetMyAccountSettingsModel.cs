@@ -9,6 +9,7 @@
         public string Email { get; set; } = default!;
         public string? Telefono { get; set; }
         public long Dni { get; set; }
+        public string? AvatarUrl { get; set; }
 
         public bool Activo { get; set; }
 

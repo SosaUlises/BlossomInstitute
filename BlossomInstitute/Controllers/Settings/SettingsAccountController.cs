@@ -1,5 +1,7 @@
 ﻿using BlossomInstitute.Application.DataBase.Settings.Command.ChangePassword;
+using BlossomInstitute.Application.DataBase.Settings.Command.DeleteAvatar;
 using BlossomInstitute.Application.DataBase.Settings.Command.UpdateAccount;
+using BlossomInstitute.Application.DataBase.Settings.Command.UpdateAvatar;
 using BlossomInstitute.Application.DataBase.Settings.Queries.GetMyAccount;
 using BlossomInstitute.Common.Features;
 using FluentValidation;
@@ -64,6 +66,36 @@ namespace BlossomInstitute.Controllers.Settings
             }
 
             var result = await command.Execute(GetUserId(), model, ct);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPut("avatar")]
+        [Consumes("multipart/form-data")]
+        [RequestSizeLimit(5_242_880)]
+        public async Task<IActionResult> UpdateMyAvatar(
+            [FromForm] UpdateAvatarRequest model,
+            [FromServices] IUpdateMyAvatarCommand command,
+            [FromServices] IValidator<UpdateAvatarRequest> validator,
+            CancellationToken ct = default)
+        {
+            var vr = await validator.ValidateAsync(model, ct);
+            if (!vr.IsValid)
+            {
+                return BadRequest(ResponseApiService.Response(
+                    StatusCodes.Status400BadRequest,
+                    vr.Errors));
+            }
+
+            var result = await command.Execute(GetUserId(), model, ct);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpDelete("avatar")]
+        public async Task<IActionResult> DeleteMyAvatar(
+            [FromServices] IDeleteMyAvatarCommand command,
+            CancellationToken ct = default)
+        {
+            var result = await command.Execute(GetUserId(), ct);
             return StatusCode(result.StatusCode, result);
         }
     }

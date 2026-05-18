@@ -15,6 +15,8 @@ namespace BlossomInstitute.Domain.Entidades.Usuario
         public string Nombre { get; set; }
         public string Apellido { get; set; }
         public long Dni { get; set; }
+        public string? AvatarUrl { get; set; }
+        public string? AvatarPublicId { get; set; }
 
         public ProfesorEntity? Profesor { get; set; }
         public AlumnoEntity? Alumno { get; set; }
