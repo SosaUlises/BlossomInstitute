@@ -7,5 +7,6 @@
         public string Apellido { get; set; } = default!;
         public long Dni { get; set; }
         public string? Email { get; set; }
+        public string? AvatarUrl { get; set; }
     }
 }

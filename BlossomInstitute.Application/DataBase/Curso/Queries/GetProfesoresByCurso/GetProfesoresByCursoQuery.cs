@@ -75,7 +75,8 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetProfesoresByCur
                     Nombre = x.Profesor.Usuario.Nombre,
                     Apellido = x.Profesor.Usuario.Apellido,
                     Dni = x.Profesor.Usuario.Dni,
-                    Email = x.Profesor.Usuario.Email
+                    Email = x.Profesor.Usuario.Email,
+                    AvatarUrl = x.Profesor.Usuario.AvatarUrl
                 })
                 .ToListAsync(ct);
 

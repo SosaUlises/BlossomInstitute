@@ -6,6 +6,7 @@ namespace BlossomInstitute.Application.DataBase.Asistencia.Queries.GetAsistencia
     {
         public int AlumnoId { get; set; }
         public string NombreCompleto { get; set; } = default!;
+        public string? AvatarUrl { get; set; }
         public EstadoAsistencia? Estado { get; set; } // null = sin registro
     }
 }

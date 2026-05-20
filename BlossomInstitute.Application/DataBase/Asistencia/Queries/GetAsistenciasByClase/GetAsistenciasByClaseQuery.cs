@@ -39,7 +39,8 @@ namespace BlossomInstitute.Application.DataBase.Asistencia.Queries.GetAsistencia
                 {
                     m.AlumnoId,
                     Nombre = m.Alumno.Usuario.Nombre,
-                    Apellido = m.Alumno.Usuario.Apellido
+                    Apellido = m.Alumno.Usuario.Apellido,
+                    AvatarUrl = m.Alumno.Usuario.AvatarUrl
                 })
                 .ToListAsync(ct);
 
@@ -58,6 +59,7 @@ namespace BlossomInstitute.Application.DataBase.Asistencia.Queries.GetAsistencia
                     {
                         AlumnoId = a.AlumnoId,
                         NombreCompleto = $"{a.Apellido} {a.Nombre}",
+                        AvatarUrl = a.AvatarUrl,
                         Estado = reg?.Estado
                     };
                 })
