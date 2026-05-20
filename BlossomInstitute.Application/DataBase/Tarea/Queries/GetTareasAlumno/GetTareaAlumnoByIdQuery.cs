@@ -39,6 +39,9 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasAlumno
                 {
                     tareaId = t.Id,
                     t.CursoId,
+                    profesorNombre = t.Profesor.Usuario.Nombre,
+                    profesorApellido = t.Profesor.Usuario.Apellido,
+                    profesorAvatarUrl = t.Profesor.Usuario.AvatarUrl,
                     t.Titulo,
                     descripcion = t.Consigna,
                     consigna = t.Consigna,
@@ -74,6 +77,9 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasAlumno
                                 .Select(f => new
                                 {
                                     feedbackId = f.Id,
+                                    profesorNombre = f.Entrega.Tarea.Profesor.Usuario.Nombre,
+                                    profesorApellido = f.Entrega.Tarea.Profesor.Usuario.Apellido,
+                                    profesorAvatarUrl = f.Entrega.Tarea.Profesor.Usuario.AvatarUrl,
                                     estado = (int)f.Estado,
                                     f.Nota,
                                     f.Comentario,

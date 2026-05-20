@@ -53,6 +53,7 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasAlumno
                     t.ProfesorId,
                     profesorNombre = t.Profesor.Usuario.Nombre,
                     profesorApellido = t.Profesor.Usuario.Apellido,
+                    profesorAvatarUrl = t.Profesor.Usuario.AvatarUrl,
                     t.Titulo,
                     descripcion = t.Consigna,
                     t.FechaEntregaUtc,

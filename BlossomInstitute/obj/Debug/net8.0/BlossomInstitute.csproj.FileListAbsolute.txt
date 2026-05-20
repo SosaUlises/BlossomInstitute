@@ -706,4 +706,3 @@ C:\Users\Ulises\Source\Repos\blossom-institute-api\BlossomInstitute\bin\Debug\ne
 C:\Users\Ulises\Source\Repos\blossom-institute-api\BlossomInstitute\bin\Debug\net8.0\runtimes\win-x86\native\libwinpthread-1.dll
 C:\Users\Ulises\Source\Repos\blossom-institute-api\BlossomInstitute\bin\Debug\net8.0\runtimes\win-x86\native\qpdf.dll
 C:\Users\Ulises\Source\Repos\blossom-institute-api\BlossomInstitute\bin\Debug\net8.0\runtimes\win-x86\native\zlib1.dll
-C:\Users\ulipv\Source\Repos\blossom-institute-api\BlossomInstitute\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

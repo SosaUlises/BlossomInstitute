@@ -38,7 +38,8 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetPersonasAlumnoC
                 {
                     x.ProfesorId,
                     x.Profesor.Usuario.Nombre,
-                    x.Profesor.Usuario.Apellido
+                    x.Profesor.Usuario.Apellido,
+                    x.Profesor.Usuario.AvatarUrl
                 })
                 .ToListAsync(ct);
 
@@ -51,7 +52,8 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetPersonasAlumnoC
                 {
                     x.AlumnoId,
                     x.Alumno.Usuario.Nombre,
-                    x.Alumno.Usuario.Apellido
+                    x.Alumno.Usuario.Apellido,
+                    x.Alumno.Usuario.AvatarUrl
                 })
                 .ToListAsync(ct);
 
