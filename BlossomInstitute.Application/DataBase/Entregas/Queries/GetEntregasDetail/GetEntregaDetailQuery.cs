@@ -54,6 +54,7 @@ namespace BlossomInstitute.Application.DataBase.Entregas.Queries.GetEntregasDeta
 
                     AlumnoNombre = e.Alumno.Usuario.Nombre,
                     AlumnoApellido = e.Alumno.Usuario.Apellido,
+                    AlumnoAvatarUrl = e.Alumno.Usuario.AvatarUrl,
 
                     Texto = e.Texto,
                     FechaEntregaUtc = e.FechaEntregaUtc,

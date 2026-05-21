@@ -12,6 +12,7 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Queries.Model
         public string AlumnoNombre { get; set; } = "";
         public string AlumnoApellido { get; set; } = "";
         public long AlumnoDni { get; set; }
+        public string? AlumnoAvatarUrl { get; set; }
 
         public TipoCalificacion Tipo { get; set; }
         public string Titulo { get; set; } = "";

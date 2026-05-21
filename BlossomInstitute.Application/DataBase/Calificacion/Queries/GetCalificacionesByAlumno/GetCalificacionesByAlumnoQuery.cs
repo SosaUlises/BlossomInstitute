@@ -110,6 +110,7 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalifica
                     AlumnoNombre = x.Alumno.Usuario.Nombre,
                     AlumnoApellido = x.Alumno.Usuario.Apellido,
                     AlumnoDni = x.Alumno.Usuario.Dni,
+                    AlumnoAvatarUrl = x.Alumno.Usuario.AvatarUrl,
                     Tipo = x.Tipo,
                     Titulo = x.Titulo,
                     Descripcion = x.Descripcion,

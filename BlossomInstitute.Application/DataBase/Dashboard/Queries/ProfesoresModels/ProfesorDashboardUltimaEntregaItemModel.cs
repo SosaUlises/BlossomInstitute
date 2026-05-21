@@ -12,6 +12,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.ProfesoresMode
         public int AlumnoId { get; set; }
         public string AlumnoNombre { get; set; } = default!;
         public string AlumnoApellido { get; set; } = default!;
+        public string? AlumnoAvatarUrl { get; set; }
         public DateTime FechaEntregaUtc { get; set; }
         public EstadoEntrega EstadoEntrega { get; set; }
         public bool TieneFeedbackVigente { get; set; }

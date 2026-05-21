@@ -187,6 +187,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetProfesorDas
                   AlumnoId = x.AlumnoId,
                   AlumnoNombre = x.Alumno.Usuario.Nombre,
                   AlumnoApellido = x.Alumno.Usuario.Apellido,
+                  AlumnoAvatarUrl = x.Alumno.Usuario.AvatarUrl,
                   FechaEntregaUtc = x.FechaEntregaUtc,
                   EstadoEntrega = x.Estado,
                   TieneFeedbackVigente = x.Feedbacks.Any(f => f.EsVigente)
