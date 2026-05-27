@@ -553,6 +553,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                     Titulo = x.Titulo,
                     CursoId = x.CursoId,
                     CursoNombre = x.Curso.Nombre,
+                    CursoDescripcion = x.Curso.Descripcion,
                     FechaEntregaUtc = x.FechaEntregaUtc!.Value
                 })
                 .ToListAsync(ct);
@@ -567,6 +568,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 {
                     x.CursoId,
                     CursoNombre = x.Curso.Nombre,
+                    CursoDescripcion = x.Curso.Descripcion,
                     x.Dia,
                     x.HoraInicio,
                     ProfesorNombre = x.Curso.Profesores
@@ -580,6 +582,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 {
                     CursoId = x.CursoId,
                     CursoNombre = x.CursoNombre,
+                    CursoDescripcion = x.CursoDescripcion,
                     ProfesorNombre = x.ProfesorNombre ?? "Sin asignar",
                     DiaSemana = GetDayName(x.Dia),
                     HoraInicio = x.HoraInicio,

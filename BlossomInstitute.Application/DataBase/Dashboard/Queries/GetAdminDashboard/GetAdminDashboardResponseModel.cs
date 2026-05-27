@@ -110,6 +110,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             public string Titulo { get; set; } = default!;
             public int CursoId { get; set; }
             public string CursoNombre { get; set; } = default!;
+            public string? CursoDescripcion { get; set; }
             public DateTime FechaEntregaUtc { get; set; }
         }
 
@@ -117,6 +118,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
         {
             public int CursoId { get; set; }
             public string CursoNombre { get; set; } = default!;
+            public string? CursoDescripcion { get; set; }
             public string ProfesorNombre { get; set; } = default!;
             public string DiaSemana { get; set; } = default!;
             public TimeOnly HoraInicio { get; set; }
