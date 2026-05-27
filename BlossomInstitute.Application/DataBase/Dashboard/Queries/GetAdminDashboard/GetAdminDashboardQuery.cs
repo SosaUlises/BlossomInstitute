@@ -215,6 +215,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 {
                     x.AlumnoId,
                     AlumnoNombre = x.Alumno.Usuario.Nombre + " " + x.Alumno.Usuario.Apellido,
+                    AlumnoAvatarUrl = x.Alumno.Usuario.AvatarUrl,
                     x.CursoId,
                     CursoNombre = x.Curso.Nombre,
                     CursoDescripcion = x.Curso.Descripcion
@@ -223,6 +224,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 {
                     AlumnoId = g.Key.AlumnoId,
                     AlumnoNombre = g.Key.AlumnoNombre,
+                    AlumnoAvatarUrl = g.Key.AlumnoAvatarUrl,
                     CursoId = g.Key.CursoId,
                     CursoNombre = g.Key.CursoNombre,
                     CursoDescripcion = g.Key.CursoDescripcion,
@@ -273,6 +275,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 {
                     AlumnoId = x.AlumnoId,
                     AlumnoNombre = x.Alumno.Usuario.Nombre + " " + x.Alumno.Usuario.Apellido,
+                    AlumnoAvatarUrl = x.Alumno.Usuario.AvatarUrl,
                     CursoId = x.CursoId,
                     CursoNombre = x.Curso.Nombre,
                     CursoDescripcion = x.Curso.Descripcion,
@@ -333,7 +336,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                     CursoNombre = x.Curso.Nombre,
                     CursoDescripcion = x.Curso.Descripcion,
                     x.AlumnoId,
-                    AlumnoNombre = x.Alumno.Usuario.Nombre + " " + x.Alumno.Usuario.Apellido
+                    AlumnoNombre = x.Alumno.Usuario.Nombre + " " + x.Alumno.Usuario.Apellido,
+                    AlumnoAvatarUrl = x.Alumno.Usuario.AvatarUrl
                 })
                 .ToListAsync(ct);
 
@@ -435,6 +439,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                     {
                         AlumnoId = x.AlumnoId,
                         AlumnoNombre = x.AlumnoNombre,
+                        AlumnoAvatarUrl = x.AlumnoAvatarUrl,
                         CursoId = x.CursoId,
                         CursoNombre = x.CursoNombre,
                         CursoDescripcion = x.CursoDescripcion,

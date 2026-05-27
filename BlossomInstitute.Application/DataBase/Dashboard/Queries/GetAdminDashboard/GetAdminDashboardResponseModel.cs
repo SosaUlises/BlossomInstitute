@@ -60,6 +60,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
         {
             public int AlumnoId { get; set; }
             public string AlumnoNombre { get; set; } = default!;
+            public string? AlumnoAvatarUrl { get; set; }
             public int CursoId { get; set; }
             public string CursoNombre { get; set; } = default!;
             public string? CursoDescripcion { get; set; }
@@ -71,6 +72,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
         {
             public int AlumnoId { get; set; }
             public string AlumnoNombre { get; set; } = default!;
+            public string? AlumnoAvatarUrl { get; set; }
             public int CursoId { get; set; }
             public string CursoNombre { get; set; } = default!;
             public string? CursoDescripcion { get; set; }
@@ -145,6 +147,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
     {
             public int AlumnoId { get; set; }
             public string AlumnoNombre { get; set; } = default!;
+            public string? AlumnoAvatarUrl { get; set; }
             public int CursoId { get; set; }
             public string CursoNombre { get; set; } = default!;
             public string? CursoDescripcion { get; set; }
