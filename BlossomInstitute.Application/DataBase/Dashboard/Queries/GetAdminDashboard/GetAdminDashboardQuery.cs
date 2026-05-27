@@ -136,11 +136,12 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                         x.Tipo == TipoCalificacion.Participation ||
                         x.Tipo == TipoCalificacion.Behaviour
                     ))
-                .GroupBy(x => new { x.CursoId, x.Curso.Nombre })
+                .GroupBy(x => new { x.CursoId, x.Curso.Nombre, x.Curso.Descripcion })
                 .Select(g => new DashboardAverageGradeByCourseModel
                 {
                     CursoId = g.Key.CursoId,
                     CursoNombre = g.Key.Nombre,
+                    CursoDescripcion = g.Key.Descripcion,
                     AverageGrade = Math.Round(g.Average(x => x.Nota), 2)
                 })
                 .OrderByDescending(x => x.AverageGrade)
@@ -163,11 +164,12 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                         x.Tipo == TipoCalificacion.Participation ||
                         x.Tipo == TipoCalificacion.Behaviour
                     ))
-                .GroupBy(x => new { x.CursoId, x.Curso.Nombre })
+                .GroupBy(x => new { x.CursoId, x.Curso.Nombre, x.Curso.Descripcion })
                 .Select(g => new DashboardAverageGradeByCourseModel
                 {
                     CursoId = g.Key.CursoId,
                     CursoNombre = g.Key.Nombre,
+                    CursoDescripcion = g.Key.Descripcion,
                     AverageGrade = Math.Round(g.Average(x => x.Nota), 2)
                 })
                 .OrderByDescending(x => x.AverageGrade)
@@ -214,7 +216,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                     x.AlumnoId,
                     AlumnoNombre = x.Alumno.Usuario.Nombre + " " + x.Alumno.Usuario.Apellido,
                     x.CursoId,
-                    CursoNombre = x.Curso.Nombre
+                    CursoNombre = x.Curso.Nombre,
+                    CursoDescripcion = x.Curso.Descripcion
                 })
                 .Select(g => new DashboardStudentAverageRiskModel
                 {
@@ -222,6 +225,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                     AlumnoNombre = g.Key.AlumnoNombre,
                     CursoId = g.Key.CursoId,
                     CursoNombre = g.Key.CursoNombre,
+                    CursoDescripcion = g.Key.CursoDescripcion,
                     AverageGrade = Math.Round(g.Average(x => x.Nota), 2),
                     CalificacionesCount = g.Count()
                 })
@@ -271,6 +275,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                     AlumnoNombre = x.Alumno.Usuario.Nombre + " " + x.Alumno.Usuario.Apellido,
                     CursoId = x.CursoId,
                     CursoNombre = x.Curso.Nombre,
+                    CursoDescripcion = x.Curso.Descripcion,
                     CalificacionId = x.Id,
                     Titulo = x.Titulo,
                     Tipo = x.Tipo,
@@ -312,7 +317,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 {
                     x.Id,
                     x.CursoId,
-                    CursoNombre = x.Curso.Nombre
+                    CursoNombre = x.Curso.Nombre,
+                    CursoDescripcion = x.Curso.Descripcion
                 })
                 .ToListAsync(ct);
 
@@ -325,6 +331,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 {
                     x.CursoId,
                     CursoNombre = x.Curso.Nombre,
+                    CursoDescripcion = x.Curso.Descripcion,
                     x.AlumnoId,
                     AlumnoNombre = x.Alumno.Usuario.Nombre + " " + x.Alumno.Usuario.Apellido
                 })
@@ -342,10 +349,11 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 .ToListAsync(ct);
 
             var classCountByCourse = periodClasses
-                .GroupBy(x => new { x.CursoId, x.CursoNombre })
+                .GroupBy(x => new { x.CursoId, x.CursoNombre, x.CursoDescripcion })
                 .ToDictionary(g => g.Key.CursoId, g => new
                 {
                     g.Key.CursoNombre,
+                    g.Key.CursoDescripcion,
                     Count = g.Count()
                 });
 
@@ -390,6 +398,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                     {
                         CursoId = x.Key,
                         CursoNombre = x.Value.CursoNombre,
+                        CursoDescripcion = x.Value.CursoDescripcion,
                         AttendancePercentage = percentage,
                         Ausentes = absent,
                         ExpectedAttendanceRecords = expectedRecords
@@ -428,6 +437,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                         AlumnoNombre = x.AlumnoNombre,
                         CursoId = x.CursoId,
                         CursoNombre = x.CursoNombre,
+                        CursoDescripcion = x.CursoDescripcion,
                         Ausentes = ausentes,
                         ClasesTotales = classCount,
                         AttendancePercentage = percentage
@@ -451,11 +461,17 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                     x.Tarea.FechaEntregaUtc.Value >= periodFromUtc &&
                     x.Tarea.FechaEntregaUtc.Value < periodToUtcExclusive &&
                     !x.Feedbacks.Any(f => f.EsVigente))
-                .GroupBy(x => new { x.Tarea.CursoId, CursoNombre = x.Tarea.Curso.Nombre })
+                .GroupBy(x => new
+                {
+                    x.Tarea.CursoId,
+                    CursoNombre = x.Tarea.Curso.Nombre,
+                    CursoDescripcion = x.Tarea.Curso.Descripcion
+                })
                 .Select(g => new
                 {
                     g.Key.CursoId,
                     g.Key.CursoNombre,
+                    g.Key.CursoDescripcion,
                     Count = g.Count()
                 })
                 .ToListAsync(ct);
@@ -476,15 +492,27 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             var courseNamesById = activeMatriculas
                 .GroupBy(x => x.CursoId)
                 .ToDictionary(g => g.Key, g => g.First().CursoNombre);
+            var courseDescriptionsById = activeMatriculas
+                .GroupBy(x => x.CursoId)
+                .ToDictionary(g => g.Key, g => g.First().CursoDescripcion);
 
             foreach (var course in averageGradesByCourse)
+            {
                 courseNamesById.TryAdd(course.CursoId, course.CursoNombre);
+                courseDescriptionsById.TryAdd(course.CursoId, course.CursoDescripcion);
+            }
 
             foreach (var course in coursesAtRiskByAttendance)
+            {
                 courseNamesById.TryAdd(course.CursoId, course.CursoNombre);
+                courseDescriptionsById.TryAdd(course.CursoId, course.CursoDescripcion);
+            }
 
             foreach (var course in pendingHomeworkByCourse)
+            {
                 courseNamesById.TryAdd(course.CursoId, course.CursoNombre);
+                courseDescriptionsById.TryAdd(course.CursoId, course.CursoDescripcion);
+            }
 
             var criticalCourses = criticalCourseIds
                 .Select(courseId =>
@@ -499,6 +527,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                     {
                         CursoId = courseId,
                         CursoNombre = courseNamesById.GetValueOrDefault(courseId, "Curso"),
+                        CursoDescripcion = courseDescriptionsById.GetValueOrDefault(courseId),
                         AverageGrade = averageByCourseDict.GetValueOrDefault(courseId),
                         AttendancePercentage = attendanceRiskByCourseDict.GetValueOrDefault(courseId),
                         PendingCorrectionCount = pendingHomeworkByCourseDict.GetValueOrDefault(courseId),

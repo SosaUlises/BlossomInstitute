@@ -52,6 +52,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
         {
             public int CursoId { get; set; }
             public string CursoNombre { get; set; } = default!;
+            public string? CursoDescripcion { get; set; }
             public decimal AverageGrade { get; set; }
         }
 
@@ -61,6 +62,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             public string AlumnoNombre { get; set; } = default!;
             public int CursoId { get; set; }
             public string CursoNombre { get; set; } = default!;
+            public string? CursoDescripcion { get; set; }
             public decimal AverageGrade { get; set; }
             public int CalificacionesCount { get; set; }
         }
@@ -71,6 +73,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             public string AlumnoNombre { get; set; } = default!;
             public int CursoId { get; set; }
             public string CursoNombre { get; set; } = default!;
+            public string? CursoDescripcion { get; set; }
             public int Ausentes { get; set; }
             public int ClasesTotales { get; set; }
             public decimal AttendancePercentage { get; set; }
@@ -80,6 +83,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
         {
             public int CursoId { get; set; }
             public string CursoNombre { get; set; } = default!;
+            public string? CursoDescripcion { get; set; }
             public decimal AttendancePercentage { get; set; }
             public int Ausentes { get; set; }
             public int ExpectedAttendanceRecords { get; set; }
@@ -89,6 +93,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
         {
             public int CursoId { get; set; }
             public string CursoNombre { get; set; } = default!;
+            public string? CursoDescripcion { get; set; }
             public decimal? AverageGrade { get; set; }
             public decimal? AttendancePercentage { get; set; }
             public int PendingCorrectionCount { get; set; }
@@ -138,12 +143,13 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
 
     public class DashboardLowManualGradeAlertModel
     {
-        public int AlumnoId { get; set; }
-        public string AlumnoNombre { get; set; } = default!;
-        public int CursoId { get; set; }
-        public string CursoNombre { get; set; } = default!;
-        public int CalificacionId { get; set; }
-        public string Titulo { get; set; } = default!;
+            public int AlumnoId { get; set; }
+            public string AlumnoNombre { get; set; } = default!;
+            public int CursoId { get; set; }
+            public string CursoNombre { get; set; } = default!;
+            public string? CursoDescripcion { get; set; }
+            public int CalificacionId { get; set; }
+            public string Titulo { get; set; } = default!;
         public TipoCalificacion Tipo { get; set; }
         public decimal Nota { get; set; }
         public DateOnly Fecha { get; set; }
