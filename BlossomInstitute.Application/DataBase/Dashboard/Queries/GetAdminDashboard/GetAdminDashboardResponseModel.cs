@@ -5,8 +5,12 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
 
         public class GetAdminDashboardResponseModel
         {
+            public DashboardPeriodModel Period { get; set; } = new();
             public DashboardOverviewModel Overview { get; set; } = new();
             public decimal? GeneralAverage { get; set; }
+            public decimal? CurrentPeriodAverage { get; set; }
+            public decimal? InstitutionalAttendanceAverage { get; set; }
+            public int InstitutionalHomeworkPendingCorrectionCount { get; set; }
 
             public List<DashboardAverageGradeByCourseModel> AverageGradesByCourse { get; set; } = new();
             public List<DashboardAverageGradeByCourseModel> ManualAverageGradesByCourse { get; set; } = new();
@@ -15,11 +19,25 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             public int StudentsManualLowGradesThisMonthCount { get; set; }
 
             public List<DashboardLowManualGradeAlertModel> StudentsManualLowPerformance { get; set; } = [];
-           public List<DashboardAverageGradeByCourseModel> CoursesAtRiskByOverallAverage { get; set; } = new();
+            public List<DashboardStudentAverageRiskModel> StudentsAtRiskByAverage { get; set; } = new();
+            public List<DashboardStudentAttendanceRiskModel> StudentsWithMultipleAbsences { get; set; } = new();
+            public List<DashboardCourseAttendanceRiskModel> CoursesAtRiskByAttendance { get; set; } = new();
+            public List<DashboardCriticalCourseModel> CriticalCourses { get; set; } = new();
+            public List<DashboardAcademicTrendModel> AcademicTrends { get; set; } = new();
+            public List<DashboardAverageGradeByCourseModel> CoursesAtRiskByOverallAverage { get; set; } = new();
             public List<DashboardAverageGradeByCourseModel> CoursesAtRiskByManualAverage { get; set; } = new();
 
             public List<DashboardUpcomingAssignmentModel> UpcomingAssignments { get; set; } = new();
             public List<DashboardUpcomingClassModel> UpcomingClasses { get; set; } = new();
+        }
+
+        public class DashboardPeriodModel
+        {
+            public string Strategy { get; set; } = "current-month";
+            public DateOnly From { get; set; }
+            public DateOnly To { get; set; }
+            public int Year { get; set; }
+            public int Month { get; set; }
         }
 
         public class DashboardOverviewModel
@@ -35,6 +53,55 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             public int CursoId { get; set; }
             public string CursoNombre { get; set; } = default!;
             public decimal AverageGrade { get; set; }
+        }
+
+        public class DashboardStudentAverageRiskModel
+        {
+            public int AlumnoId { get; set; }
+            public string AlumnoNombre { get; set; } = default!;
+            public int CursoId { get; set; }
+            public string CursoNombre { get; set; } = default!;
+            public decimal AverageGrade { get; set; }
+            public int CalificacionesCount { get; set; }
+        }
+
+        public class DashboardStudentAttendanceRiskModel
+        {
+            public int AlumnoId { get; set; }
+            public string AlumnoNombre { get; set; } = default!;
+            public int CursoId { get; set; }
+            public string CursoNombre { get; set; } = default!;
+            public int Ausentes { get; set; }
+            public int ClasesTotales { get; set; }
+            public decimal AttendancePercentage { get; set; }
+        }
+
+        public class DashboardCourseAttendanceRiskModel
+        {
+            public int CursoId { get; set; }
+            public string CursoNombre { get; set; } = default!;
+            public decimal AttendancePercentage { get; set; }
+            public int Ausentes { get; set; }
+            public int ExpectedAttendanceRecords { get; set; }
+        }
+
+        public class DashboardCriticalCourseModel
+        {
+            public int CursoId { get; set; }
+            public string CursoNombre { get; set; } = default!;
+            public decimal? AverageGrade { get; set; }
+            public decimal? AttendancePercentage { get; set; }
+            public int PendingCorrectionCount { get; set; }
+            public int SignalsCount { get; set; }
+        }
+
+        public class DashboardAcademicTrendModel
+        {
+            public string Key { get; set; } = default!;
+            public string Label { get; set; } = default!;
+            public decimal? CurrentValue { get; set; }
+            public decimal? PreviousValue { get; set; }
+            public decimal? Delta { get; set; }
         }
 
         public class DashboardUpcomingAssignmentModel
