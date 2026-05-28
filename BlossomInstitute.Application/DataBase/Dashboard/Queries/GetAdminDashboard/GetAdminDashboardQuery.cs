@@ -175,6 +175,51 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 .OrderByDescending(x => x.AverageGrade)
                 .ToListAsync(ct);
 
+            var previousAverageGradesByCourse = await _db.Calificaciones
+                .AsNoTracking()
+                .Where(x =>
+                    !x.Archivado &&
+                    x.Curso.Estado == EstadoCurso.Activo &&
+                    x.Fecha >= previousMonthStart &&
+                    x.Fecha <= previousMonthEnd &&
+                    (
+                        x.Tipo == TipoCalificacion.Homework ||
+                        x.Tipo == TipoCalificacion.Quiz ||
+                        x.Tipo == TipoCalificacion.Test ||
+                        x.Tipo == TipoCalificacion.Participation ||
+                        x.Tipo == TipoCalificacion.Behaviour
+                    ))
+                .GroupBy(x => new { x.CursoId, x.Curso.Nombre, x.Curso.Descripcion })
+                .Select(g => new DashboardCourseTrendRiskModel
+                {
+                    CursoId = g.Key.CursoId,
+                    CursoNombre = g.Key.Nombre,
+                    CursoDescripcion = g.Key.Descripcion,
+                    CurrentValue = 0,
+                    PreviousValue = Math.Round(g.Average(x => x.Nota), 2),
+                    Delta = 0
+                })
+                .ToListAsync(ct);
+
+            var coursesWithPerformanceDecline = averageGradesByCourse
+                .Join(
+                    previousAverageGradesByCourse,
+                    current => current.CursoId,
+                    previous => previous.CursoId,
+                    (current, previous) => new DashboardCourseTrendRiskModel
+                    {
+                        CursoId = current.CursoId,
+                        CursoNombre = current.CursoNombre,
+                        CursoDescripcion = current.CursoDescripcion,
+                        CurrentValue = current.AverageGrade,
+                        PreviousValue = previous.PreviousValue,
+                        Delta = Math.Round(current.AverageGrade - previous.PreviousValue, 2)
+                    })
+                .Where(x => x.Delta <= -5)
+                .OrderBy(x => x.Delta)
+                .Take(5)
+                .ToList();
+
             // -------------------------------------------------
             // STUDENTS AT RISK THIS MONTH (GENERAL)
             // promedio mensual < 60 incluyendo homework + manuales
@@ -348,6 +393,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 {
                     x.AlumnoId,
                     x.Clase.CursoId,
+                    x.Clase.Fecha,
                     x.Estado
                 })
                 .ToListAsync(ct);
@@ -413,6 +459,108 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 .Take(5)
                 .ToList();
 
+            var currentAttendanceByCourse = classCountByCourse
+                .Select(x =>
+                {
+                    var studentsInCourse = studentCountByCourse.GetValueOrDefault(x.Key);
+                    var expectedRecords = x.Value.Count * studentsInCourse;
+                    attendanceByCourse.TryGetValue(x.Key, out var attendance);
+                    var present = attendance?.Presentes ?? 0;
+                    var percentage = expectedRecords > 0
+                        ? Math.Round((decimal)present * 100 / expectedRecords, 2)
+                        : (decimal?)null;
+
+                    return new
+                    {
+                        CursoId = x.Key,
+                        x.Value.CursoNombre,
+                        x.Value.CursoDescripcion,
+                        AttendancePercentage = percentage
+                    };
+                })
+                .Where(x => x.AttendancePercentage.HasValue)
+                .ToList();
+
+            var previousClasses = await _db.Clases
+                .AsNoTracking()
+                .Where(x =>
+                    x.Curso.Estado == EstadoCurso.Activo &&
+                    x.Estado != EstadoClase.Cancelada &&
+                    x.Fecha >= previousMonthStart &&
+                    x.Fecha <= previousMonthEnd)
+                .Select(x => new
+                {
+                    x.Id,
+                    x.CursoId,
+                    CursoNombre = x.Curso.Nombre,
+                    CursoDescripcion = x.Curso.Descripcion
+                })
+                .ToListAsync(ct);
+
+            var previousClassIds = previousClasses.Select(x => x.Id).ToList();
+            var previousAttendances = await _db.Asistencias
+                .AsNoTracking()
+                .Where(x => previousClassIds.Contains(x.ClaseId))
+                .Select(x => new
+                {
+                    x.Clase.CursoId,
+                    x.Estado
+                })
+                .ToListAsync(ct);
+
+            var previousClassCountByCourse = previousClasses
+                .GroupBy(x => new { x.CursoId, x.CursoNombre, x.CursoDescripcion })
+                .ToDictionary(g => g.Key.CursoId, g => new
+                {
+                    g.Key.CursoNombre,
+                    g.Key.CursoDescripcion,
+                    Count = g.Count()
+                });
+
+            var previousAttendanceByCourse = previousAttendances
+                .GroupBy(x => x.CursoId)
+                .ToDictionary(g => g.Key, g => g.Count(x => x.Estado == EstadoAsistencia.Presente));
+
+            var previousAttendanceRateByCourse = previousClassCountByCourse
+                .Select(x =>
+                {
+                    var studentsInCourse = studentCountByCourse.GetValueOrDefault(x.Key);
+                    var expectedRecords = x.Value.Count * studentsInCourse;
+                    var present = previousAttendanceByCourse.GetValueOrDefault(x.Key);
+                    var percentage = expectedRecords > 0
+                        ? Math.Round((decimal)present * 100 / expectedRecords, 2)
+                        : (decimal?)null;
+
+                    return new
+                    {
+                        CursoId = x.Key,
+                        x.Value.CursoNombre,
+                        x.Value.CursoDescripcion,
+                        AttendancePercentage = percentage
+                    };
+                })
+                .Where(x => x.AttendancePercentage.HasValue)
+                .ToList();
+
+            var coursesWithAttendanceDecline = currentAttendanceByCourse
+                .Join(
+                    previousAttendanceRateByCourse,
+                    current => current.CursoId,
+                    previous => previous.CursoId,
+                    (current, previous) => new DashboardCourseTrendRiskModel
+                    {
+                        CursoId = current.CursoId,
+                        CursoNombre = current.CursoNombre,
+                        CursoDescripcion = current.CursoDescripcion,
+                        CurrentValue = current.AttendancePercentage!.Value,
+                        PreviousValue = previous.AttendancePercentage!.Value,
+                        Delta = Math.Round(current.AttendancePercentage.Value - previous.AttendancePercentage.Value, 2)
+                    })
+                .Where(x => x.Delta <= -5)
+                .OrderBy(x => x.Delta)
+                .Take(5)
+                .ToList();
+
             var attendanceByStudentCourse = periodAttendances
                 .GroupBy(x => new { x.AlumnoId, x.CursoId })
                 .ToDictionary(g => (g.Key.AlumnoId, g.Key.CursoId), g => new
@@ -448,8 +596,106 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                         AttendancePercentage = percentage
                     };
                 })
-                .Where(x => x.ClasesTotales > 0 && x.Ausentes >= 3)
+                .Where(x =>
+                    x.ClasesTotales > 0 &&
+                    (x.Ausentes >= 3 || x.AttendancePercentage < 80))
                 .OrderByDescending(x => x.Ausentes)
+                .ThenBy(x => x.AttendancePercentage)
+                .Take(8)
+                .ToList();
+
+            var activeMatriculaByStudentCourse = activeMatriculas
+                .GroupBy(x => new { x.AlumnoId, x.CursoId })
+                .ToDictionary(g => (g.Key.AlumnoId, g.Key.CursoId), g => g.First());
+
+            var attendancePercentageByStudentCourse = studentsWithMultipleAbsences
+                .ToDictionary(x => (x.AlumnoId, x.CursoId), x => x.AttendancePercentage);
+
+            var studentsWithConsecutiveAbsences = periodAttendances
+                .Where(x => x.Estado == EstadoAsistencia.Presente || x.Estado == EstadoAsistencia.Ausente)
+                .GroupBy(x => new { x.AlumnoId, x.CursoId })
+                .Select(g =>
+                {
+                    var currentStreak = 0;
+                    var maxStreak = 0;
+                    DateOnly? lastAbsenceDate = null;
+
+                    foreach (var attendance in g.OrderBy(x => x.Fecha))
+                    {
+                        if (attendance.Estado == EstadoAsistencia.Ausente)
+                        {
+                            currentStreak++;
+                            if (currentStreak >= maxStreak)
+                            {
+                                maxStreak = currentStreak;
+                                lastAbsenceDate = attendance.Fecha;
+                            }
+                        }
+                        else
+                        {
+                            currentStreak = 0;
+                        }
+                    }
+
+                    if (!activeMatriculaByStudentCourse.TryGetValue((g.Key.AlumnoId, g.Key.CursoId), out var matricula) ||
+                        !lastAbsenceDate.HasValue)
+                    {
+                        return null;
+                    }
+
+                    attendanceByStudentCourse.TryGetValue((g.Key.AlumnoId, g.Key.CursoId), out var attendanceSummary);
+                    var classCount = classCountByCourse.TryGetValue(g.Key.CursoId, out var classInfo)
+                        ? classInfo.Count
+                        : 0;
+                    var attendancePercentage = classCount > 0
+                        ? Math.Round((decimal)(attendanceSummary?.Presentes ?? 0) * 100 / classCount, 2)
+                        : 0;
+
+                    return new DashboardStudentConsecutiveAbsenceRiskModel
+                    {
+                        AlumnoId = matricula.AlumnoId,
+                        AlumnoNombre = matricula.AlumnoNombre,
+                        AlumnoAvatarUrl = matricula.AlumnoAvatarUrl,
+                        CursoId = matricula.CursoId,
+                        CursoNombre = matricula.CursoNombre,
+                        CursoDescripcion = matricula.CursoDescripcion,
+                        ConsecutiveAbsences = maxStreak,
+                        LastAbsenceDate = lastAbsenceDate.Value,
+                        AttendancePercentage = attendancePercentage
+                    };
+                })
+                .Where(x => x != null && x.ConsecutiveAbsences >= 2)
+                .OrderByDescending(x => x!.ConsecutiveAbsences)
+                .ThenBy(x => x!.AttendancePercentage)
+                .Take(8)
+                .Select(x => x!)
+                .ToList();
+
+            var studentsWithCombinedAcademicRisk = studentsAtRiskByAverage
+                .Where(student =>
+                    attendancePercentageByStudentCourse.TryGetValue(
+                        (student.AlumnoId, student.CursoId),
+                        out var attendancePercentage) &&
+                    attendancePercentage < 80)
+                .Select(student =>
+                {
+                    var attendanceRisk = studentsWithMultipleAbsences
+                        .First(x => x.AlumnoId == student.AlumnoId && x.CursoId == student.CursoId);
+
+                    return new DashboardStudentCombinedRiskModel
+                    {
+                        AlumnoId = student.AlumnoId,
+                        AlumnoNombre = student.AlumnoNombre,
+                        AlumnoAvatarUrl = student.AlumnoAvatarUrl,
+                        CursoId = student.CursoId,
+                        CursoNombre = student.CursoNombre,
+                        CursoDescripcion = student.CursoDescripcion,
+                        AverageGrade = student.AverageGrade,
+                        AttendancePercentage = attendanceRisk.AttendancePercentage,
+                        Absences = attendanceRisk.Ausentes
+                    };
+                })
+                .OrderBy(x => x.AverageGrade)
                 .ThenBy(x => x.AttendancePercentage)
                 .Take(8)
                 .ToList();
@@ -490,6 +736,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             var criticalCourseIds = coursesAtRiskByOverallAverage.Select(x => x.CursoId)
                 .Concat(coursesAtRiskByManualAverage.Select(x => x.CursoId))
                 .Concat(coursesAtRiskByAttendance.Select(x => x.CursoId))
+                .Concat(coursesWithPerformanceDecline.Select(x => x.CursoId))
+                .Concat(coursesWithAttendanceDecline.Select(x => x.CursoId))
                 .Concat(pendingHomeworkByCourse.Where(x => x.Count >= 5).Select(x => x.CursoId))
                 .Distinct()
                 .ToList();
@@ -519,6 +767,18 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 courseDescriptionsById.TryAdd(course.CursoId, course.CursoDescripcion);
             }
 
+            foreach (var course in coursesWithPerformanceDecline)
+            {
+                courseNamesById.TryAdd(course.CursoId, course.CursoNombre);
+                courseDescriptionsById.TryAdd(course.CursoId, course.CursoDescripcion);
+            }
+
+            foreach (var course in coursesWithAttendanceDecline)
+            {
+                courseNamesById.TryAdd(course.CursoId, course.CursoNombre);
+                courseDescriptionsById.TryAdd(course.CursoId, course.CursoDescripcion);
+            }
+
             var criticalCourses = criticalCourseIds
                 .Select(courseId =>
                 {
@@ -526,6 +786,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                     if (coursesAtRiskByOverallAverage.Any(x => x.CursoId == courseId)) signals++;
                     if (coursesAtRiskByManualAverage.Any(x => x.CursoId == courseId)) signals++;
                     if (coursesAtRiskByAttendance.Any(x => x.CursoId == courseId)) signals++;
+                    if (coursesWithPerformanceDecline.Any(x => x.CursoId == courseId)) signals++;
+                    if (coursesWithAttendanceDecline.Any(x => x.CursoId == courseId)) signals++;
                     if (pendingHomeworkByCourseDict.GetValueOrDefault(courseId) >= 5) signals++;
 
                     return new DashboardCriticalCourseModel
@@ -641,7 +903,11 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 StudentsManualLowPerformance = studentsManualLowPerformance,
                 StudentsAtRiskByAverage = studentsAtRiskByAverage,
                 StudentsWithMultipleAbsences = studentsWithMultipleAbsences,
+                StudentsWithConsecutiveAbsences = studentsWithConsecutiveAbsences,
+                StudentsWithCombinedAcademicRisk = studentsWithCombinedAcademicRisk,
                 CoursesAtRiskByAttendance = coursesAtRiskByAttendance,
+                CoursesWithAttendanceDecline = coursesWithAttendanceDecline,
+                CoursesWithPerformanceDecline = coursesWithPerformanceDecline,
                 CriticalCourses = criticalCourses,
                 AcademicTrends = academicTrends,
                 CoursesAtRiskByOverallAverage = coursesAtRiskByOverallAverage,

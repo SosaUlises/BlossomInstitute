@@ -21,7 +21,11 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             public List<DashboardLowManualGradeAlertModel> StudentsManualLowPerformance { get; set; } = [];
             public List<DashboardStudentAverageRiskModel> StudentsAtRiskByAverage { get; set; } = new();
             public List<DashboardStudentAttendanceRiskModel> StudentsWithMultipleAbsences { get; set; } = new();
+            public List<DashboardStudentConsecutiveAbsenceRiskModel> StudentsWithConsecutiveAbsences { get; set; } = new();
+            public List<DashboardStudentCombinedRiskModel> StudentsWithCombinedAcademicRisk { get; set; } = new();
             public List<DashboardCourseAttendanceRiskModel> CoursesAtRiskByAttendance { get; set; } = new();
+            public List<DashboardCourseTrendRiskModel> CoursesWithAttendanceDecline { get; set; } = new();
+            public List<DashboardCourseTrendRiskModel> CoursesWithPerformanceDecline { get; set; } = new();
             public List<DashboardCriticalCourseModel> CriticalCourses { get; set; } = new();
             public List<DashboardAcademicTrendModel> AcademicTrends { get; set; } = new();
             public List<DashboardAverageGradeByCourseModel> CoursesAtRiskByOverallAverage { get; set; } = new();
@@ -89,6 +93,42 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             public decimal AttendancePercentage { get; set; }
             public int Ausentes { get; set; }
             public int ExpectedAttendanceRecords { get; set; }
+        }
+
+        public class DashboardStudentConsecutiveAbsenceRiskModel
+        {
+            public int AlumnoId { get; set; }
+            public string AlumnoNombre { get; set; } = default!;
+            public string? AlumnoAvatarUrl { get; set; }
+            public int CursoId { get; set; }
+            public string CursoNombre { get; set; } = default!;
+            public string? CursoDescripcion { get; set; }
+            public int ConsecutiveAbsences { get; set; }
+            public DateOnly LastAbsenceDate { get; set; }
+            public decimal AttendancePercentage { get; set; }
+        }
+
+        public class DashboardStudentCombinedRiskModel
+        {
+            public int AlumnoId { get; set; }
+            public string AlumnoNombre { get; set; } = default!;
+            public string? AlumnoAvatarUrl { get; set; }
+            public int CursoId { get; set; }
+            public string CursoNombre { get; set; } = default!;
+            public string? CursoDescripcion { get; set; }
+            public decimal AverageGrade { get; set; }
+            public decimal AttendancePercentage { get; set; }
+            public int Absences { get; set; }
+        }
+
+        public class DashboardCourseTrendRiskModel
+        {
+            public int CursoId { get; set; }
+            public string CursoNombre { get; set; } = default!;
+            public string? CursoDescripcion { get; set; }
+            public decimal CurrentValue { get; set; }
+            public decimal PreviousValue { get; set; }
+            public decimal Delta { get; set; }
         }
 
         public class DashboardCriticalCourseModel

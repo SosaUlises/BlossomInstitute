@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "VZPywAlZk0g=",
+  "dgSpecHash": "1UaDneTnHKg=",
   "success": true,
-  "projectFilePath": "C:\\Users\\ulipv\\Source\\Repos\\blossom-institute-api\\BlossomInstitute.UnitTests\\BlossomInstitute.UnitTests.csproj",
+  "projectFilePath": "C:\\Users\\ulipv\\source\\repos\\blossom-institute-api\\BlossomInstitute.UnitTests\\BlossomInstitute.UnitTests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ulipv\\.nuget\\packages\\automapper\\15.1.3\\automapper.15.1.3.nupkg.sha512",
     "C:\\Users\\ulipv\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.0\\automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",
