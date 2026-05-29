@@ -83,6 +83,31 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 PendingAssignmentsCount = pendingAssignmentsCount
             };
 
+            var courseTeacherNameRows = await _db.CursoProfesores
+                .AsNoTracking()
+                .Where(x => x.Curso.Estado == EstadoCurso.Activo)
+                .Select(x => new
+                {
+                    x.CursoId,
+                    ProfesorNombre = x.Profesor.Usuario.Nombre + " " + x.Profesor.Usuario.Apellido
+                })
+                .ToListAsync(ct);
+
+            var courseTeacherNamesByCourse = courseTeacherNameRows
+                .GroupBy(x => x.CursoId)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Select(x => x.ProfesorNombre)
+                        .Where(x => !string.IsNullOrWhiteSpace(x))
+                        .Distinct()
+                        .OrderBy(x => x)
+                        .ToList());
+
+            List<string> GetCourseTeacherNames(int cursoId) =>
+                courseTeacherNamesByCourse.TryGetValue(cursoId, out var names)
+                    ? names
+                    : new List<string>();
+
             // -------------------------------------------------
             // -------------------------------------------------
             // CURRENT PERIOD GENERAL AVERAGE (TODOS LOS TIPOS)
@@ -147,6 +172,11 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 .OrderByDescending(x => x.AverageGrade)
                 .ToListAsync(ct);
 
+            foreach (var course in averageGradesByCourse)
+            {
+                course.ProfesoresNombres = GetCourseTeacherNames(course.CursoId);
+            }
+
             // -------------------------------------------------
             // -------------------------------------------------
             // AVERAGE GRADES BY COURSE (SOLO MANUALES, CURRENT MONTH)
@@ -174,6 +204,11 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 })
                 .OrderByDescending(x => x.AverageGrade)
                 .ToListAsync(ct);
+
+            foreach (var course in manualAverageGradesByCourse)
+            {
+                course.ProfesoresNombres = GetCourseTeacherNames(course.CursoId);
+            }
 
             var previousAverageGradesByCourse = await _db.Calificaciones
                 .AsNoTracking()
@@ -211,6 +246,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                         CursoId = current.CursoId,
                         CursoNombre = current.CursoNombre,
                         CursoDescripcion = current.CursoDescripcion,
+                        ProfesoresNombres = current.ProfesoresNombres,
                         CurrentValue = current.AverageGrade,
                         PreviousValue = previous.PreviousValue,
                         Delta = Math.Round(current.AverageGrade - previous.PreviousValue, 2)
@@ -459,6 +495,11 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 .Take(5)
                 .ToList();
 
+            foreach (var course in coursesAtRiskByAttendance)
+            {
+                course.ProfesoresNombres = GetCourseTeacherNames(course.CursoId);
+            }
+
             var currentAttendanceByCourse = classCountByCourse
                 .Select(x =>
                 {
@@ -552,6 +593,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                         CursoId = current.CursoId,
                         CursoNombre = current.CursoNombre,
                         CursoDescripcion = current.CursoDescripcion,
+                        ProfesoresNombres = GetCourseTeacherNames(current.CursoId),
                         CurrentValue = current.AttendancePercentage!.Value,
                         PreviousValue = previous.AttendancePercentage!.Value,
                         Delta = Math.Round(current.AttendancePercentage.Value - previous.AttendancePercentage.Value, 2)
@@ -795,6 +837,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                         CursoId = courseId,
                         CursoNombre = courseNamesById.GetValueOrDefault(courseId, "Curso"),
                         CursoDescripcion = courseDescriptionsById.GetValueOrDefault(courseId),
+                        ProfesoresNombres = GetCourseTeacherNames(courseId),
                         AverageGrade = averageByCourseDict.GetValueOrDefault(courseId),
                         AttendancePercentage = attendanceRiskByCourseDict.GetValueOrDefault(courseId),
                         PendingCorrectionCount = pendingHomeworkByCourseDict.GetValueOrDefault(courseId),
