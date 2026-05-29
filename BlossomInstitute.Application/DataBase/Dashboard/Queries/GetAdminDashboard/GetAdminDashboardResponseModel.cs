@@ -6,6 +6,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
         public class GetAdminDashboardResponseModel
         {
             public DashboardPeriodModel Period { get; set; } = new();
+            public DashboardTrendComparisonModel TrendComparison { get; set; } = new();
+            public DashboardRollingWindowModel ConsecutiveAbsencesWindow { get; set; } = new();
             public DashboardOverviewModel Overview { get; set; } = new();
             public decimal? GeneralAverage { get; set; }
             public decimal? CurrentPeriodAverage { get; set; }
@@ -37,11 +39,28 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
 
         public class DashboardPeriodModel
         {
-            public string Strategy { get; set; } = "current-month";
+            public string Type { get; set; } = "academic-quarter";
+            public string Strategy { get; set; } = "academic-quarter";
+            public string Label { get; set; } = default!;
+            public string MonthRangeLabel { get; set; } = default!;
             public DateOnly From { get; set; }
             public DateOnly To { get; set; }
             public int Year { get; set; }
             public int Month { get; set; }
+            public int Quarter { get; set; }
+        }
+
+        public class DashboardTrendComparisonModel
+        {
+            public string Type { get; set; } = "previous-academic-quarter";
+            public string Label { get; set; } = "trimestre anterior";
+        }
+
+        public class DashboardRollingWindowModel
+        {
+            public string Type { get; set; } = "rolling-days";
+            public int Days { get; set; }
+            public string Label { get; set; } = default!;
         }
 
         public class DashboardOverviewModel
@@ -84,6 +103,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             public int Ausentes { get; set; }
             public int ClasesTotales { get; set; }
             public decimal AttendancePercentage { get; set; }
+            public decimal? AverageGrade { get; set; }
         }
 
         public class DashboardCourseAttendanceRiskModel
@@ -108,6 +128,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             public int ConsecutiveAbsences { get; set; }
             public DateOnly LastAbsenceDate { get; set; }
             public decimal AttendancePercentage { get; set; }
+            public decimal? AverageGrade { get; set; }
         }
 
         public class DashboardStudentCombinedRiskModel
@@ -200,5 +221,6 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
         public TipoCalificacion Tipo { get; set; }
         public decimal Nota { get; set; }
         public DateOnly Fecha { get; set; }
+        public decimal? AverageGrade { get; set; }
     }
 }

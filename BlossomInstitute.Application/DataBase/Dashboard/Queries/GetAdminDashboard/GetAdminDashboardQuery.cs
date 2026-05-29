@@ -33,19 +33,38 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             var nowUtc = DateTime.UtcNow;
             var nowLocal = DateTime.Now;
             var today = DateOnly.FromDateTime(nowLocal);
-            var firstDayOfMonth = new DateOnly(today.Year, today.Month, 1);
-            var previousMonthStart = firstDayOfMonth.AddMonths(-1);
-            var previousMonthEnd = firstDayOfMonth.AddDays(-1);
-            var periodFromUtc = firstDayOfMonth.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
-            var periodToUtcExclusive = today.AddDays(1).ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
+            var currentQuarter = GetAcademicQuarter(today);
+            var previousQuarter = GetPreviousAcademicQuarter(currentQuarter);
+            var currentDataTo = ClampToPeriod(today, currentQuarter);
+            const int consecutiveAbsenceWindowDays = 21;
+            var consecutiveAbsenceFrom = today.AddDays(-(consecutiveAbsenceWindowDays - 1));
+            var periodFromUtc = currentQuarter.From.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
+            var periodToUtcExclusive = currentDataTo.AddDays(1).ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
 
             var period = new DashboardPeriodModel
             {
-                Strategy = "current-month",
-                From = firstDayOfMonth,
-                To = today,
-                Year = today.Year,
-                Month = today.Month
+                Type = "academic-quarter",
+                Strategy = "academic-quarter",
+                Label = currentQuarter.Label,
+                MonthRangeLabel = currentQuarter.MonthRangeLabel,
+                From = currentQuarter.From,
+                To = currentQuarter.To,
+                Year = currentQuarter.Year,
+                Month = currentQuarter.From.Month,
+                Quarter = currentQuarter.Quarter
+            };
+
+            var trendComparison = new DashboardTrendComparisonModel
+            {
+                Type = "previous-academic-quarter",
+                Label = "trimestre anterior"
+            };
+
+            var consecutiveAbsencesWindow = new DashboardRollingWindowModel
+            {
+                Type = "rolling-days",
+                Days = consecutiveAbsenceWindowDays,
+                Label = $"últimos {consecutiveAbsenceWindowDays} días"
             };
 
             // -------------------------------------------------
@@ -111,7 +130,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             // -------------------------------------------------
             // -------------------------------------------------
             // CURRENT PERIOD GENERAL AVERAGE (TODOS LOS TIPOS)
-            // Strategy: current month. Keeping GeneralAverage populated
+            // Strategy: current academic quarter. Keeping GeneralAverage populated
             // with this value for backwards compatibility with the frontend.
             // -------------------------------------------------
             var generalAverageRaw = await _db.Calificaciones
@@ -119,8 +138,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 .Where(x =>
                     !x.Archivado &&
                     x.Curso.Estado == EstadoCurso.Activo &&
-                    x.Fecha >= firstDayOfMonth &&
-                    x.Fecha <= today &&
+                    x.Fecha >= currentQuarter.From &&
+                    x.Fecha <= currentDataTo &&
                     (
                         x.Tipo == TipoCalificacion.Homework ||
                         x.Tipo == TipoCalificacion.Quiz ||
@@ -139,21 +158,21 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             var currentPeriodAverage = generalAverage;
 
             var previousPeriodAverage = await GetAverageGradeAsync(
-                previousMonthStart,
-                previousMonthEnd,
+                previousQuarter.From,
+                previousQuarter.To,
                 includeHomework: true,
                 ct);
 
             // -------------------------------------------------
-            // AVERAGE GRADES BY COURSE (GENERAL, CURRENT MONTH)
+            // AVERAGE GRADES BY COURSE (GENERAL, CURRENT ACADEMIC QUARTER)
             // -------------------------------------------------
             var averageGradesByCourse = await _db.Calificaciones
                 .AsNoTracking()
                 .Where(x =>
                     !x.Archivado &&
                     x.Curso.Estado == EstadoCurso.Activo &&
-                    x.Fecha >= firstDayOfMonth &&
-                    x.Fecha <= today &&
+                    x.Fecha >= currentQuarter.From &&
+                    x.Fecha <= currentDataTo &&
                     (
                         x.Tipo == TipoCalificacion.Homework ||
                         x.Tipo == TipoCalificacion.Quiz ||
@@ -179,15 +198,15 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
 
             // -------------------------------------------------
             // -------------------------------------------------
-            // AVERAGE GRADES BY COURSE (SOLO MANUALES, CURRENT MONTH)
+            // AVERAGE GRADES BY COURSE (SOLO MANUALES, CURRENT ACADEMIC QUARTER)
             // -------------------------------------------------
             var manualAverageGradesByCourse = await _db.Calificaciones
                 .AsNoTracking()
                 .Where(x =>
                     !x.Archivado &&
                     x.Curso.Estado == EstadoCurso.Activo &&
-                    x.Fecha >= firstDayOfMonth &&
-                    x.Fecha <= today &&
+                    x.Fecha >= currentQuarter.From &&
+                    x.Fecha <= currentDataTo &&
                     (
                         x.Tipo == TipoCalificacion.Quiz ||
                         x.Tipo == TipoCalificacion.Test ||
@@ -215,8 +234,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 .Where(x =>
                     !x.Archivado &&
                     x.Curso.Estado == EstadoCurso.Activo &&
-                    x.Fecha >= previousMonthStart &&
-                    x.Fecha <= previousMonthEnd &&
+                    x.Fecha >= previousQuarter.From &&
+                    x.Fecha <= previousQuarter.To &&
                     (
                         x.Tipo == TipoCalificacion.Homework ||
                         x.Tipo == TipoCalificacion.Quiz ||
@@ -257,16 +276,16 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 .ToList();
 
             // -------------------------------------------------
-            // STUDENTS AT RISK THIS MONTH (GENERAL)
-            // promedio mensual < 60 incluyendo homework + manuales
+            // STUDENTS AT RISK THIS ACADEMIC QUARTER (GENERAL)
+            // promedio trimestral < 60 incluyendo homework + manuales
             // -------------------------------------------------
             var studentsAtRiskThisMonthCount = await _db.Calificaciones
                 .AsNoTracking()
                 .Where(x =>
                     !x.Archivado &&
                     x.Curso.Estado == EstadoCurso.Activo &&
-                    x.Fecha >= firstDayOfMonth &&
-                    x.Fecha <= today &&
+                    x.Fecha >= currentQuarter.From &&
+                    x.Fecha <= currentDataTo &&
                     (
                         x.Tipo == TipoCalificacion.Homework ||
                         x.Tipo == TipoCalificacion.Quiz ||
@@ -278,13 +297,39 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 .Where(g => g.Average(x => x.Nota) < 60)
                 .CountAsync(ct);
 
+            var studentAverageGradesByCourse = await _db.Calificaciones
+                .AsNoTracking()
+                .Where(x =>
+                    !x.Archivado &&
+                    x.Curso.Estado == EstadoCurso.Activo &&
+                    x.Fecha >= currentQuarter.From &&
+                    x.Fecha <= currentDataTo &&
+                    (
+                        x.Tipo == TipoCalificacion.Homework ||
+                        x.Tipo == TipoCalificacion.Quiz ||
+                        x.Tipo == TipoCalificacion.Test ||
+                        x.Tipo == TipoCalificacion.Participation ||
+                        x.Tipo == TipoCalificacion.Behaviour
+                    ))
+                .GroupBy(x => new { x.AlumnoId, x.CursoId })
+                .Select(g => new
+                {
+                    g.Key.AlumnoId,
+                    g.Key.CursoId,
+                    AverageGrade = Math.Round(g.Average(x => x.Nota), 2)
+                })
+                .ToListAsync(ct);
+
+            var studentAverageGradesByCourseDict = studentAverageGradesByCourse
+                .ToDictionary(x => (x.AlumnoId, x.CursoId), x => (decimal?)x.AverageGrade);
+
             var studentsAtRiskByAverage = await _db.Calificaciones
                 .AsNoTracking()
                 .Where(x =>
                     !x.Archivado &&
                     x.Curso.Estado == EstadoCurso.Activo &&
-                    x.Fecha >= firstDayOfMonth &&
-                    x.Fecha <= today &&
+                    x.Fecha >= currentQuarter.From &&
+                    x.Fecha <= currentDataTo &&
                     (
                         x.Tipo == TipoCalificacion.Homework ||
                         x.Tipo == TipoCalificacion.Quiz ||
@@ -319,15 +364,15 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
 
             // -------------------------------------------------
             // LOW MANUAL GRADE BASE QUERY
-            // evaluaciones manuales < 60 en el mes
+            // evaluaciones manuales < 60 en el trimestre academico
             // -------------------------------------------------
             var lowManualGradesBaseQuery = _db.Calificaciones
                 .AsNoTracking()
                 .Where(x =>
                     !x.Archivado &&
                     x.Curso.Estado == EstadoCurso.Activo &&
-                    x.Fecha >= firstDayOfMonth &&
-                    x.Fecha <= today &&
+                    x.Fecha >= currentQuarter.From &&
+                    x.Fecha <= currentDataTo &&
                     x.Nota < 60 &&
                     (
                         x.Tipo == TipoCalificacion.Quiz ||
@@ -388,15 +433,15 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 .ToList();
 
             // -------------------------------------------------
-            // ATTENDANCE HEALTH (CURRENT MONTH)
+            // ATTENDANCE HEALTH (CURRENT ACADEMIC QUARTER)
             // -------------------------------------------------
             var periodClasses = await _db.Clases
                 .AsNoTracking()
                 .Where(x =>
                     x.Curso.Estado == EstadoCurso.Activo &&
                     x.Estado != EstadoClase.Cancelada &&
-                    x.Fecha >= firstDayOfMonth &&
-                    x.Fecha <= today)
+                    x.Fecha >= currentQuarter.From &&
+                    x.Fecha <= currentDataTo)
                 .Select(x => new
                 {
                     x.Id,
@@ -405,6 +450,12 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                     CursoDescripcion = x.Curso.Descripcion
                 })
                 .ToListAsync(ct);
+
+            foreach (var student in studentsManualLowPerformance)
+            {
+                student.AverageGrade = studentAverageGradesByCourseDict.GetValueOrDefault(
+                    (student.AlumnoId, student.CursoId));
+            }
 
             var periodClassIds = periodClasses.Select(x => x.Id).ToList();
 
@@ -464,8 +515,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 : (decimal?)null;
 
             var previousPeriodAttendanceAverage = await GetInstitutionalAttendanceAverageAsync(
-                previousMonthStart,
-                previousMonthEnd,
+                previousQuarter.From,
+                previousQuarter.To,
                 ct);
 
             var coursesAtRiskByAttendance = classCountByCourse
@@ -527,8 +578,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 .Where(x =>
                     x.Curso.Estado == EstadoCurso.Activo &&
                     x.Estado != EstadoClase.Cancelada &&
-                    x.Fecha >= previousMonthStart &&
-                    x.Fecha <= previousMonthEnd)
+                    x.Fecha >= previousQuarter.From &&
+                    x.Fecha <= previousQuarter.To)
                 .Select(x => new
                 {
                     x.Id,
@@ -611,6 +662,44 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                     Ausentes = g.Count(x => x.Estado == EstadoAsistencia.Ausente)
                 });
 
+            var rollingClasses = await _db.Clases
+                .AsNoTracking()
+                .Where(x =>
+                    x.Curso.Estado == EstadoCurso.Activo &&
+                    x.Estado != EstadoClase.Cancelada &&
+                    x.Fecha >= consecutiveAbsenceFrom &&
+                    x.Fecha <= today)
+                .Select(x => new
+                {
+                    x.Id,
+                    x.CursoId
+                })
+                .ToListAsync(ct);
+
+            var rollingClassIds = rollingClasses.Select(x => x.Id).ToList();
+            var rollingAttendances = await _db.Asistencias
+                .AsNoTracking()
+                .Where(x => rollingClassIds.Contains(x.ClaseId))
+                .Select(x => new
+                {
+                    x.AlumnoId,
+                    x.Clase.CursoId,
+                    x.Clase.Fecha,
+                    x.Estado
+                })
+                .ToListAsync(ct);
+
+            var rollingClassCountByCourse = rollingClasses
+                .GroupBy(x => x.CursoId)
+                .ToDictionary(g => g.Key, g => g.Count());
+
+            var rollingAttendanceByStudentCourse = rollingAttendances
+                .GroupBy(x => new { x.AlumnoId, x.CursoId })
+                .ToDictionary(g => (g.Key.AlumnoId, g.Key.CursoId), g => new
+                {
+                    Presentes = g.Count(x => x.Estado == EstadoAsistencia.Presente)
+                });
+
             var studentsWithMultipleAbsences = activeMatriculas
                 .Select(x =>
                 {
@@ -635,7 +724,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                         CursoDescripcion = x.CursoDescripcion,
                         Ausentes = ausentes,
                         ClasesTotales = classCount,
-                        AttendancePercentage = percentage
+                        AttendancePercentage = percentage,
+                        AverageGrade = studentAverageGradesByCourseDict.GetValueOrDefault((x.AlumnoId, x.CursoId))
                     };
                 })
                 .Where(x =>
@@ -653,7 +743,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             var attendancePercentageByStudentCourse = studentsWithMultipleAbsences
                 .ToDictionary(x => (x.AlumnoId, x.CursoId), x => x.AttendancePercentage);
 
-            var studentsWithConsecutiveAbsences = periodAttendances
+            var studentsWithConsecutiveAbsences = rollingAttendances
                 .Where(x => x.Estado == EstadoAsistencia.Presente || x.Estado == EstadoAsistencia.Ausente)
                 .GroupBy(x => new { x.AlumnoId, x.CursoId })
                 .Select(g =>
@@ -685,9 +775,9 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                         return null;
                     }
 
-                    attendanceByStudentCourse.TryGetValue((g.Key.AlumnoId, g.Key.CursoId), out var attendanceSummary);
-                    var classCount = classCountByCourse.TryGetValue(g.Key.CursoId, out var classInfo)
-                        ? classInfo.Count
+                    rollingAttendanceByStudentCourse.TryGetValue((g.Key.AlumnoId, g.Key.CursoId), out var attendanceSummary);
+                    var classCount = rollingClassCountByCourse.TryGetValue(g.Key.CursoId, out var rollingClassCount)
+                        ? rollingClassCount
                         : 0;
                     var attendancePercentage = classCount > 0
                         ? Math.Round((decimal)(attendanceSummary?.Presentes ?? 0) * 100 / classCount, 2)
@@ -703,7 +793,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                         CursoDescripcion = matricula.CursoDescripcion,
                         ConsecutiveAbsences = maxStreak,
                         LastAbsenceDate = lastAbsenceDate.Value,
-                        AttendancePercentage = attendancePercentage
+                        AttendancePercentage = attendancePercentage,
+                        AverageGrade = studentAverageGradesByCourseDict.GetValueOrDefault((matricula.AlumnoId, matricula.CursoId))
                     };
                 })
                 .Where(x => x != null && x.ConsecutiveAbsences >= 2)
@@ -743,7 +834,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 .ToList();
 
             // -------------------------------------------------
-            // HOMEWORK HEALTH (CURRENT MONTH)
+            // HOMEWORK HEALTH (CURRENT ACADEMIC QUARTER TO DATE)
             // -------------------------------------------------
             var pendingHomeworkByCourse = await _db.Entregas
                 .AsNoTracking()
@@ -934,6 +1025,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             var response = new GetAdminDashboardResponseModel
             {
                 Period = period,
+                TrendComparison = trendComparison,
+                ConsecutiveAbsencesWindow = consecutiveAbsencesWindow,
                 Overview = overview,
                 GeneralAverage = generalAverage,
                 CurrentPeriodAverage = currentPeriodAverage,
@@ -1040,6 +1133,64 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             return Math.Round((decimal)presentes * 100 / expectedRecords, 2);
         }
 
+        private static AcademicQuarterPeriod GetAcademicQuarter(DateOnly date)
+        {
+            return date.Month switch
+            {
+                >= 3 and <= 5 => CreateAcademicQuarter(date.Year, 1),
+                >= 6 and <= 8 => CreateAcademicQuarter(date.Year, 2),
+                >= 9 and <= 11 => CreateAcademicQuarter(date.Year, 3),
+                12 => CreateAcademicQuarter(date.Year, 3),
+                _ => CreateAcademicQuarter(date.Year - 1, 3)
+            };
+        }
+
+        private static AcademicQuarterPeriod GetPreviousAcademicQuarter(AcademicQuarterPeriod period)
+        {
+            return period.Quarter switch
+            {
+                1 => CreateAcademicQuarter(period.Year - 1, 3),
+                2 => CreateAcademicQuarter(period.Year, 1),
+                _ => CreateAcademicQuarter(period.Year, 2)
+            };
+        }
+
+        private static AcademicQuarterPeriod CreateAcademicQuarter(int year, int quarter)
+        {
+            var startMonth = quarter switch
+            {
+                1 => 3,
+                2 => 6,
+                3 => 9,
+                _ => throw new ArgumentOutOfRangeException(nameof(quarter), "El trimestre académico debe ser 1, 2 o 3.")
+            };
+
+            var from = new DateOnly(year, startMonth, 1);
+            var to = from.AddMonths(3).AddDays(-1);
+
+            return new AcademicQuarterPeriod
+            {
+                Year = year,
+                Quarter = quarter,
+                From = from,
+                To = to,
+                Label = $"{quarter}º trimestre",
+                MonthRangeLabel = quarter switch
+                {
+                    1 => "Marzo a mayo",
+                    2 => "Junio a agosto",
+                    _ => "Septiembre a noviembre"
+                }
+            };
+        }
+
+        private static DateOnly ClampToPeriod(DateOnly date, AcademicQuarterPeriod period)
+        {
+            if (date < period.From) return period.To;
+            if (date > period.To) return period.To;
+            return date;
+        }
+
         private static DateTime GetNextOccurrence(DayOfWeek dia, TimeOnly horaInicio, DateTime fromLocal)
         {
             var currentDate = fromLocal.Date;
@@ -1069,6 +1220,16 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 DayOfWeek.Sunday => "Domingo",
                 _ => "Desconocido"
             };
+        }
+
+        private sealed class AcademicQuarterPeriod
+        {
+            public int Year { get; init; }
+            public int Quarter { get; init; }
+            public DateOnly From { get; init; }
+            public DateOnly To { get; init; }
+            public string Label { get; init; } = default!;
+            public string MonthRangeLabel { get; init; } = default!;
         }
     }
 }
