@@ -5,6 +5,7 @@ using BlossomInstitute.Application.DataBase.Alumno.Command.DesactivarAlumno;
 using BlossomInstitute.Application.DataBase.Alumno.Command.UpdateAlumno;
 using BlossomInstitute.Application.DataBase.Alumno.Queries.GetAll;
 using BlossomInstitute.Application.DataBase.Alumno.Queries.GetAsignableByCurso;
+using BlossomInstitute.Application.DataBase.Alumno.Queries.GetAcademicSummary;
 using BlossomInstitute.Application.DataBase.Alumno.Queries.GetById;
 using BlossomInstitute.Application.DataBase.Asistencia.Command.TomarAsistencia;
 using BlossomInstitute.Application.DataBase.Asistencia.Queries.GetAsistenciasByAlumno;
@@ -123,6 +124,7 @@ namespace BlossomInstitute.Application
             services.AddTransient<IGetAlumnoByIdQuery, GetAlumnoByIdQuery>();
             services.AddTransient<IActivarAlumnoCommand, ActivarAlumnoCommand>();
             services.AddTransient<IGetAsignableAlumnosByCursoQuery, GetAsignableAlumnosByCursoQuery>();
+            services.AddTransient<IGetAlumnoAcademicSummaryQuery, GetAlumnoAcademicSummaryQuery>();
 
             // Curso
 

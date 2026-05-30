@@ -382,7 +382,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                     ));
 
             // -------------------------------------------------
-            // STUDENTS WITH AT LEAST ONE LOW MANUAL GRADE THIS MONTH
+            // STUDENTS WITH AT LEAST ONE LOW MANUAL GRADE IN CURRENT ACADEMIC QUARTER
             // -------------------------------------------------
             var studentsManualLowGradesThisMonthCount = await lowManualGradesBaseQuery
                 .Select(x => x.AlumnoId)
@@ -541,7 +541,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                         ExpectedAttendanceRecords = expectedRecords
                     };
                 })
-                .Where(x => x.ExpectedAttendanceRecords > 0 && x.AttendancePercentage < 80)
+                .Where(x => x.ExpectedAttendanceRecords > 0 && x.AttendancePercentage < 70)
                 .OrderBy(x => x.AttendancePercentage)
                 .Take(5)
                 .ToList();
@@ -730,7 +730,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 })
                 .Where(x =>
                     x.ClasesTotales > 0 &&
-                    (x.Ausentes >= 3 || x.AttendancePercentage < 80))
+                    x.AttendancePercentage < 70)
                 .OrderByDescending(x => x.Ausentes)
                 .ThenBy(x => x.AttendancePercentage)
                 .Take(8)
@@ -809,7 +809,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                     attendancePercentageByStudentCourse.TryGetValue(
                         (student.AlumnoId, student.CursoId),
                         out var attendancePercentage) &&
-                    attendancePercentage < 80)
+                    attendancePercentage < 70)
                 .Select(student =>
                 {
                     var attendanceRisk = studentsWithMultipleAbsences
