@@ -60,6 +60,7 @@ using BlossomInstitute.Application.DataBase.Profesor.Command.CreateProfesor;
 using BlossomInstitute.Application.DataBase.Profesor.Command.DeleteProfesor;
 using BlossomInstitute.Application.DataBase.Profesor.Command.UpdateProfesor;
 using BlossomInstitute.Application.DataBase.Profesor.Queries.GetAllProfesores;
+using BlossomInstitute.Application.DataBase.Profesor.Queries.GetAcademicSummary;
 using BlossomInstitute.Application.DataBase.Profesor.Queries.GetById;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteAsistenciaByClase;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteAttendanceByCursoAndTerm;
@@ -114,6 +115,7 @@ namespace BlossomInstitute.Application
             services.AddTransient<IDesactivarProfesorCommand, DesactivarProfesorCommand>();
             services.AddTransient<IGetAllProfesoresQuery, GetAllProfesoresQuery>();
             services.AddTransient<IGetProfesorByIdQuery, GetProfesorByIdQuery>();
+            services.AddTransient<IGetProfesorAcademicSummaryQuery, GetProfesorAcademicSummaryQuery>();
             services.AddTransient<IActivarProfesorCommand, ActivarProfesorCommand>();
 
             // Alumno
