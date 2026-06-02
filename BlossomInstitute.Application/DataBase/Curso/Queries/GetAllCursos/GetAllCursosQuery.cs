@@ -61,6 +61,7 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAllCursos
                 {
                     Id = c.Id,
                     Nombre = c.Nombre,
+                    Descripcion = c.Descripcion,
                     Anio = c.Anio,
                     Estado = c.Estado,
                     CantidadHorarios = c.Horarios.Count,

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BlossomInstitute.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+599d425b8165c0c38a10dbaae9036119feb89aef")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a7b1f22841b063353fd8cd02c87f8edfd6b177e8")]
 [assembly: System.Reflection.AssemblyProductAttribute("BlossomInstitute.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BlossomInstitute.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

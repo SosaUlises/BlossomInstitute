@@ -8,6 +8,7 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAllCursos
     {
         public int Id { get; set; }
         public string Nombre { get; set; } = default!;
+        public string? Descripcion { get; set; }
         public int Anio { get; set; }
         public EstadoCurso Estado { get; set; }
 
