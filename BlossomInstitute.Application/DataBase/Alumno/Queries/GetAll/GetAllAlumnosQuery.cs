@@ -88,8 +88,9 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAll
 
             var studentIds = students.Select(x => x.Id).ToList();
             var today = DateOnly.FromDateTime(DateTime.Now);
-            var quarter = AcademicQuarterHelper.GetCurrent(today);
-            var dataTo = AcademicQuarterHelper.ClampToPeriod(today, quarter);
+            var periodContext = AcademicQuarterHelper.GetContext(today);
+            var quarter = periodContext.CurrentQuarter;
+            var dataTo = periodContext.To;
 
             var enrollments = await _db.Matriculas
                 .AsNoTracking()

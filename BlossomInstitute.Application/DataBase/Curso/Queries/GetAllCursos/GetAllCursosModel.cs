@@ -19,13 +19,23 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAllCursos
         public List<string> AvatarUrls { get; set; } = new();
         public List<GetAllCursosTeacherModel> Teachers { get; set; } = new();
         public List<string> TeacherNames { get; set; } = new();
+        public CourseAcademicPeriodModel Period { get; set; } = new();
         public int StudentsCount { get; set; }
         public decimal? AttendanceAverage { get; set; }
         public decimal? AcademicAverage { get; set; }
+        public decimal? AsistenciaActual { get; set; }
+        public decimal? PromedioActual { get; set; }
+        public CourseMetricsCurrentModel MetricsCurrent { get; set; } = new();
         public int PendingCorrectionsCount { get; set; }
         public int StudentsAtRiskCount { get; set; }
+        public int StudentsAtRiskCurrentCount { get; set; }
+        public int AlumnosCriticosActualesCount { get; set; }
+        public int AlumnosConBajaAsistenciaActualCount { get; set; }
+        public int PendingFollowUpCount { get; set; }
+        public List<CoursePendingFollowUpModel> PendingFollowUp { get; set; } = new();
         public bool RequiresAttention { get; set; }
         public CourseHealthModel HealthStatus { get; set; } = new();
+        public CourseHealthModel AcademicStatusCurrent { get; set; } = new();
         public string MainSignal { get; set; } = default!;
     }
 

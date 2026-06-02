@@ -10,6 +10,7 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAcademicSummar
         public AlumnoAcademicGradesSummaryModel GradesSummary { get; set; } = new();
         public AlumnoAcademicHomeworkSummaryModel HomeworkSummary { get; set; } = new();
         public AlumnoAcademicStatusModel AcademicStatus { get; set; } = new();
+        public List<AlumnoAcademicPendingFollowUpModel> PendingFollowUp { get; set; } = new();
         public List<AlumnoAcademicSignalModel> RecentSignals { get; set; } = new();
     }
 
@@ -90,6 +91,23 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAcademicSummar
         public string Level { get; set; } = "normal";
         public string Label { get; set; } = "Sin alertas academicas";
         public List<string> Reasons { get; set; } = new();
+    }
+
+    public class AlumnoAcademicPendingFollowUpModel
+    {
+        public int CourseId { get; set; }
+        public string CourseName { get; set; } = default!;
+        public string PeriodLabel { get; set; } = default!;
+        public int QuarterNumber { get; set; }
+        public int Year { get; set; }
+        public string Level { get; set; } = "critical";
+        public string Title { get; set; } = default!;
+        public string Reason { get; set; } = default!;
+        public decimal? AverageValue { get; set; }
+        public decimal? AttendanceValue { get; set; }
+        public string Description { get; set; } = default!;
+        public string Status { get; set; } = "pending";
+        public bool IsPreviousQuarter { get; set; }
     }
 
     public class AlumnoAcademicSignalModel

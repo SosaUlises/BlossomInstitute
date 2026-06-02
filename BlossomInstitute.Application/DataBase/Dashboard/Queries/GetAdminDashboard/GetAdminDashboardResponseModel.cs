@@ -31,6 +31,9 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             public List<DashboardCourseTrendRiskModel> CoursesWithAttendanceDecline { get; set; } = new();
             public List<DashboardCourseTrendRiskModel> CoursesWithPerformanceDecline { get; set; } = new();
             public List<DashboardCriticalCourseModel> CriticalCourses { get; set; } = new();
+            public List<DashboardCriticalCourseModel> CoursesCurrentRisk { get; set; } = new();
+            public List<DashboardCoursePendingFollowUpModel> CoursesPendingFollowUp { get; set; } = new();
+            public List<DashboardCourseTrendRiskModel> CourseTrendAlerts { get; set; } = new();
             public List<DashboardAcademicTrendModel> AcademicTrends { get; set; } = new();
             public List<DashboardAverageGradeByCourseModel> CoursesAtRiskByOverallAverage { get; set; } = new();
             public List<DashboardAverageGradeByCourseModel> CoursesAtRiskByManualAverage { get; set; } = new();
@@ -152,6 +155,10 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             public string CursoNombre { get; set; } = default!;
             public string? CursoDescripcion { get; set; }
             public List<string> ProfesoresNombres { get; set; } = new();
+            public string Context { get; set; } = "trend";
+            public string ContextLabel { get; set; } = "Caida respecto al trimestre anterior";
+            public string PeriodLabel { get; set; } = default!;
+            public string TrendType { get; set; } = default!;
             public decimal CurrentValue { get; set; }
             public decimal PreviousValue { get; set; }
             public decimal Delta { get; set; }
@@ -167,7 +174,30 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             public decimal? AttendancePercentage { get; set; }
             public int PendingCorrectionCount { get; set; }
             public int SignalsCount { get; set; }
+            public string Context { get; set; } = "current-risk";
+            public string ContextLabel { get; set; } = "Riesgo actual del trimestre";
+            public string PeriodLabel { get; set; } = default!;
+            public int StudentsAtRiskCurrentCount { get; set; }
+            public int PendingFollowUpCount { get; set; }
             public CourseHealthModel Health { get; set; } = new();
+        }
+
+        public class DashboardCoursePendingFollowUpModel
+        {
+            public int CursoId { get; set; }
+            public string CursoNombre { get; set; } = default!;
+            public string? CursoDescripcion { get; set; }
+            public List<string> ProfesoresNombres { get; set; } = new();
+            public string Context { get; set; } = "pending-follow-up";
+            public string ContextLabel { get; set; } = "Seguimiento pendiente";
+            public string PeriodLabel { get; set; } = default!;
+            public int QuarterNumber { get; set; }
+            public int Year { get; set; }
+            public string Level { get; set; } = CourseHealthLevels.FollowUp;
+            public string Reason { get; set; } = default!;
+            public decimal? AverageGrade { get; set; }
+            public decimal? AttendancePercentage { get; set; }
+            public string Description { get; set; } = default!;
         }
 
         public class DashboardAcademicTrendModel

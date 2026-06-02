@@ -5,11 +5,18 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAcademicProfile
     public class CourseAcademicProfileResponseModel
     {
         public CourseAcademicProfileCourseModel Course { get; set; } = new();
+        public CourseAcademicPeriodModel Period { get; set; } = new();
         public List<CourseAcademicProfileTeacherModel> Teachers { get; set; } = new();
         public CourseAcademicProfileStudentsModel Students { get; set; } = new();
         public CourseAcademicProfileMetricsModel AcademicMetrics { get; set; } = new();
+        public CourseMetricsCurrentModel MetricsCurrent { get; set; } = new();
         public CourseHealthModel Health { get; set; } = new();
+        public CourseHealthModel AcademicStatusCurrent { get; set; } = new();
+        public int StudentsAtRiskCurrentCount { get; set; }
+        public int PendingFollowUpCount { get; set; }
+        public List<CourseAcademicProfileAffectedStudentModel> AffectedStudentsCurrent { get; set; } = new();
         public List<CourseAcademicProfileAffectedStudentModel> StudentsRequiringFollowUp { get; set; } = new();
+        public List<CoursePendingFollowUpModel> PendingFollowUp { get; set; } = new();
         public List<CourseAcademicProfileSignalModel> AcademicSignals { get; set; } = new();
         public List<CourseAcademicProfileActivityModel> RecentActivity { get; set; } = new();
     }
@@ -38,7 +45,13 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAcademicProfile
     {
         public decimal? AttendanceAverage { get; set; }
         public decimal? AcademicAverage { get; set; }
+        public decimal? AsistenciaActual { get; set; }
+        public decimal? PromedioActual { get; set; }
         public int StudentsAtRiskCount { get; set; }
+        public int StudentsAtRiskCurrentCount { get; set; }
+        public int AlumnosCriticosActualesCount { get; set; }
+        public int AlumnosConBajaAsistenciaActualCount { get; set; }
+        public int PendingFollowUpCount { get; set; }
         public int PendingCorrectionsCount { get; set; }
     }
 

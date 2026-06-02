@@ -1,4 +1,5 @@
 using BlossomInstitute.Common.Features;
+using BlossomInstitute.Application.Common.Academic;
 using BlossomInstitute.Application.DataBase.Curso.Shared;
 using BlossomInstitute.Domain.Entidades.Clase;
 using BlossomInstitute.Domain.Entidades.Curso;
@@ -45,6 +46,17 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAcademicProfile
                 return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Curso no encontrado");
 
             var today = GetArgentinaToday();
+            var periodContext = AcademicQuarterHelper.GetContext(today);
+            var currentFrom = periodContext.From;
+            var currentTo = periodContext.To;
+            var period = new CourseAcademicPeriodModel
+            {
+                Label = periodContext.Label,
+                From = periodContext.From,
+                To = periodContext.To,
+                Year = periodContext.Year,
+                QuarterNumber = periodContext.QuarterNumber
+            };
             var recentFrom = today.AddDays(-30);
             var previousFrom = today.AddDays(-60);
 
@@ -81,7 +93,8 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAcademicProfile
                 .Where(x =>
                     x.CursoId == courseId &&
                     x.Estado != EstadoClase.Cancelada &&
-                    x.Fecha <= today)
+                    x.Fecha >= currentFrom &&
+                    x.Fecha <= currentTo)
                 .Select(x => new ClassProjection
                 {
                     Id = x.Id,
@@ -110,7 +123,57 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAcademicProfile
                 ? new List<GradeProjection>()
                 : await _db.Calificaciones
                     .AsNoTracking()
-                    .Where(x => x.CursoId == courseId && studentIds.Contains(x.AlumnoId) && !x.Archivado)
+                    .Where(x =>
+                        x.CursoId == courseId &&
+                        studentIds.Contains(x.AlumnoId) &&
+                        !x.Archivado &&
+                        x.Fecha >= currentFrom &&
+                        x.Fecha <= currentTo)
+                    .Select(x => new GradeProjection
+                    {
+                        StudentId = x.AlumnoId,
+                        Grade = x.Nota,
+                        Date = x.Fecha
+                    })
+                    .ToListAsync(ct);
+
+            var historicalClasses = await _db.Clases
+                .AsNoTracking()
+                .Where(x =>
+                    x.CursoId == courseId &&
+                    x.Estado != EstadoClase.Cancelada &&
+                    x.Fecha < currentFrom)
+                .Select(x => new ClassProjection
+                {
+                    Id = x.Id,
+                    Date = x.Fecha
+                })
+                .ToListAsync(ct);
+
+            var historicalClassIds = historicalClasses.Select(x => x.Id).ToList();
+            var historicalAttendanceRows = historicalClassIds.Count == 0 || studentIds.Count == 0
+                ? new List<AttendanceProjection>()
+                : await _db.Asistencias
+                    .AsNoTracking()
+                    .Where(x => historicalClassIds.Contains(x.ClaseId) && studentIds.Contains(x.AlumnoId))
+                    .Select(x => new AttendanceProjection
+                    {
+                        ClassId = x.ClaseId,
+                        StudentId = x.AlumnoId,
+                        Status = x.Estado,
+                        Date = x.Clase.Fecha
+                    })
+                    .ToListAsync(ct);
+
+            var historicalGrades = studentIds.Count == 0
+                ? new List<GradeProjection>()
+                : await _db.Calificaciones
+                    .AsNoTracking()
+                    .Where(x =>
+                        x.CursoId == courseId &&
+                        studentIds.Contains(x.AlumnoId) &&
+                        !x.Archivado &&
+                        x.Fecha < currentFrom)
                     .Select(x => new GradeProjection
                     {
                         StudentId = x.AlumnoId,
@@ -132,9 +195,13 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAcademicProfile
                 : (decimal?)Math.Round(grades.Average(x => x.Grade), 2);
 
             var studentFollowUp = BuildStudentFollowUp(students, classes, attendanceRows, grades);
+            var pendingFollowUp = BuildPendingFollowUp(course, students, historicalClasses, historicalAttendanceRows, historicalGrades);
             var studentsAtRiskCount = studentFollowUp.Count(x =>
                 (x.AttendancePercentage.HasValue && x.AttendancePercentage.Value < CriticalAttendanceThreshold) ||
                 (x.AverageGrade.HasValue && x.AverageGrade.Value < CriticalGradeThreshold));
+            var lowAttendanceStudentsCount = studentFollowUp.Count(x =>
+                x.AttendancePercentage.HasValue &&
+                x.AttendancePercentage.Value < CriticalAttendanceThreshold);
 
             var recentAttendanceAverage = CalculateAttendanceAverage(
                 classes.Where(x => x.Date >= recentFrom).ToList(),
@@ -191,15 +258,39 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAcademicProfile
                 {
                     StudentsCount = students.Count
                 },
+                Period = period,
                 AcademicMetrics = new CourseAcademicProfileMetricsModel
                 {
                     AttendanceAverage = attendanceAverage,
                     AcademicAverage = academicAverage,
+                    AsistenciaActual = attendanceAverage,
+                    PromedioActual = academicAverage,
                     StudentsAtRiskCount = studentsAtRiskCount,
+                    StudentsAtRiskCurrentCount = studentsAtRiskCount,
+                    AlumnosCriticosActualesCount = studentsAtRiskCount,
+                    AlumnosConBajaAsistenciaActualCount = lowAttendanceStudentsCount,
+                    PendingFollowUpCount = pendingFollowUp.Count,
+                    PendingCorrectionsCount = pendingCorrectionsCount
+                },
+                MetricsCurrent = new CourseMetricsCurrentModel
+                {
+                    AttendanceAverage = attendanceAverage,
+                    AcademicAverage = academicAverage,
+                    AsistenciaActual = attendanceAverage,
+                    PromedioActual = academicAverage,
+                    StudentsAtRiskCurrentCount = studentsAtRiskCount,
+                    AlumnosCriticosActualesCount = studentsAtRiskCount,
+                    AlumnosConBajaAsistenciaActualCount = lowAttendanceStudentsCount,
+                    PendingFollowUpCount = pendingFollowUp.Count,
                     PendingCorrectionsCount = pendingCorrectionsCount
                 },
                 Health = health,
+                AcademicStatusCurrent = health,
+                StudentsAtRiskCurrentCount = studentsAtRiskCount,
+                PendingFollowUpCount = pendingFollowUp.Count,
+                AffectedStudentsCurrent = studentFollowUp,
                 StudentsRequiringFollowUp = studentFollowUp,
+                PendingFollowUp = pendingFollowUp,
                 AcademicSignals = signals,
                 RecentActivity = activity
             };
@@ -251,6 +342,103 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAcademicProfile
                 .ThenBy(x => x.AttendancePercentage ?? 100m)
                 .ThenBy(x => x.AverageGrade ?? 100m)
                 .ToList();
+        }
+
+        private static List<CoursePendingFollowUpModel> BuildPendingFollowUp(
+            CourseProjection course,
+            List<StudentProjection> students,
+            List<ClassProjection> historicalClasses,
+            List<AttendanceProjection> historicalAttendanceRows,
+            List<GradeProjection> historicalGrades)
+        {
+            var studentsById = students.ToDictionary(x => x.Id);
+            var classCountByPeriod = historicalClasses
+                .GroupBy(x =>
+                {
+                    var period = AcademicQuarterHelper.GetCurrent(x.Date);
+                    return new PendingCoursePeriodKey(period.Year, period.Quarter);
+                })
+                .ToDictionary(x => x.Key, x => x.Count());
+            var accumulators = new Dictionary<PendingFollowUpKey, PendingFollowUpAccumulator>();
+
+            foreach (var group in historicalGrades.GroupBy(x =>
+            {
+                var period = AcademicQuarterHelper.GetCurrent(x.Date);
+                return new PendingFollowUpKey(x.StudentId, period.Year, period.Quarter);
+            }))
+            {
+                if (!studentsById.TryGetValue(group.Key.StudentId, out var student))
+                    continue;
+
+                var average = Math.Round(group.Average(x => x.Grade), 2);
+                if (average >= FollowUpGradeThreshold)
+                    continue;
+
+                var period = AcademicQuarterHelper.GetCurrent(group.First().Date);
+                var accumulator = GetOrCreatePendingFollowUp(accumulators, group.Key, course, student, period);
+                accumulator.AverageValue = average;
+                accumulator.Reasons.Add(average < CriticalGradeThreshold ? "Bajo rendimiento" : "Rendimiento en seguimiento");
+            }
+
+            foreach (var group in historicalAttendanceRows.GroupBy(x =>
+            {
+                var period = AcademicQuarterHelper.GetCurrent(x.Date);
+                return new PendingFollowUpKey(x.StudentId, period.Year, period.Quarter);
+            }))
+            {
+                if (!studentsById.TryGetValue(group.Key.StudentId, out var student))
+                    continue;
+
+                var classCountKey = new PendingCoursePeriodKey(group.Key.Year, group.Key.QuarterNumber);
+                var classCount = classCountByPeriod.GetValueOrDefault(classCountKey);
+                if (classCount <= 0)
+                    continue;
+
+                var attendance = Math.Round(group.Count(x => x.Status == EstadoAsistencia.Presente) * 100m / classCount, 2);
+                if (attendance >= FollowUpAttendanceThreshold)
+                    continue;
+
+                var period = AcademicQuarterHelper.GetCurrent(group.First().Date);
+                var accumulator = GetOrCreatePendingFollowUp(accumulators, group.Key, course, student, period);
+                accumulator.AttendanceValue = attendance;
+                accumulator.Reasons.Add(attendance < CriticalAttendanceThreshold ? "Baja asistencia" : "Asistencia en seguimiento");
+            }
+
+            return accumulators.Values
+                .Select(x => x.ToModel())
+                .OrderByDescending(x => x.Level == CourseHealthLevels.Critical)
+                .ThenByDescending(x => x.Year)
+                .ThenByDescending(x => x.QuarterNumber)
+                .ThenBy(x => x.AlumnoApellido)
+                .ThenBy(x => x.AlumnoNombre)
+                .ToList();
+        }
+
+        private static PendingFollowUpAccumulator GetOrCreatePendingFollowUp(
+            Dictionary<PendingFollowUpKey, PendingFollowUpAccumulator> accumulators,
+            PendingFollowUpKey key,
+            CourseProjection course,
+            StudentProjection student,
+            AcademicQuarterPeriod period)
+        {
+            if (accumulators.TryGetValue(key, out var accumulator))
+                return accumulator;
+
+            accumulator = new PendingFollowUpAccumulator
+            {
+                StudentId = student.Id,
+                StudentFirstName = student.FirstName,
+                StudentLastName = student.LastName,
+                AvatarUrl = student.AvatarUrl,
+                CourseId = course.Id,
+                CourseName = course.Name,
+                PeriodLabel = period.Label,
+                QuarterNumber = period.Quarter,
+                Year = period.Year
+            };
+            accumulators[key] = accumulator;
+
+            return accumulator;
         }
 
         private static string BuildStudentReason(decimal? attendancePercentage, decimal? averageGrade)
@@ -569,6 +757,56 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAcademicProfile
             public int StudentId { get; init; }
             public decimal Grade { get; init; }
             public DateOnly Date { get; init; }
+        }
+
+        private readonly record struct PendingCoursePeriodKey(int Year, int QuarterNumber);
+
+        private readonly record struct PendingFollowUpKey(
+            int StudentId,
+            int Year,
+            int QuarterNumber);
+
+        private sealed class PendingFollowUpAccumulator
+        {
+            public int StudentId { get; init; }
+            public string StudentFirstName { get; init; } = default!;
+            public string StudentLastName { get; init; } = default!;
+            public string? AvatarUrl { get; init; }
+            public int CourseId { get; init; }
+            public string CourseName { get; init; } = default!;
+            public string PeriodLabel { get; init; } = default!;
+            public int QuarterNumber { get; init; }
+            public int Year { get; init; }
+            public decimal? AverageValue { get; set; }
+            public decimal? AttendanceValue { get; set; }
+            public List<string> Reasons { get; } = new();
+
+            public CoursePendingFollowUpModel ToModel()
+            {
+                var isCritical =
+                    (AverageValue.HasValue && AverageValue.Value < CriticalGradeThreshold) ||
+                    (AttendanceValue.HasValue && AttendanceValue.Value < CriticalAttendanceThreshold);
+                var level = isCritical ? CourseHealthLevels.Critical : CourseHealthLevels.FollowUp;
+                var reason = string.Join(" y ", Reasons.Distinct());
+
+                return new CoursePendingFollowUpModel
+                {
+                    AlumnoId = StudentId,
+                    AlumnoNombre = StudentFirstName,
+                    AlumnoApellido = StudentLastName,
+                    AvatarUrl = AvatarUrl,
+                    CursoId = CourseId,
+                    CursoNombre = CourseName,
+                    PeriodLabel = PeriodLabel,
+                    QuarterNumber = QuarterNumber,
+                    Year = Year,
+                    Level = level,
+                    Reason = reason,
+                    AverageValue = AverageValue,
+                    AttendanceValue = AttendanceValue,
+                    Description = $"{(isCritical ? "Critico" : "Seguimiento")} en {PeriodLabel} {Year}: {reason}"
+                };
+            }
         }
     }
 }

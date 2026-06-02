@@ -15,6 +15,46 @@ namespace BlossomInstitute.Application.DataBase.Curso.Shared
         public const string Critical = "critical";
     }
 
+    public class CoursePendingFollowUpModel
+    {
+        public int AlumnoId { get; set; }
+        public string AlumnoNombre { get; set; } = default!;
+        public string AlumnoApellido { get; set; } = default!;
+        public string? AvatarUrl { get; set; }
+        public int CursoId { get; set; }
+        public string CursoNombre { get; set; } = default!;
+        public string PeriodLabel { get; set; } = default!;
+        public int QuarterNumber { get; set; }
+        public int Year { get; set; }
+        public string Level { get; set; } = CourseHealthLevels.Critical;
+        public string Reason { get; set; } = default!;
+        public decimal? AverageValue { get; set; }
+        public decimal? AttendanceValue { get; set; }
+        public string Description { get; set; } = default!;
+    }
+
+    public class CourseAcademicPeriodModel
+    {
+        public string Label { get; set; } = default!;
+        public DateOnly From { get; set; }
+        public DateOnly To { get; set; }
+        public int Year { get; set; }
+        public int QuarterNumber { get; set; }
+    }
+
+    public class CourseMetricsCurrentModel
+    {
+        public decimal? AttendanceAverage { get; set; }
+        public decimal? AcademicAverage { get; set; }
+        public decimal? AsistenciaActual { get; set; }
+        public decimal? PromedioActual { get; set; }
+        public int StudentsAtRiskCurrentCount { get; set; }
+        public int AlumnosCriticosActualesCount { get; set; }
+        public int AlumnosConBajaAsistenciaActualCount { get; set; }
+        public int PendingFollowUpCount { get; set; }
+        public int PendingCorrectionsCount { get; set; }
+    }
+
     public static class CourseHealthCalculator
     {
         private const decimal CriticalAttendanceThreshold = 70m;
