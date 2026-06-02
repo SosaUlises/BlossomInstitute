@@ -1,5 +1,7 @@
 ﻿using BlossomInstitute.Domain.Entidades.Calificacion;
 
+using BlossomInstitute.Application.DataBase.Curso.Shared;
+
 namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashboard
 {
 
@@ -165,6 +167,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             public decimal? AttendancePercentage { get; set; }
             public int PendingCorrectionCount { get; set; }
             public int SignalsCount { get; set; }
+            public CourseHealthModel Health { get; set; } = new();
         }
 
         public class DashboardAcademicTrendModel

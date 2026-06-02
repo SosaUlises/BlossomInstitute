@@ -1,4 +1,5 @@
 using BlossomInstitute.Common.Features;
+using BlossomInstitute.Application.DataBase.Curso.Shared;
 using BlossomInstitute.Domain.Entidades.Calificacion;
 using BlossomInstitute.Domain.Entidades.Clase;
 using BlossomInstitute.Domain.Entidades.Curso;
@@ -865,6 +866,15 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             var pendingHomeworkByCourseDict = pendingHomeworkByCourse.ToDictionary(x => x.CursoId, x => x.Count);
             var averageByCourseDict = averageGradesByCourse.ToDictionary(x => x.CursoId, x => (decimal?)x.AverageGrade);
             var attendanceRiskByCourseDict = coursesAtRiskByAttendance.ToDictionary(x => x.CursoId, x => (decimal?)x.AttendancePercentage);
+            var studentsAtRiskByCourseDict = studentsAtRiskByAverage
+                .Select(x => new { x.CursoId, x.AlumnoId })
+                .Concat(studentsWithMultipleAbsences.Select(x => new { x.CursoId, x.AlumnoId }))
+                .Concat(studentsWithConsecutiveAbsences.Select(x => new { x.CursoId, x.AlumnoId }))
+                .Concat(studentsWithCombinedAcademicRisk.Select(x => new { x.CursoId, x.AlumnoId }))
+                .GroupBy(x => x.CursoId)
+                .ToDictionary(
+                    x => x.Key,
+                    x => x.Select(student => student.AlumnoId).Distinct().Count());
 
             var criticalCourseIds = coursesAtRiskByOverallAverage.Select(x => x.CursoId)
                 .Concat(coursesAtRiskByManualAverage.Select(x => x.CursoId))
@@ -923,16 +933,26 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                     if (coursesWithAttendanceDecline.Any(x => x.CursoId == courseId)) signals++;
                     if (pendingHomeworkByCourseDict.GetValueOrDefault(courseId) >= 5) signals++;
 
+                    var teacherNames = GetCourseTeacherNames(courseId);
+                    var attendanceAverage = attendanceRiskByCourseDict.GetValueOrDefault(courseId);
+                    var academicAverage = averageByCourseDict.GetValueOrDefault(courseId);
+                    var studentsAtRiskCount = studentsAtRiskByCourseDict.GetValueOrDefault(courseId);
+
                     return new DashboardCriticalCourseModel
                     {
                         CursoId = courseId,
                         CursoNombre = courseNamesById.GetValueOrDefault(courseId, "Curso"),
                         CursoDescripcion = courseDescriptionsById.GetValueOrDefault(courseId),
-                        ProfesoresNombres = GetCourseTeacherNames(courseId),
-                        AverageGrade = averageByCourseDict.GetValueOrDefault(courseId),
-                        AttendancePercentage = attendanceRiskByCourseDict.GetValueOrDefault(courseId),
+                        ProfesoresNombres = teacherNames,
+                        AverageGrade = academicAverage,
+                        AttendancePercentage = attendanceAverage,
                         PendingCorrectionCount = pendingHomeworkByCourseDict.GetValueOrDefault(courseId),
-                        SignalsCount = signals
+                        SignalsCount = signals,
+                        Health = CourseHealthCalculator.Calculate(
+                            attendanceAverage,
+                            academicAverage,
+                            studentsAtRiskCount,
+                            teacherNames.Count > 0)
                     };
                 })
                 .OrderByDescending(x => x.SignalsCount)
