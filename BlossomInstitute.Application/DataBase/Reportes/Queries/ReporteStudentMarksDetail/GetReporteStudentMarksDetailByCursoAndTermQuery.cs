@@ -1,3 +1,5 @@
+using BlossomInstitute.Application.Common.Academic;
+using BlossomInstitute.Application.DataBase.Reportes.Shared;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Calificacion;
 using BlossomInstitute.Domain.Entidades.Calificaciones;
@@ -87,7 +89,9 @@ namespace BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteStudentM
             if (!alumnoMatriculado)
                 return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "El alumno no pertenece al curso");
 
-            var (from, to) = GetTermRange(year, term);
+            var academicPeriod = AcademicQuarterHelper.GetQuarter(year, term);
+            var from = academicPeriod.From;
+            var to = academicPeriod.To;
 
             IQueryable<CalificacionEntity> q = _db.Calificaciones
                 .AsNoTracking()
@@ -153,22 +157,12 @@ namespace BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteStudentM
                 Term = term,
                 From = from,
                 To = to,
+                Period = ReportAcademicPeriodModel.FromQuarter(academicPeriod),
                 Total = calificaciones.Count,
                 Items = calificaciones
             };
 
             return ResponseApiService.Response(StatusCodes.Status200OK, response);
-        }
-
-        private static (DateOnly from, DateOnly to) GetTermRange(int year, int term)
-        {
-            return term switch
-            {
-                1 => (new DateOnly(year, 3, 1), new DateOnly(year, 5, 31)),
-                2 => (new DateOnly(year, 6, 1), new DateOnly(year, 8, 31)),
-                3 => (new DateOnly(year, 9, 1), new DateOnly(year, 11, 30)),
-                _ => throw new ArgumentOutOfRangeException(nameof(term))
-            };
         }
     }
 }

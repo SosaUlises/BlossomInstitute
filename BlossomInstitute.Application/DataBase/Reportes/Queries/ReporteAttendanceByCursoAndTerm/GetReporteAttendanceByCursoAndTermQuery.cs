@@ -1,3 +1,5 @@
+using BlossomInstitute.Application.Common.Academic;
+using BlossomInstitute.Application.DataBase.Reportes.Shared;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Clase;
 using BlossomInstitute.Domain.Model;
@@ -62,7 +64,9 @@ namespace BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteAttendan
                     return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "No autorizado");
             }
 
-            var (from, to) = GetTermRange(year, term);
+            var academicPeriod = AcademicQuarterHelper.GetQuarter(year, term);
+            var from = academicPeriod.From;
+            var to = academicPeriod.To;
 
             var clasesTerm = await _db.Clases
                 .AsNoTracking()
@@ -208,22 +212,12 @@ namespace BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteAttendan
                 PageNumber = pageNumber,
                 PageSize = pageSize,
                 Total = total,
+                Period = ReportAcademicPeriodModel.FromQuarter(academicPeriod),
                 Resumen = resumen,
                 Items = items
             };
 
             return ResponseApiService.Response(StatusCodes.Status200OK, response);
-        }
-
-        private static (DateOnly from, DateOnly to) GetTermRange(int year, int term)
-        {
-            return term switch
-            {
-                1 => (new DateOnly(year, 3, 1), new DateOnly(year, 5, 31)),
-                2 => (new DateOnly(year, 6, 1), new DateOnly(year, 8, 31)),
-                3 => (new DateOnly(year, 9, 1), new DateOnly(year, 11, 30)),
-                _ => throw new ArgumentOutOfRangeException(nameof(term))
-            };
         }
     }
 }

@@ -42,6 +42,11 @@ namespace BlossomInstitute.Application.Common.Academic
             };
         }
 
+        public static AcademicQuarterPeriod GetQuarter(int year, int quarter)
+        {
+            return Create(year, quarter);
+        }
+
         public static DateOnly ClampToPeriod(DateOnly date, AcademicQuarterPeriod period)
         {
             if (date < period.From) return period.To;

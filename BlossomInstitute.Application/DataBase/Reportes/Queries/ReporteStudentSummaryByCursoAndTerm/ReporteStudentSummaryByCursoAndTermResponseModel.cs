@@ -1,4 +1,6 @@
-﻿namespace BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteStudentSummaryByCursoAndTerm
+using BlossomInstitute.Application.DataBase.Reportes.Shared;
+
+namespace BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteStudentSummaryByCursoAndTerm
 {
     public class ReporteStudentSummaryByCursoAndTermResponseModel
     {
@@ -15,6 +17,7 @@
         public int Term { get; set; }
         public DateOnly From { get; set; }
         public DateOnly To { get; set; }
+        public ReportAcademicPeriodModel Period { get; set; } = new();
 
         public ReporteStudentSummaryAttendanceModel Attendance { get; set; } = new();
         public ReporteStudentSummaryHomeworkModel Homework { get; set; } = new();
