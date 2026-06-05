@@ -602,6 +602,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 .Where(x => previousClassIds.Contains(x.ClaseId))
                 .Select(x => new
                 {
+                    x.AlumnoId,
                     x.Clase.CursoId,
                     x.Estado
                 })
@@ -1036,6 +1037,351 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 .Take(5)
                 .ToList();
 
+            var currentStudentRiskKeys = studentsAtRiskByAverage
+                .Select(x => (x.AlumnoId, x.CursoId))
+                .Concat(studentsWithMultipleAbsences.Select(x => (x.AlumnoId, x.CursoId)))
+                .Concat(studentsWithConsecutiveAbsences.Select(x => (x.AlumnoId, x.CursoId)))
+                .Concat(studentsWithCombinedAcademicRisk.Select(x => (x.AlumnoId, x.CursoId)))
+                .Distinct()
+                .ToHashSet();
+            var currentCourseRiskIds = criticalCourses
+                .Select(x => x.CursoId)
+                .ToHashSet();
+            var monitoringPeriods = currentQuarter.Quarter > 1
+                ? Enumerable.Range(1, currentQuarter.Quarter - 1)
+                    .Select(quarter => AcademicQuarterHelper.GetQuarter(currentQuarter.Year, quarter))
+                    .ToList()
+                : new List<AcademicQuarterPeriod> { previousQuarter };
+            var openFollowUpsByKey = new Dictionary<string, DashboardOpenFollowUpModel>();
+
+            foreach (var monitoringPeriod in monitoringPeriods)
+            {
+                var monitoringStudentAverageRows = await _db.Calificaciones
+                    .AsNoTracking()
+                    .Where(x =>
+                        !x.Archivado &&
+                        x.Curso.Estado == EstadoCurso.Activo &&
+                        x.Fecha >= monitoringPeriod.From &&
+                        x.Fecha <= monitoringPeriod.To &&
+                        (
+                            x.Tipo == TipoCalificacion.Homework ||
+                            x.Tipo == TipoCalificacion.Quiz ||
+                            x.Tipo == TipoCalificacion.Test ||
+                            x.Tipo == TipoCalificacion.Participation ||
+                            x.Tipo == TipoCalificacion.Behaviour
+                        ))
+                    .GroupBy(x => new
+                    {
+                        x.AlumnoId,
+                        AlumnoNombre = x.Alumno.Usuario.Nombre + " " + x.Alumno.Usuario.Apellido,
+                        AlumnoAvatarUrl = x.Alumno.Usuario.AvatarUrl,
+                        x.CursoId,
+                        CursoNombre = x.Curso.Nombre,
+                        CursoDescripcion = x.Curso.Descripcion
+                    })
+                    .Select(g => new
+                    {
+                        g.Key.AlumnoId,
+                        g.Key.AlumnoNombre,
+                        g.Key.AlumnoAvatarUrl,
+                        g.Key.CursoId,
+                        g.Key.CursoNombre,
+                        g.Key.CursoDescripcion,
+                        AverageGrade = Math.Round(g.Average(x => x.Nota), 2)
+                    })
+                    .Where(x => x.AverageGrade < 60m)
+                    .ToListAsync(ct);
+
+                foreach (var row in monitoringStudentAverageRows)
+                {
+                    if (currentStudentRiskKeys.Contains((row.AlumnoId, row.CursoId)))
+                        continue;
+
+                    var key = $"student-{row.AlumnoId}-{row.CursoId}-{monitoringPeriod.Year}-{monitoringPeriod.Quarter}";
+
+                    if (!openFollowUpsByKey.TryGetValue(key, out var item))
+                    {
+                        item = new DashboardOpenFollowUpModel
+                        {
+                            Id = key,
+                            EntityType = "student",
+                            EntityId = row.AlumnoId,
+                            AlumnoId = row.AlumnoId,
+                            AlumnoNombre = row.AlumnoNombre,
+                            AlumnoAvatarUrl = row.AlumnoAvatarUrl,
+                            CursoId = row.CursoId,
+                            CursoNombre = row.CursoNombre,
+                            CursoDescripcion = row.CursoDescripcion,
+                            PeriodLabel = monitoringPeriod.Label,
+                            QuarterNumber = monitoringPeriod.Quarter,
+                            Year = monitoringPeriod.Year,
+                            Source = "low-average",
+                            Level = CourseHealthLevels.Critical,
+                            Href = $"/admin/dashboard/students/{row.AlumnoId}/profile"
+                        };
+                        openFollowUpsByKey[key] = item;
+                    }
+
+                    item.AverageGrade = row.AverageGrade;
+                    item.Level = CourseHealthLevels.Critical;
+                    item.Source = item.AttendancePercentage.HasValue
+                        ? "combined-academic-risk"
+                        : "low-average";
+                    item.Reason = item.AttendancePercentage.HasValue
+                        ? $"Promedio {row.AverageGrade:0.##} y asistencia {item.AttendancePercentage:0.##}% en {monitoringPeriod.Label}"
+                        : $"Promedio {row.AverageGrade:0.##} en {monitoringPeriod.Label}";
+                }
+
+                var monitoringClasses = await _db.Clases
+                    .AsNoTracking()
+                    .Where(x =>
+                        x.Curso.Estado == EstadoCurso.Activo &&
+                        x.Estado != EstadoClase.Cancelada &&
+                        x.Fecha >= monitoringPeriod.From &&
+                        x.Fecha <= monitoringPeriod.To)
+                    .Select(x => new
+                    {
+                        x.Id,
+                        x.CursoId,
+                        CursoNombre = x.Curso.Nombre,
+                        CursoDescripcion = x.Curso.Descripcion
+                    })
+                    .ToListAsync(ct);
+                var monitoringClassIds = monitoringClasses.Select(x => x.Id).ToList();
+                var monitoringAttendances = await _db.Asistencias
+                    .AsNoTracking()
+                    .Where(x => monitoringClassIds.Contains(x.ClaseId))
+                    .Select(x => new
+                    {
+                        x.AlumnoId,
+                        x.Clase.CursoId,
+                        x.Estado
+                    })
+                    .ToListAsync(ct);
+                var monitoringClassCountByCourse = monitoringClasses
+                    .GroupBy(x => new { x.CursoId, x.CursoNombre, x.CursoDescripcion })
+                    .ToDictionary(g => g.Key.CursoId, g => new
+                    {
+                        g.Key.CursoNombre,
+                        g.Key.CursoDescripcion,
+                        Count = g.Count()
+                    });
+                var monitoringAttendanceByStudentCourse = monitoringAttendances
+                    .GroupBy(x => new { x.AlumnoId, x.CursoId })
+                    .ToDictionary(g => (g.Key.AlumnoId, g.Key.CursoId), g => new
+                    {
+                        Presentes = g.Count(x => x.Estado == EstadoAsistencia.Presente),
+                        Ausentes = g.Count(x => x.Estado == EstadoAsistencia.Ausente)
+                    });
+
+                foreach (var row in activeMatriculas)
+                {
+                    if (currentStudentRiskKeys.Contains((row.AlumnoId, row.CursoId)))
+                        continue;
+
+                    var classCount = monitoringClassCountByCourse.TryGetValue(row.CursoId, out var classInfo)
+                        ? classInfo.Count
+                        : 0;
+
+                    if (classCount == 0)
+                        continue;
+
+                    monitoringAttendanceByStudentCourse.TryGetValue((row.AlumnoId, row.CursoId), out var attendance);
+                    var attendancePercentage = Math.Round((decimal)(attendance?.Presentes ?? 0) * 100 / classCount, 2);
+
+                    if (attendancePercentage >= 70m)
+                        continue;
+
+                    var key = $"student-{row.AlumnoId}-{row.CursoId}-{monitoringPeriod.Year}-{monitoringPeriod.Quarter}";
+
+                    if (!openFollowUpsByKey.TryGetValue(key, out var item))
+                    {
+                        item = new DashboardOpenFollowUpModel
+                        {
+                            Id = key,
+                            EntityType = "student",
+                            EntityId = row.AlumnoId,
+                            AlumnoId = row.AlumnoId,
+                            AlumnoNombre = row.AlumnoNombre,
+                            AlumnoAvatarUrl = row.AlumnoAvatarUrl,
+                            CursoId = row.CursoId,
+                            CursoNombre = row.CursoNombre,
+                            CursoDescripcion = row.CursoDescripcion,
+                            PeriodLabel = monitoringPeriod.Label,
+                            QuarterNumber = monitoringPeriod.Quarter,
+                            Year = monitoringPeriod.Year,
+                            Source = "low-attendance",
+                            Level = CourseHealthLevels.Critical,
+                            Href = $"/admin/dashboard/students/{row.AlumnoId}/profile"
+                        };
+                        openFollowUpsByKey[key] = item;
+                    }
+
+                    item.AttendancePercentage = attendancePercentage;
+                    item.Level = CourseHealthLevels.Critical;
+                    item.Source = item.AverageGrade.HasValue
+                        ? "combined-academic-risk"
+                        : "low-attendance";
+                    item.Reason = item.AverageGrade.HasValue
+                        ? $"Promedio {item.AverageGrade:0.##} y asistencia {attendancePercentage:0.##}% en {monitoringPeriod.Label}"
+                        : $"Asistencia critica {attendancePercentage:0.##}% en {monitoringPeriod.Label}";
+                }
+
+                var monitoringCourseAverageRows = await _db.Calificaciones
+                    .AsNoTracking()
+                    .Where(x =>
+                        !x.Archivado &&
+                        x.Curso.Estado == EstadoCurso.Activo &&
+                        x.Fecha >= monitoringPeriod.From &&
+                        x.Fecha <= monitoringPeriod.To &&
+                        (
+                            x.Tipo == TipoCalificacion.Homework ||
+                            x.Tipo == TipoCalificacion.Quiz ||
+                            x.Tipo == TipoCalificacion.Test ||
+                            x.Tipo == TipoCalificacion.Participation ||
+                            x.Tipo == TipoCalificacion.Behaviour
+                        ))
+                    .GroupBy(x => new { x.CursoId, x.Curso.Nombre, x.Curso.Descripcion })
+                    .Select(g => new
+                    {
+                        g.Key.CursoId,
+                        CursoNombre = g.Key.Nombre,
+                        CursoDescripcion = g.Key.Descripcion,
+                        AverageGrade = Math.Round(g.Average(x => x.Nota), 2)
+                    })
+                    .Where(x => x.AverageGrade < 75m)
+                    .ToListAsync(ct);
+
+                foreach (var row in monitoringCourseAverageRows)
+                {
+                    if (currentCourseRiskIds.Contains(row.CursoId))
+                        continue;
+
+                    var key = $"course-{row.CursoId}-{monitoringPeriod.Year}-{monitoringPeriod.Quarter}";
+
+                    if (!openFollowUpsByKey.TryGetValue(key, out var item))
+                    {
+                        item = new DashboardOpenFollowUpModel
+                        {
+                            Id = key,
+                            EntityType = "course",
+                            EntityId = row.CursoId,
+                            CursoId = row.CursoId,
+                            CursoNombre = row.CursoNombre,
+                            CursoDescripcion = row.CursoDescripcion,
+                            PeriodLabel = monitoringPeriod.Label,
+                            QuarterNumber = monitoringPeriod.Quarter,
+                            Year = monitoringPeriod.Year,
+                            Source = "course-low-average",
+                            Level = row.AverageGrade < 60m ? CourseHealthLevels.Critical : CourseHealthLevels.FollowUp,
+                            Href = $"/admin/dashboard/courses/{row.CursoId}/profile"
+                        };
+                        openFollowUpsByKey[key] = item;
+                    }
+
+                    item.AverageGrade = row.AverageGrade;
+                    item.Level = row.AverageGrade < 60m ? CourseHealthLevels.Critical : item.Level;
+                    item.Source = item.AttendancePercentage.HasValue
+                        ? "course-recurring-risk"
+                        : "course-low-average";
+                    item.Reason = item.AttendancePercentage.HasValue
+                        ? $"Promedio grupal {row.AverageGrade:0.##} y asistencia {item.AttendancePercentage:0.##}% en {monitoringPeriod.Label}"
+                        : $"Promedio grupal {row.AverageGrade:0.##} en {monitoringPeriod.Label}";
+                }
+
+                foreach (var row in monitoringClassCountByCourse)
+                {
+                    if (currentCourseRiskIds.Contains(row.Key))
+                        continue;
+
+                    var studentsInCourse = studentCountByCourse.GetValueOrDefault(row.Key);
+                    var expectedRecords = row.Value.Count * studentsInCourse;
+
+                    if (expectedRecords == 0)
+                        continue;
+
+                    var present = monitoringAttendances.Count(x =>
+                        x.CursoId == row.Key &&
+                        x.Estado == EstadoAsistencia.Presente);
+                    var attendancePercentage = Math.Round((decimal)present * 100 / expectedRecords, 2);
+
+                    if (attendancePercentage >= 85m)
+                        continue;
+
+                    var key = $"course-{row.Key}-{monitoringPeriod.Year}-{monitoringPeriod.Quarter}";
+
+                    if (!openFollowUpsByKey.TryGetValue(key, out var item))
+                    {
+                        item = new DashboardOpenFollowUpModel
+                        {
+                            Id = key,
+                            EntityType = "course",
+                            EntityId = row.Key,
+                            CursoId = row.Key,
+                            CursoNombre = row.Value.CursoNombre,
+                            CursoDescripcion = row.Value.CursoDescripcion,
+                            PeriodLabel = monitoringPeriod.Label,
+                            QuarterNumber = monitoringPeriod.Quarter,
+                            Year = monitoringPeriod.Year,
+                            Source = "course-low-attendance",
+                            Level = attendancePercentage < 70m ? CourseHealthLevels.Critical : CourseHealthLevels.FollowUp,
+                            Href = $"/admin/dashboard/courses/{row.Key}/profile"
+                        };
+                        openFollowUpsByKey[key] = item;
+                    }
+
+                    item.AttendancePercentage = attendancePercentage;
+                    item.Level = attendancePercentage < 70m ? CourseHealthLevels.Critical : item.Level;
+                    item.Source = item.AverageGrade.HasValue
+                        ? "course-recurring-risk"
+                        : "course-low-attendance";
+                    item.Reason = item.AverageGrade.HasValue
+                        ? $"Promedio grupal {item.AverageGrade:0.##} y asistencia {attendancePercentage:0.##}% en {monitoringPeriod.Label}"
+                        : $"Baja asistencia grupal {attendancePercentage:0.##}% en {monitoringPeriod.Label}";
+                }
+            }
+
+            foreach (var pending in coursesPendingFollowUp)
+            {
+                if (currentCourseRiskIds.Contains(pending.CursoId))
+                    continue;
+
+                var key = $"course-{pending.CursoId}-{pending.Year}-{pending.QuarterNumber}";
+
+                if (!openFollowUpsByKey.TryGetValue(key, out var item))
+                {
+                    openFollowUpsByKey[key] = new DashboardOpenFollowUpModel
+                    {
+                        Id = key,
+                        EntityType = "course",
+                        EntityId = pending.CursoId,
+                        CursoId = pending.CursoId,
+                        CursoNombre = pending.CursoNombre,
+                        CursoDescripcion = pending.CursoDescripcion,
+                        PeriodLabel = pending.PeriodLabel,
+                        QuarterNumber = pending.QuarterNumber,
+                        Year = pending.Year,
+                        Reason = pending.Reason,
+                        Source = "course-pending-follow-up",
+                        Level = pending.Level,
+                        AverageGrade = pending.AverageGrade,
+                        AttendancePercentage = pending.AttendancePercentage,
+                        Href = $"/admin/dashboard/courses/{pending.CursoId}/profile"
+                    };
+                }
+            }
+
+            var openFollowUps = openFollowUpsByKey.Values
+                .Where(x => !string.IsNullOrWhiteSpace(x.Reason))
+                .OrderByDescending(x => x.Year)
+                .ThenByDescending(x => x.QuarterNumber)
+                .ThenByDescending(x => x.Level == CourseHealthLevels.Critical)
+                .ThenBy(x => x.EntityType == "student" ? 0 : 1)
+                .ThenBy(x => x.AverageGrade ?? 100m)
+                .ThenBy(x => x.AttendancePercentage ?? 100m)
+                .Take(12)
+                .ToList();
+
             var academicTrends = new List<DashboardAcademicTrendModel>
             {
                 new()
@@ -1143,6 +1489,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 CriticalCourses = criticalCourses,
                 CoursesCurrentRisk = criticalCourses,
                 CoursesPendingFollowUp = coursesPendingFollowUp,
+                OpenFollowUps = openFollowUps,
                 CourseTrendAlerts = courseTrendAlerts,
                 AcademicTrends = academicTrends,
                 CoursesAtRiskByOverallAverage = coursesAtRiskByOverallAverage,

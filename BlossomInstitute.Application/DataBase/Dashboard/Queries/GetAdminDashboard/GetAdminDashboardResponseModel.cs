@@ -33,6 +33,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             public List<DashboardCriticalCourseModel> CriticalCourses { get; set; } = new();
             public List<DashboardCriticalCourseModel> CoursesCurrentRisk { get; set; } = new();
             public List<DashboardCoursePendingFollowUpModel> CoursesPendingFollowUp { get; set; } = new();
+            public List<DashboardOpenFollowUpModel> OpenFollowUps { get; set; } = new();
             public List<DashboardCourseTrendRiskModel> CourseTrendAlerts { get; set; } = new();
             public List<DashboardAcademicTrendModel> AcademicTrends { get; set; } = new();
             public List<DashboardAverageGradeByCourseModel> CoursesAtRiskByOverallAverage { get; set; } = new();
@@ -198,6 +199,28 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             public decimal? AverageGrade { get; set; }
             public decimal? AttendancePercentage { get; set; }
             public string Description { get; set; } = default!;
+        }
+
+        public class DashboardOpenFollowUpModel
+        {
+            public string Id { get; set; } = default!;
+            public string EntityType { get; set; } = default!;
+            public int EntityId { get; set; }
+            public int? AlumnoId { get; set; }
+            public string? AlumnoNombre { get; set; }
+            public string? AlumnoAvatarUrl { get; set; }
+            public int? CursoId { get; set; }
+            public string? CursoNombre { get; set; }
+            public string? CursoDescripcion { get; set; }
+            public string PeriodLabel { get; set; } = default!;
+            public int QuarterNumber { get; set; }
+            public int Year { get; set; }
+            public string Reason { get; set; } = default!;
+            public string Source { get; set; } = default!;
+            public string Level { get; set; } = CourseHealthLevels.FollowUp;
+            public decimal? AverageGrade { get; set; }
+            public decimal? AttendancePercentage { get; set; }
+            public string Href { get; set; } = default!;
         }
 
         public class DashboardAcademicTrendModel
