@@ -12,6 +12,7 @@ namespace BlossomInstitute.Application.DataBase.Profesor.Queries.GetAcademicSumm
     {
         private const decimal CourseRiskAverageThreshold = 60m;
         private const decimal CourseRiskAttendanceThreshold = 70m;
+        private const int RecentActivityLimit = 60;
 
         private readonly IDataBaseService _db;
 
@@ -290,7 +291,7 @@ namespace BlossomInstitute.Application.DataBase.Profesor.Queries.GetAcademicSumm
             activities.AddRange(BuildCourseAttentionActivity(assignedCourses));
 
             if (courseIds.Count == 0)
-                return activities.Take(8).ToList();
+                return activities.Take(RecentActivityLimit).ToList();
 
             var attendanceRows = await _db.Clases
                 .AsNoTracking()
@@ -301,7 +302,7 @@ namespace BlossomInstitute.Application.DataBase.Profesor.Queries.GetAcademicSumm
                     x.Asistencias.Any())
                 .OrderByDescending(x => x.Fecha)
                 .ThenByDescending(x => x.Id)
-                .Take(4)
+                .Take(RecentActivityLimit)
                 .Select(x => new AttendanceActivityProjection
                 {
                     CourseId = x.CursoId,
@@ -325,7 +326,7 @@ namespace BlossomInstitute.Application.DataBase.Profesor.Queries.GetAcademicSumm
                 .AsNoTracking()
                 .Where(x => x.ProfesorId == teacherId && x.Estado == EstadoTarea.Publicada)
                 .OrderByDescending(x => x.CreatedAtUtc)
-                .Take(4)
+                .Take(RecentActivityLimit)
                 .Select(x => new TaskActivityProjection
                 {
                     CourseId = x.CursoId,
@@ -350,7 +351,7 @@ namespace BlossomInstitute.Application.DataBase.Profesor.Queries.GetAcademicSumm
                 .AsNoTracking()
                 .Where(x => x.EsVigente && x.Entrega.Tarea.ProfesorId == teacherId)
                 .OrderByDescending(x => x.FechaCorreccionUtc)
-                .Take(4)
+                .Take(RecentActivityLimit)
                 .Select(x => new CorrectionActivityProjection
                 {
                     CourseId = x.Entrega.Tarea.CursoId,
@@ -375,7 +376,7 @@ namespace BlossomInstitute.Application.DataBase.Profesor.Queries.GetAcademicSumm
                 .OrderByDescending(x => x.Severity == "critical")
                 .ThenByDescending(x => x.Severity == "attention")
                 .ThenByDescending(x => x.OccurredAtUtc)
-                .Take(8)
+                .Take(RecentActivityLimit)
                 .ToList();
         }
 
