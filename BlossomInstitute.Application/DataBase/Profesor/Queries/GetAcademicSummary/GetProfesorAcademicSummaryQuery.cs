@@ -1,4 +1,5 @@
 using BlossomInstitute.Common.Features;
+using BlossomInstitute.Application.DataBase.Profesor;
 using BlossomInstitute.Domain.Entidades.Clase;
 using BlossomInstitute.Domain.Entidades.Tarea;
 using BlossomInstitute.Domain.Model;
@@ -127,8 +128,7 @@ namespace BlossomInstitute.Application.DataBase.Profesor.Queries.GetAcademicSumm
             var classesThisWeek = await GetClassesThisWeekCount(courseIds, week, ct);
             var unloadedAttendanceCount = await GetUnloadedAttendanceCount(courseIds, today, ct);
             var operationalStatus = BuildOperationalStatus(
-                teacher.Active,
-                assignedCourses.Count,
+                studentsCount,
                 pendingCorrectionsCount,
                 unloadedAttendanceCount,
                 assignedCourses.Count(x => x.RequiresAttention));
@@ -226,34 +226,29 @@ namespace BlossomInstitute.Application.DataBase.Profesor.Queries.GetAcademicSumm
         }
 
         private static ProfesorOperationalStatusModel BuildOperationalStatus(
-            bool active,
-            int assignedCoursesCount,
+            int studentsCount,
             int pendingCorrectionsCount,
             int unloadedAttendanceCount,
             int coursesAtRiskCount)
         {
             var reasons = new List<string>();
-
-            if (!active)
-                reasons.Add("Docente inactivo");
-
-            if (assignedCoursesCount == 0)
-                reasons.Add("Sin cursos asignados");
+            var hasRelevantPendingCorrections =
+                TeacherFollowUpPolicy.HasRelevantPendingCorrections(
+                    pendingCorrectionsCount,
+                    studentsCount);
 
             if (coursesAtRiskCount > 0)
                 reasons.Add(coursesAtRiskCount == 1
                     ? "1 curso requiere atención"
                     : $"{coursesAtRiskCount} cursos requieren atención");
 
-            if (pendingCorrectionsCount > 0)
-                reasons.Add(pendingCorrectionsCount == 1
-                    ? "1 corrección pendiente"
-                    : $"{pendingCorrectionsCount} correcciones pendientes");
-
             if (unloadedAttendanceCount > 0)
                 reasons.Add(unloadedAttendanceCount == 1
                     ? "1 asistencia pendiente"
                     : $"{unloadedAttendanceCount} asistencias pendientes");
+
+            if (hasRelevantPendingCorrections)
+                reasons.Add($"{pendingCorrectionsCount} correcciones acumuladas");
 
             if (coursesAtRiskCount > 0)
             {

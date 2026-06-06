@@ -1,4 +1,5 @@
 using BlossomInstitute.Common.Features;
+using BlossomInstitute.Application.DataBase.Profesor;
 using BlossomInstitute.Domain.Entidades.Clase;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
@@ -259,26 +260,24 @@ namespace BlossomInstitute.Application.DataBase.Profesor.Queries.GetAllProfesore
         {
             foreach (var teacher in teachers)
             {
+                var hasRelevantPendingCorrections =
+                    TeacherFollowUpPolicy.HasRelevantPendingCorrections(
+                        teacher.PendingCorrectionsCount,
+                        teacher.StudentsCount);
+
                 teacher.RequiresFollowUp =
-                    teacher.AssignedCoursesCount == 0 ||
-                    teacher.PendingCorrectionsCount > 0 ||
                     teacher.CoursesAtRiskCount > 0 ||
+                    hasRelevantPendingCorrections ||
                     teacher.UnloadedAttendanceCount > 0;
 
-                teacher.MainSignal = BuildMainSignal(teacher);
+                teacher.MainSignal = BuildMainSignal(teacher, hasRelevantPendingCorrections);
             }
         }
 
-        private static string BuildMainSignal(GetProfesorModel teacher)
+        private static string BuildMainSignal(
+            GetProfesorModel teacher,
+            bool hasRelevantPendingCorrections)
         {
-            if (teacher.AssignedCoursesCount == 0)
-                return "Sin cursos asignados";
-
-            if (teacher.PendingCorrectionsCount > 0)
-                return teacher.PendingCorrectionsCount == 1
-                    ? "1 corrección pendiente"
-                    : $"{teacher.PendingCorrectionsCount} correcciones pendientes";
-
             if (teacher.CoursesAtRiskCount > 0)
                 return teacher.CoursesAtRiskCount == 1
                     ? "1 curso requiere atención"
@@ -286,6 +285,9 @@ namespace BlossomInstitute.Application.DataBase.Profesor.Queries.GetAllProfesore
 
             if (teacher.UnloadedAttendanceCount > 0)
                 return "Asistencias pendientes";
+
+            if (hasRelevantPendingCorrections)
+                return $"{teacher.PendingCorrectionsCount} correcciones acumuladas";
 
             return "Sin señales pendientes";
         }
