@@ -1227,6 +1227,95 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                         : $"Asistencia critica {attendancePercentage:0.##}% en {monitoringPeriod.Label}";
                 }
 
+                var monitoringLowManualGradeRows = await _db.Calificaciones
+                    .AsNoTracking()
+                    .Where(x =>
+                        !x.Archivado &&
+                        x.Curso.Estado == EstadoCurso.Activo &&
+                        x.Fecha >= monitoringPeriod.From &&
+                        x.Fecha <= monitoringPeriod.To &&
+                        x.Nota < 60m &&
+                        (
+                            x.Tipo == TipoCalificacion.Quiz ||
+                            x.Tipo == TipoCalificacion.Test ||
+                            x.Tipo == TipoCalificacion.Participation ||
+                            x.Tipo == TipoCalificacion.Behaviour
+                        ))
+                    .Select(x => new
+                    {
+                        x.AlumnoId,
+                        AlumnoNombre = x.Alumno.Usuario.Nombre + " " + x.Alumno.Usuario.Apellido,
+                        AlumnoAvatarUrl = x.Alumno.Usuario.AvatarUrl,
+                        x.CursoId,
+                        CursoNombre = x.Curso.Nombre,
+                        CursoDescripcion = x.Curso.Descripcion,
+                        CalificacionId = x.Id,
+                        x.Titulo,
+                        x.Tipo,
+                        Nota = Math.Round(x.Nota, 2),
+                        x.Fecha
+                    })
+                    .OrderBy(x => x.Nota)
+                    .ThenByDescending(x => x.Fecha)
+                    .ToListAsync(ct);
+
+                foreach (var row in monitoringLowManualGradeRows)
+                {
+                    if (currentStudentRiskKeys.Contains((row.AlumnoId, row.CursoId)))
+                        continue;
+
+                    var key = $"student-{row.AlumnoId}-{row.CursoId}-{monitoringPeriod.Year}-{monitoringPeriod.Quarter}";
+
+                    if (!openFollowUpsByKey.TryGetValue(key, out var item))
+                    {
+                        item = new DashboardOpenFollowUpModel
+                        {
+                            Id = key,
+                            EntityType = "student",
+                            EntityId = row.AlumnoId,
+                            AlumnoId = row.AlumnoId,
+                            AlumnoNombre = row.AlumnoNombre,
+                            AlumnoAvatarUrl = row.AlumnoAvatarUrl,
+                            CursoId = row.CursoId,
+                            CursoNombre = row.CursoNombre,
+                            CursoDescripcion = row.CursoDescripcion,
+                            PeriodLabel = monitoringPeriod.Label,
+                            QuarterNumber = monitoringPeriod.Quarter,
+                            Year = monitoringPeriod.Year,
+                            Source = "low-manual-grade",
+                            Level = row.Nota < 50m ? CourseHealthLevels.Critical : CourseHealthLevels.FollowUp,
+                            Href = $"/admin/dashboard/students/{row.AlumnoId}/profile"
+                        };
+                        openFollowUpsByKey[key] = item;
+                    }
+
+                    if (item.GradeAlerts.All(x => x.CalificacionId != row.CalificacionId))
+                    {
+                        item.GradeAlerts.Add(new DashboardOpenFollowUpGradeAlertModel
+                        {
+                            CalificacionId = row.CalificacionId,
+                            Titulo = row.Titulo,
+                            Tipo = row.Tipo,
+                            Nota = row.Nota,
+                            Fecha = row.Fecha
+                        });
+                    }
+
+                    if (row.Nota < 50m)
+                    {
+                        item.Level = CourseHealthLevels.Critical;
+                    }
+
+                    item.Source = item.AverageGrade.HasValue || item.AttendancePercentage.HasValue
+                        ? "combined-academic-risk"
+                        : "low-manual-grade";
+
+                    if (string.IsNullOrWhiteSpace(item.Reason))
+                    {
+                        item.Reason = $"{GetTipoCalificacionLabel(row.Tipo)}: {row.Titulo} ({row.Nota:0.##}) en {monitoringPeriod.Label}";
+                    }
+                }
+
                 var monitoringCourseAverageRows = await _db.Calificaciones
                     .AsNoTracking()
                     .Where(x =>
@@ -1376,7 +1465,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 .OrderByDescending(x => x.Year)
                 .ThenByDescending(x => x.QuarterNumber)
                 .ThenByDescending(x => x.Level == CourseHealthLevels.Critical)
-                .ThenBy(x => x.EntityType == "student" ? 0 : 1)
+                .ThenBy(GetOpenFollowUpPriority)
                 .ThenBy(x => x.AverageGrade ?? 100m)
                 .ThenBy(x => x.AttendancePercentage ?? 100m)
                 .Take(12)
@@ -1499,6 +1588,36 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             };
 
             return ResponseApiService.Response(StatusCodes.Status200OK, response);
+        }
+
+        private static int GetOpenFollowUpPriority(DashboardOpenFollowUpModel item)
+        {
+            if (item.EntityType == "student" && item.Source == "combined-academic-risk")
+                return 0;
+
+            if (item.EntityType == "student" && item.Source == "low-attendance")
+                return 1;
+
+            if (item.EntityType == "student" && item.GradeAlerts.Any(x => x.Nota < 50m))
+                return 2;
+
+            if (item.EntityType == "course")
+                return 3;
+
+            return 4;
+        }
+
+        private static string GetTipoCalificacionLabel(TipoCalificacion tipo)
+        {
+            return tipo switch
+            {
+                TipoCalificacion.Quiz => "Quiz",
+                TipoCalificacion.Test => "Test",
+                TipoCalificacion.Participation => "Participación",
+                TipoCalificacion.Behaviour => "Comportamiento",
+                TipoCalificacion.Homework => "Homework",
+                _ => "Evaluación"
+            };
         }
 
         private async Task<decimal?> GetAverageGradeAsync(

@@ -220,7 +220,17 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             public string Level { get; set; } = CourseHealthLevels.FollowUp;
             public decimal? AverageGrade { get; set; }
             public decimal? AttendancePercentage { get; set; }
+            public List<DashboardOpenFollowUpGradeAlertModel> GradeAlerts { get; set; } = new();
             public string Href { get; set; } = default!;
+        }
+
+        public class DashboardOpenFollowUpGradeAlertModel
+        {
+            public int CalificacionId { get; set; }
+            public string Titulo { get; set; } = default!;
+            public TipoCalificacion Tipo { get; set; }
+            public decimal Nota { get; set; }
+            public DateOnly Fecha { get; set; }
         }
 
         public class DashboardAcademicTrendModel
