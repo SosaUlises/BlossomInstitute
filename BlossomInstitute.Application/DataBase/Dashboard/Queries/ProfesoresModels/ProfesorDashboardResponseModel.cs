@@ -18,5 +18,6 @@
         public List<ProfesorDashboardUltimaClaseItemModel> UltimasClases { get; set; } = new();
         public List<ProfesorDashboardUltimaEntregaItemModel> UltimasEntregas { get; set; } = new();
         public List<ProfesorDashboardResumenCursoItemModel> ResumenPorCurso { get; set; } = new();
+        public List<ProfesorDashboardAlumnoAtencionItemModel> AlumnosQueRequierenAtencion { get; set; } = new();
     }
 }

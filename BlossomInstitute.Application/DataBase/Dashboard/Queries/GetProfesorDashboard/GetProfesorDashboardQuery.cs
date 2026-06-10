@@ -1,6 +1,9 @@
 using BlossomInstitute.Application.DataBase.Dashboard.Queries.ProfesoresModels;
+using BlossomInstitute.Application.Common.Academic;
 using BlossomInstitute.Common.Features;
+using BlossomInstitute.Domain.Entidades.Calificacion;
 using BlossomInstitute.Domain.Entidades.Clase;
+using BlossomInstitute.Domain.Entidades.Curso;
 using BlossomInstitute.Domain.Entidades.Tarea;
 using BlossomInstitute.Domain.Entidades.Usuario;
 using BlossomInstitute.Domain.Model;
@@ -64,6 +67,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetProfesorDas
 
             var ahoraLocal = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, argentinaTimeZone);
             var hoy = DateOnly.FromDateTime(ahoraLocal);
+            var periodoAcademico = AcademicQuarterHelper.GetContext(hoy);
 
             var cursos = await _db.CursoProfesores
                 .AsNoTracking()
@@ -101,7 +105,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetProfesorDas
                     ProximasClases = new List<ProfesorDashboardProximaClaseItemModel>(),
                     UltimasClases = new List<ProfesorDashboardUltimaClaseItemModel>(),
                     UltimasEntregas = new List<ProfesorDashboardUltimaEntregaItemModel>(),
-                    ResumenPorCurso = new List<ProfesorDashboardResumenCursoItemModel>()
+                    ResumenPorCurso = new List<ProfesorDashboardResumenCursoItemModel>(),
+                    AlumnosQueRequierenAtencion = new List<ProfesorDashboardAlumnoAtencionItemModel>()
                 });
             }
 
@@ -291,6 +296,138 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetProfesorDas
                 .OrderBy(x => x.CursoNombre)
                 .ToList();
 
+            var calificacionesTrimestre = await _db.Calificaciones
+                .AsNoTracking()
+                .Where(x =>
+                    cursoIds.Contains(x.CursoId) &&
+                    x.Curso.Estado == EstadoCurso.Activo &&
+                    !x.Archivado &&
+                    x.Fecha >= periodoAcademico.From &&
+                    x.Fecha <= periodoAcademico.To)
+                .Select(x => new
+                {
+                    x.AlumnoId,
+                    AlumnoNombre = x.Alumno.Usuario.Nombre + " " + x.Alumno.Usuario.Apellido,
+                    AlumnoAvatarUrl = x.Alumno.Usuario.AvatarUrl,
+                    x.CursoId,
+                    CursoNombre = x.Curso.Nombre,
+                    x.Tipo,
+                    x.Titulo,
+                    x.Nota,
+                    x.Fecha
+                })
+                .ToListAsync(ct);
+
+            var clasesTrimestre = await _db.Clases
+                .AsNoTracking()
+                .Where(x =>
+                    cursoIds.Contains(x.CursoId) &&
+                    x.Curso.Estado == EstadoCurso.Activo &&
+                    x.Estado != EstadoClase.Cancelada &&
+                    x.Fecha >= periodoAcademico.From &&
+                    x.Fecha <= periodoAcademico.To)
+                .Select(x => new { x.Id, x.CursoId })
+                .ToListAsync(ct);
+
+            var claseIdsTrimestre = clasesTrimestre.Select(x => x.Id).ToList();
+            var asistenciasTrimestre = await _db.Asistencias
+                .AsNoTracking()
+                .Where(x => claseIdsTrimestre.Contains(x.ClaseId))
+                .Select(x => new
+                {
+                    x.AlumnoId,
+                    x.Clase.CursoId,
+                    x.Estado
+                })
+                .ToListAsync(ct);
+
+            var clasesPorCurso = clasesTrimestre
+                .GroupBy(x => x.CursoId)
+                .ToDictionary(x => x.Key, x => x.Count());
+
+            var asistenciasPorAlumnoCurso = asistenciasTrimestre
+                .GroupBy(x => new { x.AlumnoId, x.CursoId })
+                .ToDictionary(
+                    x => (x.Key.AlumnoId, x.Key.CursoId),
+                    x => x.Count(a => a.Estado == EstadoAsistencia.Presente));
+
+            var matriculasActivas = await _db.Matriculas
+                .AsNoTracking()
+                .Where(x =>
+                    cursoIds.Contains(x.CursoId) &&
+                    x.Curso.Estado == EstadoCurso.Activo)
+                .Select(x => new
+                {
+                    x.AlumnoId,
+                    AlumnoNombre = x.Alumno.Usuario.Nombre + " " + x.Alumno.Usuario.Apellido,
+                    AlumnoAvatarUrl = x.Alumno.Usuario.AvatarUrl,
+                    x.CursoId,
+                    CursoNombre = x.Curso.Nombre
+                })
+                .ToListAsync(ct);
+
+            var calificacionesPorAlumnoCurso = calificacionesTrimestre
+                .GroupBy(x => new { x.AlumnoId, x.CursoId })
+                .ToDictionary(x => (x.Key.AlumnoId, x.Key.CursoId), x => x.ToList());
+
+            var alumnosQueRequierenAtencion = matriculasActivas
+                .Select(matricula =>
+                {
+                    var calificaciones = calificacionesPorAlumnoCurso.GetValueOrDefault(
+                        (matricula.AlumnoId, matricula.CursoId));
+                    var promedio = calificaciones is { Count: > 0 }
+                        ? Math.Round(calificaciones.Average(x => x.Nota), 2)
+                        : (decimal?)null;
+                    var totalClases = clasesPorCurso.GetValueOrDefault(matricula.CursoId);
+                    var presentes = asistenciasPorAlumnoCurso.GetValueOrDefault(
+                        (matricula.AlumnoId, matricula.CursoId));
+                    var asistencia = totalClases > 0
+                        ? Math.Round((decimal)presentes * 100 / totalClases, 2)
+                        : (decimal?)null;
+                    var calificacionBaja = calificaciones?
+                        .Where(x =>
+                            x.Nota < 60 &&
+                            (
+                                x.Tipo == TipoCalificacion.Quiz ||
+                                x.Tipo == TipoCalificacion.Test ||
+                                x.Tipo == TipoCalificacion.Participation ||
+                                x.Tipo == TipoCalificacion.Behaviour
+                            ))
+                        .OrderBy(x => x.Nota)
+                        .ThenByDescending(x => x.Fecha)
+                        .FirstOrDefault();
+                    var promedioBajo = promedio.HasValue && promedio.Value < 60;
+                    var asistenciaBaja = asistencia.HasValue && asistencia.Value < 70;
+
+                    if (!promedioBajo && !asistenciaBaja && calificacionBaja == null)
+                        return null;
+
+                    return new ProfesorDashboardAlumnoAtencionItemModel
+                    {
+                        AlumnoId = matricula.AlumnoId,
+                        AlumnoNombre = matricula.AlumnoNombre,
+                        AlumnoAvatarUrl = matricula.AlumnoAvatarUrl,
+                        CursoId = matricula.CursoId,
+                        CursoNombre = matricula.CursoNombre,
+                        PeriodoLabel = periodoAcademico.Label,
+                        Promedio = promedioBajo ? promedio : null,
+                        Asistencia = asistenciaBaja ? asistencia : null,
+                        CalificacionBajaTitulo = calificacionBaja?.Titulo,
+                        CalificacionBajaTipo = calificacionBaja?.Tipo,
+                        CalificacionBajaNota = calificacionBaja != null
+                            ? Math.Round(calificacionBaja.Nota, 2)
+                            : null,
+                        Severidad = promedioBajo && asistenciaBaja ? "critical" : "attention"
+                    };
+                })
+                .Where(x => x != null)
+                .OrderByDescending(x => x!.Severidad == "critical")
+                .ThenBy(x => x!.Asistencia ?? 100)
+                .ThenBy(x => x!.Promedio ?? 100)
+                .Take(3)
+                .Select(x => x!)
+                .ToList();
+
             var response = new ProfesorDashboardResponseModel
             {
                 ProfesorId = profesor.Id,
@@ -306,7 +443,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetProfesorDas
                 ProximasClases = proximasClases,
                 UltimasClases = ultimasClases,
                 UltimasEntregas = ultimasEntregas,
-                ResumenPorCurso = resumenPorCurso
+                ResumenPorCurso = resumenPorCurso,
+                AlumnosQueRequierenAtencion = alumnosQueRequierenAtencion
             };
 
             return ResponseApiService.Response(StatusCodes.Status200OK, response);
