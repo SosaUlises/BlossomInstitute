@@ -18,5 +18,6 @@
         public DateOnly From { get; set; }
         public DateOnly To { get; set; }
         public decimal? Promedio { get; set; }
+        public decimal? Asistencia { get; set; }
     }
 }

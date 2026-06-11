@@ -1,5 +1,7 @@
 using BlossomInstitute.Application.Common.Academic;
 using BlossomInstitute.Common.Features;
+using BlossomInstitute.Domain.Entidades.Calificacion;
+using BlossomInstitute.Domain.Entidades.Clase;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -97,8 +99,28 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAlumnosByCurso
                     alumnoIds.Contains(x.AlumnoId) &&
                     !x.Archivado &&
                     x.Fecha >= yearFrom &&
-                    x.Fecha <= yearTo)
+                    x.Fecha <= yearTo &&
+                    (x.Tipo == TipoCalificacion.Quiz || x.Tipo == TipoCalificacion.Test))
                 .Select(x => new { x.AlumnoId, x.Fecha, x.Nota })
+                .ToListAsync(ct);
+
+            var classes = await _db.Clases
+                .AsNoTracking()
+                .Where(x =>
+                    x.CursoId == cursoId &&
+                    x.Estado != EstadoClase.Cancelada &&
+                    x.Fecha >= yearFrom &&
+                    x.Fecha <= yearTo)
+                .Select(x => new { x.Id, x.Fecha })
+                .ToListAsync(ct);
+
+            var classIds = classes.Select(x => x.Id).ToList();
+            var attendanceRows = await _db.Asistencias
+                .AsNoTracking()
+                .Where(x =>
+                    classIds.Contains(x.ClaseId) &&
+                    alumnoIds.Contains(x.AlumnoId))
+                .Select(x => new { x.AlumnoId, x.ClaseId, x.Estado })
                 .ToListAsync(ct);
 
             foreach (var item in items)
@@ -112,6 +134,14 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAlumnosByCurso
                             .Where(x => x.Fecha >= quarter.From && x.Fecha <= quarter.To)
                             .Select(x => x.Nota)
                             .ToList();
+                        var quarterClassIds = classes
+                            .Where(x => x.Fecha >= quarter.From && x.Fecha <= quarter.To)
+                            .Select(x => x.Id)
+                            .ToHashSet();
+                        var presentCount = attendanceRows.Count(x =>
+                            x.AlumnoId == item.AlumnoId &&
+                            quarterClassIds.Contains(x.ClaseId) &&
+                            x.Estado == EstadoAsistencia.Presente);
 
                         return new AlumnoByCursoQuarterAverageModel
                         {
@@ -121,6 +151,9 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAlumnosByCurso
                             To = quarter.To,
                             Promedio = grades.Count > 0
                                 ? Math.Round(grades.Average(), 2)
+                                : null,
+                            Asistencia = quarterClassIds.Count > 0
+                                ? Math.Round((decimal)presentCount * 100 / quarterClassIds.Count, 2)
                                 : null
                         };
                     })
