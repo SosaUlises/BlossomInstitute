@@ -1,3 +1,4 @@
+using BlossomInstitute.Application.Common.Academic;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
@@ -30,11 +31,13 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAlumnosByCurso
             if (pageSize <= 0) pageSize = 10;
             if (pageSize > 100) pageSize = 100;
 
-            var cursoExiste = await _db.Cursos
+            var curso = await _db.Cursos
                 .AsNoTracking()
-                .AnyAsync(x => x.Id == cursoId, ct);
+                .Where(x => x.Id == cursoId)
+                .Select(x => new { x.Id, x.Anio })
+                .FirstOrDefaultAsync(ct);
 
-            if (!cursoExiste)
+            if (curso is null)
                 return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Curso no encontrado");
 
             if (!isAdmin)
@@ -79,6 +82,50 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAlumnosByCurso
                     AvatarUrl = x.Alumno.Usuario.AvatarUrl
                 })
                 .ToListAsync(ct);
+
+            var alumnoIds = items.Select(x => x.AlumnoId).ToList();
+            var quarters = Enumerable.Range(1, 3)
+                .Select(quarter => AcademicQuarterHelper.GetQuarter(curso.Anio, quarter))
+                .ToList();
+            var yearFrom = quarters[0].From;
+            var yearTo = quarters[^1].To;
+
+            var averages = await _db.Calificaciones
+                .AsNoTracking()
+                .Where(x =>
+                    x.CursoId == cursoId &&
+                    alumnoIds.Contains(x.AlumnoId) &&
+                    !x.Archivado &&
+                    x.Fecha >= yearFrom &&
+                    x.Fecha <= yearTo)
+                .Select(x => new { x.AlumnoId, x.Fecha, x.Nota })
+                .ToListAsync(ct);
+
+            foreach (var item in items)
+            {
+                var studentGrades = averages.Where(x => x.AlumnoId == item.AlumnoId).ToList();
+
+                item.PromediosTrimestrales = quarters
+                    .Select(quarter =>
+                    {
+                        var grades = studentGrades
+                            .Where(x => x.Fecha >= quarter.From && x.Fecha <= quarter.To)
+                            .Select(x => x.Nota)
+                            .ToList();
+
+                        return new AlumnoByCursoQuarterAverageModel
+                        {
+                            Quarter = quarter.Quarter,
+                            Label = quarter.Label,
+                            From = quarter.From,
+                            To = quarter.To,
+                            Promedio = grades.Count > 0
+                                ? Math.Round(grades.Average(), 2)
+                                : null
+                        };
+                    })
+                    .ToList();
+            }
 
             return ResponseApiService.Response(StatusCodes.Status200OK, new
             {
