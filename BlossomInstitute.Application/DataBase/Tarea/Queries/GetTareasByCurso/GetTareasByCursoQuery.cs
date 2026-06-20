@@ -7,6 +7,7 @@ using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasByCurso
 {
@@ -102,10 +103,28 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasByCurso
                     Titulo = t.Titulo,
                     Estado = (int)t.Estado,
                     FechaEntregaUtc = t.FechaEntregaUtc,
+                    DueDateUtc = t.FechaEntregaUtc,
                     EsAnuncio = !t.FechaEntregaUtc.HasValue,
-                    CreatedAtUtc = t.CreatedAtUtc
+                    CreatedAtUtc = t.CreatedAtUtc,
+                    UpdatedAtUtc = t.UpdatedAtUtc,
+                    PublicationType = t.FechaEntregaUtc.HasValue ? "task" : "announcement",
+                    AuthorName = t.Profesor.Usuario.Nombre + " " + t.Profesor.Usuario.Apellido,
+                    AuthorAvatarUrl = t.Profesor.Usuario.AvatarUrl,
+                    ContentPreview = t.Consigna,
+                    ResourcesCount = t.Recursos.Count(),
+                    SubmissionsCount = _db.Entregas.Count(e => e.TareaId == t.Id),
+                    PendingReviewsCount = _db.Entregas.Count(e =>
+                        e.TareaId == t.Id &&
+                        !e.Feedbacks.Any(f => f.EsVigente))
                 })
                 .ToListAsync(ct);
+
+            foreach (var item in items)
+            {
+                item.AuthorName = NormalizeText(item.AuthorName);
+                item.ContentPreview = BuildContentPreview(item.ContentPreview);
+                item.ResourceSummary = BuildResourceSummary(item.ResourcesCount);
+            }
 
             return ResponseApiService.Response(StatusCodes.Status200OK, new
             {
@@ -114,6 +133,39 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasByCurso
                 total,
                 items
             });
+        }
+
+        private static string? BuildContentPreview(string? value)
+        {
+            var normalized = NormalizeText(Regex.Replace(value ?? string.Empty, "<[^>]+>", " "));
+
+            if (string.IsNullOrWhiteSpace(normalized))
+                return null;
+
+            const int maxLength = 220;
+
+            if (normalized.Length <= maxLength)
+                return normalized;
+
+            return normalized[..maxLength].TrimEnd() + "...";
+        }
+
+        private static string? BuildResourceSummary(int resourcesCount)
+        {
+            if (resourcesCount <= 0)
+                return null;
+
+            return resourcesCount == 1
+                ? "1 recurso adjunto"
+                : $"{resourcesCount} recursos adjuntos";
+        }
+
+        private static string? NormalizeText(string? value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return null;
+
+            return Regex.Replace(value, "\\s+", " ").Trim();
         }
     }
 }

@@ -22,8 +22,18 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Queries.Models
         public string Titulo { get; set; } = default!;
         public int Estado { get; set; }
         public DateTime? FechaEntregaUtc { get; set; }
+        public DateTime? DueDateUtc { get; set; }
         public bool EsAnuncio { get; set; }
         public DateTime CreatedAtUtc { get; set; }
+        public DateTime? UpdatedAtUtc { get; set; }
+        public string PublicationType { get; set; } = default!;
+        public string? AuthorName { get; set; }
+        public string? AuthorAvatarUrl { get; set; }
+        public string? ContentPreview { get; set; }
+        public int ResourcesCount { get; set; }
+        public string? ResourceSummary { get; set; }
+        public int SubmissionsCount { get; set; }
+        public int PendingReviewsCount { get; set; }
     }
 
     public class TareaDetailModel
