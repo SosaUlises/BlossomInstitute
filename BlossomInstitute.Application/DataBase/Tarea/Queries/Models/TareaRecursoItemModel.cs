@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Domain.Entidades.Common;
+using BlossomInstitute.Domain.Entidades.Common;
 
 namespace BlossomInstitute.Application.DataBase.Tarea.Queries.Models
 {
@@ -34,6 +34,7 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Queries.Models
         public string? ResourceSummary { get; set; }
         public int SubmissionsCount { get; set; }
         public int PendingReviewsCount { get; set; }
+        public List<TareaRecursoItemModel> Recursos { get; set; } = new();
     }
 
     public class TareaDetailModel

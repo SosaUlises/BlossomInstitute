@@ -112,6 +112,20 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasByCurso
                     AuthorAvatarUrl = t.Profesor.Usuario.AvatarUrl,
                     ContentPreview = t.Consigna,
                     ResourcesCount = t.Recursos.Count(),
+                    Recursos = t.Recursos
+                        .OrderBy(r => r.Id)
+                        .Select(r => new TareaRecursoItemModel
+                        {
+                            Id = r.Id,
+                            Tipo = (int)r.Tipo,
+                            Url = r.Url,
+                            Nombre = r.Nombre,
+                            StorageProvider = r.StorageProvider,
+                            StorageKey = r.StorageKey,
+                            ContentType = r.ContentType,
+                            SizeBytes = r.SizeBytes
+                        })
+                        .ToList(),
                     SubmissionsCount = _db.Entregas.Count(e => e.TareaId == t.Id),
                     PendingReviewsCount = _db.Entregas.Count(e =>
                         e.TareaId == t.Id &&
