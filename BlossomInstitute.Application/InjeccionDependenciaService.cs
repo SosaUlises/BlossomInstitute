@@ -29,6 +29,7 @@ using BlossomInstitute.Application.DataBase.Curso.Commands.DesactivarCurso;
 using BlossomInstitute.Application.DataBase.Curso.Commands.RemoveAlumno;
 using BlossomInstitute.Application.DataBase.Curso.Commands.RemoveProfesores;
 using BlossomInstitute.Application.DataBase.Curso.Commands.UpdateCurso;
+using BlossomInstitute.Application.DataBase.Curso.Commands.UpdateCursoTheme;
 using BlossomInstitute.Application.DataBase.Curso.Queries.GetAcademicProfile;
 using BlossomInstitute.Application.DataBase.Curso.Queries.GetAllCursos;
 using BlossomInstitute.Application.DataBase.Curso.Queries.GetAlumnosByCurso;
@@ -133,6 +134,7 @@ namespace BlossomInstitute.Application
 
             services.AddTransient<ICreateCursoCommand, CreateCursoCommand>();
             services.AddTransient<IUpdateCursoCommand, UpdateCursoCommand>();
+            services.AddTransient<IUpdateCursoThemeCommand, UpdateCursoThemeCommand>();
             services.AddTransient<IDesactivateCursoCommand, DesactivateCursoCommand>();
             services.AddTransient<IActivateCursoCommand, ActivateCursoCommand>();
             services.AddTransient<IArchiveCursoCommand, ArchiveCursoCommand>();

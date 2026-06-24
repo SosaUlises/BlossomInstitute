@@ -8,6 +8,7 @@ namespace BlossomInstitute.Domain.Entidades.Curso
         public string Nombre { get; set; } = default!;
         public int Anio { get; set; }
         public string? Descripcion { get; set; }
+        public string? ThemeIcon { get; set; }
         public EstadoCurso Estado { get; set; } = EstadoCurso.Activo;
 
         public List<CursoHorarioEntity> Horarios { get; set; } = new();

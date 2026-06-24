@@ -3,6 +3,7 @@ using BlossomInstitute.Application.DataBase.Curso.Commands.ArchivarCurso;
 using BlossomInstitute.Application.DataBase.Curso.Commands.CreateCurso;
 using BlossomInstitute.Application.DataBase.Curso.Commands.DesactivarCurso;
 using BlossomInstitute.Application.DataBase.Curso.Commands.UpdateCurso;
+using BlossomInstitute.Application.DataBase.Curso.Commands.UpdateCursoTheme;
 using BlossomInstitute.Application.DataBase.Curso.Queries.GetAllCursos;
 using BlossomInstitute.Application.DataBase.Curso.Queries.GetCursoById;
 using BlossomInstitute.Common.Features;
@@ -100,6 +101,25 @@ namespace BlossomInstitute.Controllers.Cursos
                 return BadRequest(ResponseApiService.Response(400, message: "Id inválido"));
 
             var result = await command.Execute(cursoId);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPatch("{cursoId:int}/theme")]
+        [Authorize(Roles = "Administrador,Profesor")]
+        public async Task<IActionResult> UpdateTheme(
+            [FromRoute] int cursoId,
+            [FromBody] UpdateCursoThemeModel model,
+            [FromServices] IUpdateCursoThemeCommand command,
+            CancellationToken ct)
+        {
+            if (cursoId <= 0)
+                return BadRequest(ResponseApiService.Response(400, message: "Id invÃ¡lido"));
+
+            var userId = GetUserId();
+            if (userId <= 0)
+                return Unauthorized(ResponseApiService.Response(401, message: "Token invÃ¡lido"));
+
+            var result = await command.Execute(cursoId, userId, IsAdmin(), model, ct);
             return StatusCode(result.StatusCode, result);
         }
 

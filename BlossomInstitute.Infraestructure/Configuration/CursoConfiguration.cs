@@ -14,6 +14,7 @@ namespace BlossomInstitute.Infraestructure.Configuration
             b.Property(x => x.Nombre).IsRequired().HasMaxLength(100);
             b.Property(x => x.Anio).IsRequired();
             b.Property(x => x.Descripcion).HasMaxLength(1000);
+            b.Property(x => x.ThemeIcon).HasMaxLength(200);
             b.Property(x => x.Estado).IsRequired();
 
             b.HasIndex(x => new { x.Anio, x.Nombre }).IsUnique(false);

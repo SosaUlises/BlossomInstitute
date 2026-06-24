@@ -53,6 +53,7 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetCursoById
                 Nombre = curso.Nombre,
                 Anio = curso.Anio,
                 Descripcion = curso.Descripcion,
+                ThemeIcon = curso.ThemeIcon,
                 Estado = curso.Estado,
                 CantidadProfesores = curso.Profesores.Count,
                 CantidadAlumnos = curso.Matriculas.Count,

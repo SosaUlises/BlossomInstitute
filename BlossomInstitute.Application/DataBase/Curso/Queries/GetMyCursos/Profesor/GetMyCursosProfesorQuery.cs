@@ -62,6 +62,7 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetMyCursos.Profes
                     Id = c.Id,
                     Nombre = c.Nombre,
                     Anio = c.Anio,
+                    ThemeIcon = c.ThemeIcon,
                     Estado = c.Estado,
                     CantidadHorarios = c.Horarios.Count
                 })
