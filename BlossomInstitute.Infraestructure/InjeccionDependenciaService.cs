@@ -66,7 +66,8 @@ namespace BlossomInstitute.Infraestructure
 
             if (string.IsNullOrWhiteSpace(jwtAudience))
                 throw new InvalidOperationException("Jwt_Audience no está configurado.");
-
+            
+            // Registrar autenticacion con Bearer Token. Validamos token
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -90,9 +91,9 @@ namespace BlossomInstitute.Infraestructure
 
             });
 
-            // Servicios
-
             services.AddScoped<IGetTokenJWTService, GetTokenJWTService>();
+
+            // Cargar conf de email
             services.Configure<EmailSettings>(configuration.GetSection("Email"));
 
             services.AddHttpClient<IEmailService, BrevoEmailService>(client =>

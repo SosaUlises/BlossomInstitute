@@ -17,7 +17,7 @@ namespace BlossomInstitute.Infraestructure.Email
 
         public BrevoEmailService(
             HttpClient httpClient,
-            IOptions<EmailSettings> options,
+            IOptions<EmailSettings> options, // leer confg de appsettings
             ILogger<BrevoEmailService> logger)
         {
             _httpClient = httpClient;
@@ -43,6 +43,7 @@ namespace BlossomInstitute.Infraestructure.Email
             if (string.IsNullOrWhiteSpace(_settings.FromName))
                 throw new InvalidOperationException("Email:FromName no está configurado.");
 
+            // carga que Brevo espera    
             var payload = new
             {
                 sender = new
@@ -63,6 +64,7 @@ namespace BlossomInstitute.Infraestructure.Email
 
             var json = JsonSerializer.Serialize(payload);
 
+            // crear request
             using var request = new HttpRequestMessage(HttpMethod.Post, BrevoSendEmailUrl);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Add("api-key", _settings.ApiKey);
@@ -71,6 +73,7 @@ namespace BlossomInstitute.Infraestructure.Email
             using var response = await _httpClient.SendAsync(request, ct);
             var responseBody = await response.Content.ReadAsStringAsync(ct);
 
+            // validar respuesta
             if (!response.IsSuccessStatusCode)
             {
                 _logger.LogError(
