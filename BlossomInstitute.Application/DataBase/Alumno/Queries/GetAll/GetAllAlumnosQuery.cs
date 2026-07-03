@@ -1,4 +1,4 @@
-using BlossomInstitute.Application.Common.Academic;
+using BlossomInstitute.Application.Common.Academico;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Clase;
 using BlossomInstitute.Domain.Entidades.Curso;
@@ -88,9 +88,9 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAll
 
             var studentIds = students.Select(x => x.Id).ToList();
             var today = DateOnly.FromDateTime(DateTime.Now);
-            var periodContext = AcademicQuarterHelper.GetContext(today);
-            var quarter = periodContext.CurrentQuarter;
-            var dataTo = periodContext.To;
+            var periodContext = PeriodoAcademicoHelper.ObtenerContexto(today);
+            var quarter = periodContext.TrimestreActual;
+            var dataTo = periodContext.Hasta;
 
             var enrollments = await _db.Matriculas
                 .AsNoTracking()
@@ -132,7 +132,7 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAll
                     .Where(x =>
                         courseIds.Contains(x.CursoId) &&
                         x.Estado != EstadoClase.Cancelada &&
-                        x.Fecha >= quarter.From &&
+                        x.Fecha >= quarter.Desde &&
                         x.Fecha <= dataTo)
                     .Select(x => new ClassProjection
                     {
@@ -168,7 +168,7 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAll
                         studentIds.Contains(x.AlumnoId) &&
                         courseIds.Contains(x.CursoId) &&
                         !x.Archivado &&
-                        x.Fecha >= quarter.From &&
+                        x.Fecha >= quarter.Desde &&
                         x.Fecha <= dataTo)
                     .Select(x => new GradeProjection
                     {

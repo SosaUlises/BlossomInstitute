@@ -1,4 +1,4 @@
-using BlossomInstitute.Application.Common.Academic;
+using BlossomInstitute.Application.Common.Academico;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Calificacion;
 using BlossomInstitute.Domain.Entidades.Clase;
@@ -47,21 +47,21 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAcademicSummar
                 return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Alumno no encontrado");
 
             var today = DateOnly.FromDateTime(DateTime.Now);
-            var periodContext = AcademicQuarterHelper.GetContext(today);
-            var quarter = periodContext.CurrentQuarter;
-            var dataTo = periodContext.To;
-            var fromUtc = quarter.From.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
+            var periodContext = PeriodoAcademicoHelper.ObtenerContexto(today);
+            var quarter = periodContext.TrimestreActual;
+            var dataTo = periodContext.Hasta;
+            var fromUtc = quarter.Desde.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
             var toUtcExclusive = dataTo.AddDays(1).ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
 
             var period = new AlumnoAcademicPeriodModel
             {
                 Type = "academic-quarter",
-                Label = quarter.Label,
-                MonthRangeLabel = quarter.MonthRangeLabel,
-                From = periodContext.From,
-                To = periodContext.To,
-                Year = periodContext.Year,
-                Quarter = periodContext.QuarterNumber
+                Label = quarter.Etiqueta,
+                MonthRangeLabel = quarter.EtiquetaRangoMeses,
+                From = periodContext.Desde,
+                To = periodContext.Hasta,
+                Year = periodContext.Anio,
+                Quarter = periodContext.NumeroTrimestre
             };
 
             var enrollments = await _db.Matriculas
@@ -123,7 +123,7 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAcademicSummar
                     .Where(x =>
                         currentCourseIds.Contains(x.CursoId) &&
                         x.Estado != EstadoClase.Cancelada &&
-                        x.Fecha >= quarter.From &&
+                        x.Fecha >= quarter.Desde &&
                         x.Fecha <= dataTo)
                     .Select(x => new ClassProjection
                     {
@@ -157,7 +157,7 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAcademicSummar
                         x.AlumnoId == studentId &&
                         currentCourseIds.Contains(x.CursoId) &&
                         !x.Archivado &&
-                        x.Fecha >= quarter.From &&
+                        x.Fecha >= quarter.Desde &&
                         x.Fecha <= dataTo &&
                         (
                             x.Tipo == TipoCalificacion.Homework ||
@@ -190,8 +190,8 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAcademicSummar
                     studentId,
                     courseIds,
                     enrollments.ToDictionary(x => x.CourseId, x => x.CourseName),
-                    quarter.From,
-                    periodContext.PreviousQuarter,
+                    quarter.Desde,
+                    periodContext.TrimestreAnterior,
                     ct);
 
             var fullName = $"{student.Nombre} {student.Apellido}".Trim();
@@ -246,7 +246,7 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAcademicSummar
             List<int> courseIds,
             Dictionary<int, string> courseNames,
             DateOnly currentFrom,
-            AcademicQuarterPeriod previousQuarter,
+            PeriodoAcademicoTrimestre previousQuarter,
             CancellationToken ct)
         {
             var historicalClasses = await _db.Clases
@@ -316,29 +316,29 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAcademicSummar
             List<ClassProjection> historicalClasses,
             List<AttendanceProjection> historicalAttendanceRows,
             List<GradeProjection> historicalGrades,
-            AcademicQuarterPeriod previousQuarter)
+            PeriodoAcademicoTrimestre previousQuarter)
         {
             var classById = historicalClasses.ToDictionary(x => x.Id);
             var classCountByPeriod = historicalClasses
                 .GroupBy(x =>
                 {
-                    var period = AcademicQuarterHelper.GetCurrent(x.Date);
-                    return new PendingFollowUpKey(x.CourseId, period.Year, period.Quarter);
+                    var period = PeriodoAcademicoHelper.ObtenerActual(x.Date);
+                    return new PendingFollowUpKey(x.CourseId, period.Anio, period.Trimestre);
                 })
                 .ToDictionary(x => x.Key, x => x.Count());
             var accumulators = new Dictionary<PendingFollowUpKey, PendingFollowUpAccumulator>();
 
             foreach (var group in historicalGrades.GroupBy(x =>
             {
-                var period = AcademicQuarterHelper.GetCurrent(x.Date);
-                return new PendingFollowUpKey(x.CourseId, period.Year, period.Quarter);
+                var period = PeriodoAcademicoHelper.ObtenerActual(x.Date);
+                return new PendingFollowUpKey(x.CourseId, period.Anio, period.Trimestre);
             }))
             {
                 var average = Math.Round(group.Average(x => x.Grade), 2);
                 if (average >= 75m)
                     continue;
 
-                var period = AcademicQuarterHelper.GetCurrent(group.First().Date);
+                var period = PeriodoAcademicoHelper.ObtenerActual(group.First().Date);
                 var courseName = courseNames.GetValueOrDefault(group.Key.CourseId) ?? group.First().CourseName;
                 var accumulator = GetOrCreatePendingFollowUp(accumulators, group.Key, courseName, period, previousQuarter);
                 accumulator.AverageValue = average;
@@ -350,8 +350,8 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAcademicSummar
                 .GroupBy(x =>
                 {
                     var cls = classById[x.ClassId];
-                    var period = AcademicQuarterHelper.GetCurrent(x.Date);
-                    return new PendingFollowUpKey(cls.CourseId, period.Year, period.Quarter);
+                    var period = PeriodoAcademicoHelper.ObtenerActual(x.Date);
+                    return new PendingFollowUpKey(cls.CourseId, period.Anio, period.Trimestre);
                 }))
             {
                 var key = group.Key;
@@ -363,7 +363,7 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAcademicSummar
                 if (attendance >= 85m)
                     continue;
 
-                var period = AcademicQuarterHelper.GetCurrent(group.First().Date);
+                var period = PeriodoAcademicoHelper.ObtenerActual(group.First().Date);
                 var courseName = courseNames.GetValueOrDefault(key.CourseId) ?? string.Empty;
                 var accumulator = GetOrCreatePendingFollowUp(accumulators, key, courseName, period, previousQuarter);
                 accumulator.AttendanceValue = attendance;
@@ -384,8 +384,8 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAcademicSummar
             Dictionary<PendingFollowUpKey, PendingFollowUpAccumulator> accumulators,
             PendingFollowUpKey key,
             string courseName,
-            AcademicQuarterPeriod period,
-            AcademicQuarterPeriod previousQuarter)
+            PeriodoAcademicoTrimestre period,
+            PeriodoAcademicoTrimestre previousQuarter)
         {
             if (accumulators.TryGetValue(key, out var accumulator))
                 return accumulator;
@@ -394,11 +394,11 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAcademicSummar
             {
                 CourseId = key.CourseId,
                 CourseName = courseName,
-                PeriodLabel = period.Label,
-                QuarterNumber = period.Quarter,
-                Year = period.Year,
-                IsPreviousQuarter = period.Year == previousQuarter.Year &&
-                    period.Quarter == previousQuarter.Quarter
+                PeriodLabel = period.Etiqueta,
+                QuarterNumber = period.Trimestre,
+                Year = period.Anio,
+                IsPreviousQuarter = period.Anio == previousQuarter.Anio &&
+                    period.Trimestre == previousQuarter.Trimestre
             };
             accumulators[key] = accumulator;
 

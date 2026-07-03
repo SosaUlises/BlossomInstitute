@@ -113,11 +113,11 @@ namespace BlossomInstitute.Controllers.Cursos
             CancellationToken ct)
         {
             if (cursoId <= 0)
-                return BadRequest(ResponseApiService.Response(400, message: "Id invÃ¡lido"));
+                return BadRequest(ResponseApiService.Response(400, message: "Id inválido"));
 
             var userId = GetUserId();
             if (userId <= 0)
-                return Unauthorized(ResponseApiService.Response(401, message: "Token invÃ¡lido"));
+                return Unauthorized(ResponseApiService.Response(401, message: "Token inválido"));
 
             var result = await command.Execute(cursoId, userId, IsAdmin(), model, ct);
             return StatusCode(result.StatusCode, result);

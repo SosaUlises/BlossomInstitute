@@ -234,7 +234,7 @@ namespace BlossomInstitute.Application.DataBase.Profesor.Queries.GetAcademicSumm
         {
             var reasons = new List<string>();
             var hasRelevantPendingCorrections =
-                TeacherFollowUpPolicy.HasRelevantPendingCorrections(
+                PoliticaSeguimientoProfesor.TieneCorreccionesPendientesRelevantes(
                     pendingCorrectionsCount,
                     studentsCount);
 

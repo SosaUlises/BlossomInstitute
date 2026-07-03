@@ -1,5 +1,5 @@
 using BlossomInstitute.Common.Features;
-using BlossomInstitute.Application.Common.Academic;
+using BlossomInstitute.Application.Common.Academico;
 using BlossomInstitute.Application.DataBase.Curso.Shared;
 using BlossomInstitute.Domain.Entidades.Calificacion;
 using BlossomInstitute.Domain.Entidades.Clase;
@@ -35,26 +35,26 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             var nowUtc = DateTime.UtcNow;
             var nowLocal = DateTime.Now;
             var today = DateOnly.FromDateTime(nowLocal);
-            var periodContext = AcademicQuarterHelper.GetContext(today);
-            var currentQuarter = periodContext.CurrentQuarter;
-            var previousQuarter = periodContext.PreviousQuarter;
-            var currentDataTo = periodContext.To;
+            var periodContext = PeriodoAcademicoHelper.ObtenerContexto(today);
+            var currentQuarter = periodContext.TrimestreActual;
+            var previousQuarter = periodContext.TrimestreAnterior;
+            var currentDataTo = periodContext.Hasta;
             const int consecutiveAbsenceWindowDays = 21;
             var consecutiveAbsenceFrom = today.AddDays(-(consecutiveAbsenceWindowDays - 1));
-            var periodFromUtc = currentQuarter.From.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
+            var periodFromUtc = currentQuarter.Desde.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
             var periodToUtcExclusive = currentDataTo.AddDays(1).ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
 
             var period = new DashboardPeriodModel
             {
                 Type = "academic-quarter",
                 Strategy = "academic-quarter",
-                Label = periodContext.Label,
-                MonthRangeLabel = currentQuarter.MonthRangeLabel,
-                From = periodContext.From,
-                To = periodContext.To,
-                Year = periodContext.Year,
-                Month = currentQuarter.From.Month,
-                Quarter = periodContext.QuarterNumber
+                Label = periodContext.Etiqueta,
+                MonthRangeLabel = currentQuarter.EtiquetaRangoMeses,
+                From = periodContext.Desde,
+                To = periodContext.Hasta,
+                Year = periodContext.Anio,
+                Month = currentQuarter.Desde.Month,
+                Quarter = periodContext.NumeroTrimestre
             };
 
             var trendComparison = new DashboardTrendComparisonModel
@@ -141,7 +141,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 .Where(x =>
                     !x.Archivado &&
                     x.Curso.Estado == EstadoCurso.Activo &&
-                    x.Fecha >= currentQuarter.From &&
+                    x.Fecha >= currentQuarter.Desde &&
                     x.Fecha <= currentDataTo &&
                     (
                         x.Tipo == TipoCalificacion.Homework ||
@@ -161,8 +161,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             var currentPeriodAverage = generalAverage;
 
             var previousPeriodAverage = await GetAverageGradeAsync(
-                previousQuarter.From,
-                previousQuarter.To,
+                previousQuarter.Desde,
+                previousQuarter.Hasta,
                 includeHomework: true,
                 ct);
 
@@ -174,7 +174,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 .Where(x =>
                     !x.Archivado &&
                     x.Curso.Estado == EstadoCurso.Activo &&
-                    x.Fecha >= currentQuarter.From &&
+                    x.Fecha >= currentQuarter.Desde &&
                     x.Fecha <= currentDataTo &&
                     (
                         x.Tipo == TipoCalificacion.Homework ||
@@ -208,7 +208,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 .Where(x =>
                     !x.Archivado &&
                     x.Curso.Estado == EstadoCurso.Activo &&
-                    x.Fecha >= currentQuarter.From &&
+                    x.Fecha >= currentQuarter.Desde &&
                     x.Fecha <= currentDataTo &&
                     (
                         x.Tipo == TipoCalificacion.Quiz ||
@@ -237,8 +237,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 .Where(x =>
                     !x.Archivado &&
                     x.Curso.Estado == EstadoCurso.Activo &&
-                    x.Fecha >= previousQuarter.From &&
-                    x.Fecha <= previousQuarter.To &&
+                    x.Fecha >= previousQuarter.Desde &&
+                    x.Fecha <= previousQuarter.Hasta &&
                     (
                         x.Tipo == TipoCalificacion.Homework ||
                         x.Tipo == TipoCalificacion.Quiz ||
@@ -270,8 +270,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                         CursoDescripcion = current.CursoDescripcion,
                         ProfesoresNombres = current.ProfesoresNombres,
                         Context = "trend",
-                        ContextLabel = $"Caida respecto a {previousQuarter.Label}",
-                        PeriodLabel = currentQuarter.Label,
+                        ContextLabel = $"Caida respecto a {previousQuarter.Etiqueta}",
+                        PeriodLabel = currentQuarter.Etiqueta,
                         TrendType = "performance-decline",
                         CurrentValue = current.AverageGrade,
                         PreviousValue = previous.PreviousValue,
@@ -291,7 +291,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 .Where(x =>
                     !x.Archivado &&
                     x.Curso.Estado == EstadoCurso.Activo &&
-                    x.Fecha >= currentQuarter.From &&
+                    x.Fecha >= currentQuarter.Desde &&
                     x.Fecha <= currentDataTo &&
                     (
                         x.Tipo == TipoCalificacion.Homework ||
@@ -309,7 +309,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 .Where(x =>
                     !x.Archivado &&
                     x.Curso.Estado == EstadoCurso.Activo &&
-                    x.Fecha >= currentQuarter.From &&
+                    x.Fecha >= currentQuarter.Desde &&
                     x.Fecha <= currentDataTo &&
                     (
                         x.Tipo == TipoCalificacion.Homework ||
@@ -335,7 +335,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 .Where(x =>
                     !x.Archivado &&
                     x.Curso.Estado == EstadoCurso.Activo &&
-                    x.Fecha >= currentQuarter.From &&
+                    x.Fecha >= currentQuarter.Desde &&
                     x.Fecha <= currentDataTo &&
                     (
                         x.Tipo == TipoCalificacion.Homework ||
@@ -378,7 +378,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 .Where(x =>
                     !x.Archivado &&
                     x.Curso.Estado == EstadoCurso.Activo &&
-                    x.Fecha >= currentQuarter.From &&
+                    x.Fecha >= currentQuarter.Desde &&
                     x.Fecha <= currentDataTo &&
                     x.Nota < 60 &&
                     (
@@ -447,7 +447,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 .Where(x =>
                     x.Curso.Estado == EstadoCurso.Activo &&
                     x.Estado != EstadoClase.Cancelada &&
-                    x.Fecha >= currentQuarter.From &&
+                    x.Fecha >= currentQuarter.Desde &&
                     x.Fecha <= currentDataTo)
                 .Select(x => new
                 {
@@ -522,8 +522,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 : (decimal?)null;
 
             var previousPeriodAttendanceAverage = await GetInstitutionalAttendanceAverageAsync(
-                previousQuarter.From,
-                previousQuarter.To,
+                previousQuarter.Desde,
+                previousQuarter.Hasta,
                 ct);
 
             var coursesAtRiskByAttendance = classCountByCourse
@@ -585,8 +585,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                 .Where(x =>
                     x.Curso.Estado == EstadoCurso.Activo &&
                     x.Estado != EstadoClase.Cancelada &&
-                    x.Fecha >= previousQuarter.From &&
-                    x.Fecha <= previousQuarter.To)
+                    x.Fecha >= previousQuarter.Desde &&
+                    x.Fecha <= previousQuarter.Hasta)
                 .Select(x => new
                 {
                     x.Id,
@@ -654,8 +654,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                         CursoDescripcion = current.CursoDescripcion,
                         ProfesoresNombres = GetCourseTeacherNames(current.CursoId),
                         Context = "trend",
-                        ContextLabel = $"Caida respecto a {previousQuarter.Label}",
-                        PeriodLabel = currentQuarter.Label,
+                        ContextLabel = $"Caida respecto a {previousQuarter.Etiqueta}",
+                        PeriodLabel = currentQuarter.Etiqueta,
                         TrendType = "attendance-decline",
                         CurrentValue = current.AttendancePercentage!.Value,
                         PreviousValue = previous.AttendancePercentage!.Value,
@@ -974,14 +974,14 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                         ProfesoresNombres = GetCourseTeacherNames(courseId),
                         Context = "pending-follow-up",
                         ContextLabel = "Seguimiento pendiente del trimestre anterior",
-                        PeriodLabel = previousQuarter.Label,
-                        QuarterNumber = previousQuarter.Quarter,
-                        Year = previousQuarter.Year,
+                        PeriodLabel = previousQuarter.Etiqueta,
+                        QuarterNumber = previousQuarter.Trimestre,
+                        Year = previousQuarter.Anio,
                         Level = isCritical ? CourseHealthLevels.Critical : CourseHealthLevels.FollowUp,
                         Reason = reason,
                         AverageGrade = average,
                         AttendancePercentage = attendance,
-                        Description = $"{(isCritical ? "Critico" : "Seguimiento")} en {previousQuarter.Label}: {reason}"
+                        Description = $"{(isCritical ? "Critico" : "Seguimiento")} en {previousQuarter.Etiqueta}: {reason}"
                     };
                 })
                 .OrderByDescending(x => x.Level == CourseHealthLevels.Critical)
@@ -1021,8 +1021,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                         PendingCorrectionCount = pendingHomeworkByCourseDict.GetValueOrDefault(courseId),
                         SignalsCount = signals,
                         Context = "current-risk",
-                        ContextLabel = $"Riesgo actual en {currentQuarter.Label}",
-                        PeriodLabel = currentQuarter.Label,
+                        ContextLabel = $"Riesgo actual en {currentQuarter.Etiqueta}",
+                        PeriodLabel = currentQuarter.Etiqueta,
                         StudentsAtRiskCurrentCount = studentsAtRiskCount,
                         PendingFollowUpCount = coursesPendingFollowUp.Count(x => x.CursoId == courseId),
                         Health = CourseHealthCalculator.Calculate(
@@ -1047,11 +1047,11 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
             var currentCourseRiskIds = criticalCourses
                 .Select(x => x.CursoId)
                 .ToHashSet();
-            var monitoringPeriods = currentQuarter.Quarter > 1
-                ? Enumerable.Range(1, currentQuarter.Quarter - 1)
-                    .Select(quarter => AcademicQuarterHelper.GetQuarter(currentQuarter.Year, quarter))
+            var monitoringPeriods = currentQuarter.Trimestre > 1
+                ? Enumerable.Range(1, currentQuarter.Trimestre - 1)
+                    .Select(quarter => PeriodoAcademicoHelper.ObtenerTrimestre(currentQuarter.Anio, quarter))
                     .ToList()
-                : new List<AcademicQuarterPeriod> { previousQuarter };
+                : new List<PeriodoAcademicoTrimestre> { previousQuarter };
             var openFollowUpsByKey = new Dictionary<string, DashboardOpenFollowUpModel>();
 
             foreach (var monitoringPeriod in monitoringPeriods)
@@ -1061,8 +1061,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                     .Where(x =>
                         !x.Archivado &&
                         x.Curso.Estado == EstadoCurso.Activo &&
-                        x.Fecha >= monitoringPeriod.From &&
-                        x.Fecha <= monitoringPeriod.To &&
+                        x.Fecha >= monitoringPeriod.Desde &&
+                        x.Fecha <= monitoringPeriod.Hasta &&
                         (
                             x.Tipo == TipoCalificacion.Homework ||
                             x.Tipo == TipoCalificacion.Quiz ||
@@ -1097,7 +1097,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                     if (currentStudentRiskKeys.Contains((row.AlumnoId, row.CursoId)))
                         continue;
 
-                    var key = $"student-{row.AlumnoId}-{row.CursoId}-{monitoringPeriod.Year}-{monitoringPeriod.Quarter}";
+                    var key = $"student-{row.AlumnoId}-{row.CursoId}-{monitoringPeriod.Anio}-{monitoringPeriod.Trimestre}";
 
                     if (!openFollowUpsByKey.TryGetValue(key, out var item))
                     {
@@ -1112,9 +1112,9 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                             CursoId = row.CursoId,
                             CursoNombre = row.CursoNombre,
                             CursoDescripcion = row.CursoDescripcion,
-                            PeriodLabel = monitoringPeriod.Label,
-                            QuarterNumber = monitoringPeriod.Quarter,
-                            Year = monitoringPeriod.Year,
+                            PeriodLabel = monitoringPeriod.Etiqueta,
+                            QuarterNumber = monitoringPeriod.Trimestre,
+                            Year = monitoringPeriod.Anio,
                             Source = "low-average",
                             Level = CourseHealthLevels.Critical,
                             Href = $"/admin/dashboard/students/{row.AlumnoId}/profile"
@@ -1128,8 +1128,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                         ? "combined-academic-risk"
                         : "low-average";
                     item.Reason = item.AttendancePercentage.HasValue
-                        ? $"Promedio {row.AverageGrade:0.##} y asistencia {item.AttendancePercentage:0.##}% en {monitoringPeriod.Label}"
-                        : $"Promedio {row.AverageGrade:0.##} en {monitoringPeriod.Label}";
+                        ? $"Promedio {row.AverageGrade:0.##} y asistencia {item.AttendancePercentage:0.##}% en {monitoringPeriod.Etiqueta}"
+                        : $"Promedio {row.AverageGrade:0.##} en {monitoringPeriod.Etiqueta}";
                 }
 
                 var monitoringClasses = await _db.Clases
@@ -1137,8 +1137,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                     .Where(x =>
                         x.Curso.Estado == EstadoCurso.Activo &&
                         x.Estado != EstadoClase.Cancelada &&
-                        x.Fecha >= monitoringPeriod.From &&
-                        x.Fecha <= monitoringPeriod.To)
+                        x.Fecha >= monitoringPeriod.Desde &&
+                        x.Fecha <= monitoringPeriod.Hasta)
                     .Select(x => new
                     {
                         x.Id,
@@ -1192,7 +1192,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                     if (attendancePercentage >= 70m)
                         continue;
 
-                    var key = $"student-{row.AlumnoId}-{row.CursoId}-{monitoringPeriod.Year}-{monitoringPeriod.Quarter}";
+                    var key = $"student-{row.AlumnoId}-{row.CursoId}-{monitoringPeriod.Anio}-{monitoringPeriod.Trimestre}";
 
                     if (!openFollowUpsByKey.TryGetValue(key, out var item))
                     {
@@ -1207,9 +1207,9 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                             CursoId = row.CursoId,
                             CursoNombre = row.CursoNombre,
                             CursoDescripcion = row.CursoDescripcion,
-                            PeriodLabel = monitoringPeriod.Label,
-                            QuarterNumber = monitoringPeriod.Quarter,
-                            Year = monitoringPeriod.Year,
+                            PeriodLabel = monitoringPeriod.Etiqueta,
+                            QuarterNumber = monitoringPeriod.Trimestre,
+                            Year = monitoringPeriod.Anio,
                             Source = "low-attendance",
                             Level = CourseHealthLevels.Critical,
                             Href = $"/admin/dashboard/students/{row.AlumnoId}/profile"
@@ -1223,8 +1223,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                         ? "combined-academic-risk"
                         : "low-attendance";
                     item.Reason = item.AverageGrade.HasValue
-                        ? $"Promedio {item.AverageGrade:0.##} y asistencia {attendancePercentage:0.##}% en {monitoringPeriod.Label}"
-                        : $"Asistencia critica {attendancePercentage:0.##}% en {monitoringPeriod.Label}";
+                        ? $"Promedio {item.AverageGrade:0.##} y asistencia {attendancePercentage:0.##}% en {monitoringPeriod.Etiqueta}"
+                        : $"Asistencia critica {attendancePercentage:0.##}% en {monitoringPeriod.Etiqueta}";
                 }
 
                 var monitoringLowManualGradeRows = await _db.Calificaciones
@@ -1232,8 +1232,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                     .Where(x =>
                         !x.Archivado &&
                         x.Curso.Estado == EstadoCurso.Activo &&
-                        x.Fecha >= monitoringPeriod.From &&
-                        x.Fecha <= monitoringPeriod.To &&
+                        x.Fecha >= monitoringPeriod.Desde &&
+                        x.Fecha <= monitoringPeriod.Hasta &&
                         x.Nota < 60m &&
                         (
                             x.Tipo == TipoCalificacion.Quiz ||
@@ -1264,7 +1264,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                     if (currentStudentRiskKeys.Contains((row.AlumnoId, row.CursoId)))
                         continue;
 
-                    var key = $"student-{row.AlumnoId}-{row.CursoId}-{monitoringPeriod.Year}-{monitoringPeriod.Quarter}";
+                    var key = $"student-{row.AlumnoId}-{row.CursoId}-{monitoringPeriod.Anio}-{monitoringPeriod.Trimestre}";
 
                     if (!openFollowUpsByKey.TryGetValue(key, out var item))
                     {
@@ -1279,9 +1279,9 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                             CursoId = row.CursoId,
                             CursoNombre = row.CursoNombre,
                             CursoDescripcion = row.CursoDescripcion,
-                            PeriodLabel = monitoringPeriod.Label,
-                            QuarterNumber = monitoringPeriod.Quarter,
-                            Year = monitoringPeriod.Year,
+                            PeriodLabel = monitoringPeriod.Etiqueta,
+                            QuarterNumber = monitoringPeriod.Trimestre,
+                            Year = monitoringPeriod.Anio,
                             Source = "low-manual-grade",
                             Level = row.Nota < 50m ? CourseHealthLevels.Critical : CourseHealthLevels.FollowUp,
                             Href = $"/admin/dashboard/students/{row.AlumnoId}/profile"
@@ -1312,7 +1312,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
 
                     if (string.IsNullOrWhiteSpace(item.Reason))
                     {
-                        item.Reason = $"{GetTipoCalificacionLabel(row.Tipo)}: {row.Titulo} ({row.Nota:0.##}) en {monitoringPeriod.Label}";
+                        item.Reason = $"{GetTipoCalificacionLabel(row.Tipo)}: {row.Titulo} ({row.Nota:0.##}) en {monitoringPeriod.Etiqueta}";
                     }
                 }
 
@@ -1321,8 +1321,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                     .Where(x =>
                         !x.Archivado &&
                         x.Curso.Estado == EstadoCurso.Activo &&
-                        x.Fecha >= monitoringPeriod.From &&
-                        x.Fecha <= monitoringPeriod.To &&
+                        x.Fecha >= monitoringPeriod.Desde &&
+                        x.Fecha <= monitoringPeriod.Hasta &&
                         (
                             x.Tipo == TipoCalificacion.Homework ||
                             x.Tipo == TipoCalificacion.Quiz ||
@@ -1346,7 +1346,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                     if (currentCourseRiskIds.Contains(row.CursoId))
                         continue;
 
-                    var key = $"course-{row.CursoId}-{monitoringPeriod.Year}-{monitoringPeriod.Quarter}";
+                    var key = $"course-{row.CursoId}-{monitoringPeriod.Anio}-{monitoringPeriod.Trimestre}";
 
                     if (!openFollowUpsByKey.TryGetValue(key, out var item))
                     {
@@ -1358,9 +1358,9 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                             CursoId = row.CursoId,
                             CursoNombre = row.CursoNombre,
                             CursoDescripcion = row.CursoDescripcion,
-                            PeriodLabel = monitoringPeriod.Label,
-                            QuarterNumber = monitoringPeriod.Quarter,
-                            Year = monitoringPeriod.Year,
+                            PeriodLabel = monitoringPeriod.Etiqueta,
+                            QuarterNumber = monitoringPeriod.Trimestre,
+                            Year = monitoringPeriod.Anio,
                             Source = "course-low-average",
                             Level = row.AverageGrade < 60m ? CourseHealthLevels.Critical : CourseHealthLevels.FollowUp,
                             Href = $"/admin/dashboard/courses/{row.CursoId}/profile"
@@ -1374,8 +1374,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                         ? "course-recurring-risk"
                         : "course-low-average";
                     item.Reason = item.AttendancePercentage.HasValue
-                        ? $"Promedio grupal {row.AverageGrade:0.##} y asistencia {item.AttendancePercentage:0.##}% en {monitoringPeriod.Label}"
-                        : $"Promedio grupal {row.AverageGrade:0.##} en {monitoringPeriod.Label}";
+                        ? $"Promedio grupal {row.AverageGrade:0.##} y asistencia {item.AttendancePercentage:0.##}% en {monitoringPeriod.Etiqueta}"
+                        : $"Promedio grupal {row.AverageGrade:0.##} en {monitoringPeriod.Etiqueta}";
                 }
 
                 foreach (var row in monitoringClassCountByCourse)
@@ -1397,7 +1397,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                     if (attendancePercentage >= 85m)
                         continue;
 
-                    var key = $"course-{row.Key}-{monitoringPeriod.Year}-{monitoringPeriod.Quarter}";
+                    var key = $"course-{row.Key}-{monitoringPeriod.Anio}-{monitoringPeriod.Trimestre}";
 
                     if (!openFollowUpsByKey.TryGetValue(key, out var item))
                     {
@@ -1409,9 +1409,9 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                             CursoId = row.Key,
                             CursoNombre = row.Value.CursoNombre,
                             CursoDescripcion = row.Value.CursoDescripcion,
-                            PeriodLabel = monitoringPeriod.Label,
-                            QuarterNumber = monitoringPeriod.Quarter,
-                            Year = monitoringPeriod.Year,
+                            PeriodLabel = monitoringPeriod.Etiqueta,
+                            QuarterNumber = monitoringPeriod.Trimestre,
+                            Year = monitoringPeriod.Anio,
                             Source = "course-low-attendance",
                             Level = attendancePercentage < 70m ? CourseHealthLevels.Critical : CourseHealthLevels.FollowUp,
                             Href = $"/admin/dashboard/courses/{row.Key}/profile"
@@ -1425,8 +1425,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAdminDashbo
                         ? "course-recurring-risk"
                         : "course-low-attendance";
                     item.Reason = item.AverageGrade.HasValue
-                        ? $"Promedio grupal {item.AverageGrade:0.##} y asistencia {attendancePercentage:0.##}% en {monitoringPeriod.Label}"
-                        : $"Baja asistencia grupal {attendancePercentage:0.##}% en {monitoringPeriod.Label}";
+                        ? $"Promedio grupal {item.AverageGrade:0.##} y asistencia {attendancePercentage:0.##}% en {monitoringPeriod.Etiqueta}"
+                        : $"Baja asistencia grupal {attendancePercentage:0.##}% en {monitoringPeriod.Etiqueta}";
                 }
             }
 

@@ -1,4 +1,4 @@
-using BlossomInstitute.Application.Common.Academic;
+using BlossomInstitute.Application.Common.Academico;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Calificacion;
 using BlossomInstitute.Domain.Entidades.Clase;
@@ -87,10 +87,10 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAlumnosByCurso
 
             var alumnoIds = items.Select(x => x.AlumnoId).ToList();
             var quarters = Enumerable.Range(1, 3)
-                .Select(quarter => AcademicQuarterHelper.GetQuarter(curso.Anio, quarter))
+                .Select(quarter => PeriodoAcademicoHelper.ObtenerTrimestre(curso.Anio, quarter))
                 .ToList();
-            var yearFrom = quarters[0].From;
-            var yearTo = quarters[^1].To;
+            var yearFrom = quarters[0].Desde;
+            var yearTo = quarters[^1].Hasta;
 
             var averages = await _db.Calificaciones
                 .AsNoTracking()
@@ -131,11 +131,11 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAlumnosByCurso
                     .Select(quarter =>
                     {
                         var grades = studentGrades
-                            .Where(x => x.Fecha >= quarter.From && x.Fecha <= quarter.To)
+                            .Where(x => x.Fecha >= quarter.Desde && x.Fecha <= quarter.Hasta)
                             .Select(x => x.Nota)
                             .ToList();
                         var quarterClassIds = classes
-                            .Where(x => x.Fecha >= quarter.From && x.Fecha <= quarter.To)
+                            .Where(x => x.Fecha >= quarter.Desde && x.Fecha <= quarter.Hasta)
                             .Select(x => x.Id)
                             .ToHashSet();
                         var presentCount = attendanceRows.Count(x =>
@@ -145,10 +145,10 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAlumnosByCurso
 
                         return new AlumnoByCursoQuarterAverageModel
                         {
-                            Quarter = quarter.Quarter,
-                            Label = quarter.Label,
-                            From = quarter.From,
-                            To = quarter.To,
+                            Quarter = quarter.Trimestre,
+                            Label = quarter.Etiqueta,
+                            From = quarter.Desde,
+                            To = quarter.Hasta,
                             Promedio = grades.Count > 0
                                 ? Math.Round(grades.Average(), 2)
                                 : null,

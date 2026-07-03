@@ -261,7 +261,7 @@ namespace BlossomInstitute.Application.DataBase.Profesor.Queries.GetAll
             foreach (var teacher in teachers)
             {
                 var hasRelevantPendingCorrections =
-                    TeacherFollowUpPolicy.HasRelevantPendingCorrections(
+                    PoliticaSeguimientoProfesor.TieneCorreccionesPendientesRelevantes(
                         teacher.PendingCorrectionsCount,
                         teacher.StudentsCount);
 

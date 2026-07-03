@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteAttendanceByCursoAndTerm;
+using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteAttendanceByCursoAndTerm;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteHomeworkByCursoAndTerm;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteMarksByCursoAndTerm;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteStudentMarksDetail;
@@ -16,12 +16,12 @@ namespace BlossomInstitute.Application.Services.Export
     {
         private const string LogoResourceName = "BlossomInstitute.Application.Assets.Reports.institute-logo.png";
 
-        public byte[] ExportMarksByCourseTermToExcel(
+        public byte[] ExportarCalificacionesPorCursoYTrimestreAExcel(
             ReporteMarksByCursoAndTermResumenModel resumen,
             List<ReporteMarksByCursoAndTermItemModel> items)
         {
             using var workbook = new XLWorkbook();
-            var ws = workbook.Worksheets.Add("Marks Report");
+            var ws = workbook.Worksheets.Add("Reporte de calificaciones");
 
             var row = 1;
 
@@ -30,13 +30,13 @@ namespace BlossomInstitute.Application.Services.Export
             ws.Range(row, 2, row, 8).Merge().Style.Font.SetBold().Font.SetFontSize(16);
             row++;
 
-            ws.Cell(row, 1).Value = "Course";
+            ws.Cell(row, 1).Value = "Curso";
             ws.Cell(row, 2).Value = resumen.CursoNombre;
             row++;
 
             ws.Cell(row, 1).Value = "Year";
             ws.Cell(row, 2).Value = resumen.Year;
-            ws.Cell(row, 3).Value = "Term";
+            ws.Cell(row, 3).Value = "Trimestre";
             ws.Cell(row, 4).Value = resumen.Term;
             row++;
 
@@ -46,39 +46,39 @@ namespace BlossomInstitute.Application.Services.Export
             ws.Cell(row, 4).Value = resumen.To.ToString("yyyy-MM-dd");
             row += 2;
 
-            ws.Cell(row, 1).Value = "Total Students";
+            ws.Cell(row, 1).Value = "Total de alumnos";
             ws.Cell(row, 2).Value = resumen.TotalAlumnos;
-            ws.Cell(row, 3).Value = "Students With Marks";
+            ws.Cell(row, 3).Value = "Alumnos con calificaciones";
             ws.Cell(row, 4).Value = resumen.AlumnosConNotas;
             row++;
 
             ws.Cell(row, 1).Value = "Total Quizzes";
             ws.Cell(row, 2).Value = resumen.TotalQuizzes;
             ws.Cell(row, 3).Value = "Quiz Avg";
-            ws.Cell(row, 4).Value = FormatScoreForReport(TipoCalificacion.Quiz, resumen.PromedioQuizzesCurso);
+            ws.Cell(row, 4).Value = FormatearNotaParaReporte(TipoCalificacion.Quiz, resumen.PromedioQuizzesCurso);
             row++;
 
             ws.Cell(row, 1).Value = "Total Tests";
             ws.Cell(row, 2).Value = resumen.TotalTests;
             ws.Cell(row, 3).Value = "Test Avg";
-            ws.Cell(row, 4).Value = FormatScoreForReport(TipoCalificacion.Test, resumen.PromedioTestsCurso);
+            ws.Cell(row, 4).Value = FormatearNotaParaReporte(TipoCalificacion.Test, resumen.PromedioTestsCurso);
             row++;
 
-            ws.Cell(row, 1).Value = "Total Marks";
+            ws.Cell(row, 1).Value = "Total de calificaciones";
             ws.Cell(row, 2).Value = resumen.TotalMarks;
             ws.Cell(row, 3).Value = "General Avg";
-            ws.Cell(row, 4).Value = FormatScoreForReport(TipoCalificacion.Quiz, resumen.PromedioGeneralCurso);
+            ws.Cell(row, 4).Value = FormatearNotaParaReporte(TipoCalificacion.Quiz, resumen.PromedioGeneralCurso);
             row += 2;
 
             var headerRow = row;
-            ws.Cell(row, 1).Value = "Student";
+            ws.Cell(row, 1).Value = "Alumno";
             ws.Cell(row, 2).Value = "DNI";
             ws.Cell(row, 3).Value = "Email";
             ws.Cell(row, 4).Value = "Quiz Count";
             ws.Cell(row, 5).Value = "Quiz Avg";
             ws.Cell(row, 6).Value = "Test Count";
             ws.Cell(row, 7).Value = "Test Avg";
-            ws.Cell(row, 8).Value = "Marks Count";
+            ws.Cell(row, 8).Value = "Cantidad de calificaciones";
             ws.Cell(row, 9).Value = "General Avg";
 
             ws.Range(row, 1, row, 9).Style.Font.SetBold();
@@ -91,11 +91,11 @@ namespace BlossomInstitute.Application.Services.Export
                 ws.Cell(row, 2).Value = item.AlumnoDni;
                 ws.Cell(row, 3).Value = item.AlumnoEmail;
                 ws.Cell(row, 4).Value = item.QuizCount;
-                ws.Cell(row, 5).Value = FormatScoreForReport(TipoCalificacion.Quiz, item.QuizPromedio);
+                ws.Cell(row, 5).Value = FormatearNotaParaReporte(TipoCalificacion.Quiz, item.QuizPromedio);
                 ws.Cell(row, 6).Value = item.TestCount;
-                ws.Cell(row, 7).Value = FormatScoreForReport(TipoCalificacion.Test, item.TestPromedio);
+                ws.Cell(row, 7).Value = FormatearNotaParaReporte(TipoCalificacion.Test, item.TestPromedio);
                 ws.Cell(row, 8).Value = item.MarksCount;
-                ws.Cell(row, 9).Value = FormatScoreForReport(TipoCalificacion.Quiz, item.PromedioGeneral);
+                ws.Cell(row, 9).Value = FormatearNotaParaReporte(TipoCalificacion.Quiz, item.PromedioGeneral);
                 row++;
             }
 
@@ -106,7 +106,7 @@ namespace BlossomInstitute.Application.Services.Export
             return stream.ToArray();
         }
 
-        public byte[] ExportMarksByCourseTermToPdf(
+        public byte[] ExportarCalificacionesPorCursoYTrimestreAPdf(
             ReporteMarksByCursoAndTermResumenModel resumen,
             List<ReporteMarksByCursoAndTermItemModel> items)
         {
@@ -120,8 +120,8 @@ namespace BlossomInstitute.Application.Services.Export
 
                     page.Header().Element(header => ComposePdfHeader(
                         header,
-                        $"Marks Report - {resumen.CursoNombre}",
-                        $"Year {resumen.Year} - Term {resumen.Term} ({resumen.From:yyyy-MM-dd} to {resumen.To:yyyy-MM-dd})"));
+                        $"Reporte de calificaciones - {resumen.CursoNombre}",
+                        $"Año {resumen.Year} - Trimestre {resumen.Term} ({resumen.From:yyyy-MM-dd} a {resumen.To:yyyy-MM-dd})"));
 
                     page.Content().Column(column =>
                     {
@@ -137,25 +137,25 @@ namespace BlossomInstitute.Application.Services.Export
                                 columns.RelativeColumn();
                             });
 
-                            table.Cell().Text("Total Students").Bold();
+                            table.Cell().Text("Total de alumnos").Bold();
                             table.Cell().Text(resumen.TotalAlumnos.ToString());
-                            table.Cell().Text("Students With Marks").Bold();
+                            table.Cell().Text("Alumnos con calificaciones").Bold();
                             table.Cell().Text(resumen.AlumnosConNotas.ToString());
 
                             table.Cell().Text("Total Quizzes").Bold();
                             table.Cell().Text(resumen.TotalQuizzes.ToString());
                             table.Cell().Text("Quiz Avg").Bold();
-                            table.Cell().Text(FormatScoreForReport(TipoCalificacion.Quiz, resumen.PromedioQuizzesCurso));
+                            table.Cell().Text(FormatearNotaParaReporte(TipoCalificacion.Quiz, resumen.PromedioQuizzesCurso));
 
                             table.Cell().Text("Total Tests").Bold();
                             table.Cell().Text(resumen.TotalTests.ToString());
                             table.Cell().Text("Test Avg").Bold();
-                            table.Cell().Text(FormatScoreForReport(TipoCalificacion.Test, resumen.PromedioTestsCurso));
+                            table.Cell().Text(FormatearNotaParaReporte(TipoCalificacion.Test, resumen.PromedioTestsCurso));
 
-                            table.Cell().Text("Total Marks").Bold();
+                            table.Cell().Text("Total de calificaciones").Bold();
                             table.Cell().Text(resumen.TotalMarks.ToString());
                             table.Cell().Text("General Avg").Bold();
-                            table.Cell().Text(FormatScoreForReport(TipoCalificacion.Quiz, resumen.PromedioGeneralCurso));
+                            table.Cell().Text(FormatearNotaParaReporte(TipoCalificacion.Quiz, resumen.PromedioGeneralCurso));
                         });
 
                         column.Item().Table(table =>
@@ -175,14 +175,14 @@ namespace BlossomInstitute.Application.Services.Export
 
                             void Header(string text) => table.Cell().BorderBottom(1).Padding(4).Text(text).Bold();
 
-                            Header("Student");
+                            Header("Alumno");
                             Header("DNI");
                             Header("Email");
                             Header("Quiz Count");
                             Header("Quiz Avg");
                             Header("Test Count");
                             Header("Test Avg");
-                            Header("Marks Count");
+                            Header("Cantidad de calificaciones");
                             Header("General Avg");
 
                             foreach (var item in items)
@@ -191,11 +191,11 @@ namespace BlossomInstitute.Application.Services.Export
                                 table.Cell().Padding(4).Text(item.AlumnoDni.ToString());
                                 table.Cell().Padding(4).Text(item.AlumnoEmail ?? "-");
                                 table.Cell().Padding(4).Text(item.QuizCount.ToString());
-                                table.Cell().Padding(4).Text(FormatScoreForReport(TipoCalificacion.Quiz, item.QuizPromedio));
+                                table.Cell().Padding(4).Text(FormatearNotaParaReporte(TipoCalificacion.Quiz, item.QuizPromedio));
                                 table.Cell().Padding(4).Text(item.TestCount.ToString());
-                                table.Cell().Padding(4).Text(FormatScoreForReport(TipoCalificacion.Test, item.TestPromedio));
+                                table.Cell().Padding(4).Text(FormatearNotaParaReporte(TipoCalificacion.Test, item.TestPromedio));
                                 table.Cell().Padding(4).Text(item.MarksCount.ToString());
-                                table.Cell().Padding(4).Text(FormatScoreForReport(TipoCalificacion.Quiz, item.PromedioGeneral));
+                                table.Cell().Padding(4).Text(FormatearNotaParaReporte(TipoCalificacion.Quiz, item.PromedioGeneral));
                             }
                         });
                     });
@@ -215,12 +215,12 @@ namespace BlossomInstitute.Application.Services.Export
             return document.GeneratePdf();
         }
 
-        public byte[] ExportAttendanceByCourseTermToExcel(
+        public byte[] ExportarAsistenciaPorCursoYTrimestreAExcel(
             ReporteAttendanceByCursoAndTermResumenModel resumen,
             List<ReporteAttendanceByCursoAndTermItemModel> items)
         {
             using var workbook = new XLWorkbook();
-            var ws = workbook.Worksheets.Add("Attendance Report");
+            var ws = workbook.Worksheets.Add("Reporte de asistencia");
 
             var row = 1;
 
@@ -229,13 +229,13 @@ namespace BlossomInstitute.Application.Services.Export
             ws.Range(row, 2, row, 8).Merge().Style.Font.SetBold().Font.SetFontSize(16);
             row++;
 
-            ws.Cell(row, 1).Value = "Course";
+            ws.Cell(row, 1).Value = "Curso";
             ws.Cell(row, 2).Value = resumen.CursoNombre;
             row++;
 
             ws.Cell(row, 1).Value = "Year";
             ws.Cell(row, 2).Value = resumen.Year;
-            ws.Cell(row, 3).Value = "Term";
+            ws.Cell(row, 3).Value = "Trimestre";
             ws.Cell(row, 4).Value = resumen.Term;
             row++;
 
@@ -245,7 +245,7 @@ namespace BlossomInstitute.Application.Services.Export
             ws.Cell(row, 4).Value = resumen.To.ToString("yyyy-MM-dd");
             row += 2;
 
-            ws.Cell(row, 1).Value = "Total Students";
+            ws.Cell(row, 1).Value = "Total de alumnos";
             ws.Cell(row, 2).Value = resumen.TotalAlumnos;
             ws.Cell(row, 3).Value = "Total Classes";
             ws.Cell(row, 4).Value = resumen.TotalClases;
@@ -257,17 +257,17 @@ namespace BlossomInstitute.Application.Services.Export
             ws.Cell(row, 4).Value = resumen.TotalAusentes;
             row++;
 
-            ws.Cell(row, 1).Value = "Course Attendance %";
+            ws.Cell(row, 1).Value = "Asistencia del curso %";
             ws.Cell(row, 2).Value = resumen.PorcentajeAsistenciaCurso;
             row += 2;
 
-            ws.Cell(row, 1).Value = "Student";
+            ws.Cell(row, 1).Value = "Alumno";
             ws.Cell(row, 2).Value = "DNI";
             ws.Cell(row, 3).Value = "Email";
             ws.Cell(row, 4).Value = "Total Classes";
             ws.Cell(row, 5).Value = "Present";
             ws.Cell(row, 6).Value = "Absent";
-            ws.Cell(row, 7).Value = "Attendance %";
+            ws.Cell(row, 7).Value = "Asistencia %";
 
             ws.Range(row, 1, row, 7).Style.Font.SetBold();
             ws.Range(row, 1, row, 7).Style.Fill.BackgroundColor = XLColor.LightGray;
@@ -292,7 +292,7 @@ namespace BlossomInstitute.Application.Services.Export
             return stream.ToArray();
         }
 
-        public byte[] ExportAttendanceByCourseTermToPdf(
+        public byte[] ExportarAsistenciaPorCursoYTrimestreAPdf(
             ReporteAttendanceByCursoAndTermResumenModel resumen,
             List<ReporteAttendanceByCursoAndTermItemModel> items)
         {
@@ -306,8 +306,8 @@ namespace BlossomInstitute.Application.Services.Export
 
                     page.Header().Element(header => ComposePdfHeader(
                         header,
-                        $"Attendance Report - {resumen.CursoNombre}",
-                        $"Year {resumen.Year} - Term {resumen.Term} ({resumen.From:yyyy-MM-dd} to {resumen.To:yyyy-MM-dd})"));
+                        $"Reporte de asistencia - {resumen.CursoNombre}",
+                        $"Año {resumen.Year} - Trimestre {resumen.Term} ({resumen.From:yyyy-MM-dd} a {resumen.To:yyyy-MM-dd})"));
 
                     page.Content().Column(column =>
                     {
@@ -323,7 +323,7 @@ namespace BlossomInstitute.Application.Services.Export
                                 columns.RelativeColumn();
                             });
 
-                            table.Cell().Text("Total Students").Bold();
+                            table.Cell().Text("Total de alumnos").Bold();
                             table.Cell().Text(resumen.TotalAlumnos.ToString());
                             table.Cell().Text("Total Classes").Bold();
                             table.Cell().Text(resumen.TotalClases.ToString());
@@ -333,7 +333,7 @@ namespace BlossomInstitute.Application.Services.Export
                             table.Cell().Text("Total Absent").Bold();
                             table.Cell().Text(resumen.TotalAusentes.ToString());
 
-                            table.Cell().Text("Course Attendance %").Bold();
+                            table.Cell().Text("Asistencia del curso %").Bold();
                             table.Cell().Text(resumen.PorcentajeAsistenciaCurso?.ToString("0.00") ?? "-");
                             table.Cell().Text("");
                             table.Cell().Text("");
@@ -354,13 +354,13 @@ namespace BlossomInstitute.Application.Services.Export
 
                             void Header(string text) => table.Cell().BorderBottom(1).Padding(4).Text(text).Bold();
 
-                            Header("Student");
+                            Header("Alumno");
                             Header("DNI");
                             Header("Email");
                             Header("Total Classes");
                             Header("Present");
                             Header("Absent");
-                            Header("Attendance %");
+                            Header("Asistencia %");
 
                             foreach (var item in items)
                             {
@@ -390,12 +390,12 @@ namespace BlossomInstitute.Application.Services.Export
             return document.GeneratePdf();
         }
 
-        public byte[] ExportHomeworkByCourseTermToExcel(
+        public byte[] ExportarTareasPorCursoYTrimestreAExcel(
             ReporteHomeworkByCursoAndTermResumenModel resumen,
             List<ReporteHomeworkByCursoAndTermItemModel> items)
         {
             using var workbook = new XLWorkbook();
-            var ws = workbook.Worksheets.Add("Homework Report");
+            var ws = workbook.Worksheets.Add("Reporte de tareas");
 
             var row = 1;
 
@@ -404,13 +404,13 @@ namespace BlossomInstitute.Application.Services.Export
             ws.Range(row, 2, row, 10).Merge().Style.Font.SetBold().Font.SetFontSize(16);
             row++;
 
-            ws.Cell(row, 1).Value = "Course";
+            ws.Cell(row, 1).Value = "Curso";
             ws.Cell(row, 2).Value = resumen.CursoNombre;
             row++;
 
             ws.Cell(row, 1).Value = "Year";
             ws.Cell(row, 2).Value = resumen.Year;
-            ws.Cell(row, 3).Value = "Term";
+            ws.Cell(row, 3).Value = "Trimestre";
             ws.Cell(row, 4).Value = resumen.Term;
             row++;
 
@@ -420,9 +420,9 @@ namespace BlossomInstitute.Application.Services.Export
             ws.Cell(row, 4).Value = resumen.To.ToString("yyyy-MM-dd");
             row += 2;
 
-            ws.Cell(row, 1).Value = "Total Students";
+            ws.Cell(row, 1).Value = "Total de alumnos";
             ws.Cell(row, 2).Value = resumen.TotalAlumnos;
-            ws.Cell(row, 3).Value = "Total Homework";
+            ws.Cell(row, 3).Value = "Total de tareas";
             ws.Cell(row, 4).Value = resumen.TotalHomework;
             row++;
 
@@ -440,20 +440,20 @@ namespace BlossomInstitute.Application.Services.Export
 
             ws.Cell(row, 1).Value = "Approved";
             ws.Cell(row, 2).Value = resumen.TotalAprobadas;
-            ws.Cell(row, 3).Value = "Homework Avg";
-            ws.Cell(row, 4).Value = FormatScoreForReport(TipoCalificacion.Homework, resumen.PromedioHomeworkCurso);
+            ws.Cell(row, 3).Value = "Promedio de tareas";
+            ws.Cell(row, 4).Value = FormatearNotaParaReporte(TipoCalificacion.Homework, resumen.PromedioHomeworkCurso);
             row += 2;
 
-            ws.Cell(row, 1).Value = "Student";
+            ws.Cell(row, 1).Value = "Alumno";
             ws.Cell(row, 2).Value = "DNI";
             ws.Cell(row, 3).Value = "Email";
-            ws.Cell(row, 4).Value = "Homework Total";
+            ws.Cell(row, 4).Value = "Total de tareas";
             ws.Cell(row, 5).Value = "Delivered";
             ws.Cell(row, 6).Value = "Not Delivered";
             ws.Cell(row, 7).Value = "Pending Correction";
             ws.Cell(row, 8).Value = "Rework";
             ws.Cell(row, 9).Value = "Approved";
-            ws.Cell(row, 10).Value = "Homework Avg";
+            ws.Cell(row, 10).Value = "Promedio de tareas";
 
             ws.Range(row, 1, row, 10).Style.Font.SetBold();
             ws.Range(row, 1, row, 10).Style.Fill.BackgroundColor = XLColor.LightGray;
@@ -470,7 +470,7 @@ namespace BlossomInstitute.Application.Services.Export
                 ws.Cell(row, 7).Value = item.HomeworkPendientesCorreccion;
                 ws.Cell(row, 8).Value = item.HomeworkRehacer;
                 ws.Cell(row, 9).Value = item.HomeworkAprobadas;
-                ws.Cell(row, 10).Value = FormatScoreForReport(TipoCalificacion.Homework, item.HomeworkPromedio);
+                ws.Cell(row, 10).Value = FormatearNotaParaReporte(TipoCalificacion.Homework, item.HomeworkPromedio);
                 row++;
             }
 
@@ -481,7 +481,7 @@ namespace BlossomInstitute.Application.Services.Export
             return stream.ToArray();
         }
 
-        public byte[] ExportHomeworkByCourseTermToPdf(
+        public byte[] ExportarTareasPorCursoYTrimestreAPdf(
             ReporteHomeworkByCursoAndTermResumenModel resumen,
             List<ReporteHomeworkByCursoAndTermItemModel> items)
         {
@@ -495,8 +495,8 @@ namespace BlossomInstitute.Application.Services.Export
 
                     page.Header().Element(header => ComposePdfHeader(
                         header,
-                        $"Homework Report - {resumen.CursoNombre}",
-                        $"Year {resumen.Year} - Term {resumen.Term} ({resumen.From:yyyy-MM-dd} to {resumen.To:yyyy-MM-dd})"));
+                        $"Reporte de tareas - {resumen.CursoNombre}",
+                        $"Año {resumen.Year} - Trimestre {resumen.Term} ({resumen.From:yyyy-MM-dd} a {resumen.To:yyyy-MM-dd})"));
 
                     page.Content().Column(column =>
                     {
@@ -512,9 +512,9 @@ namespace BlossomInstitute.Application.Services.Export
                                 columns.RelativeColumn();
                             });
 
-                            table.Cell().Text("Total Students").Bold();
+                            table.Cell().Text("Total de alumnos").Bold();
                             table.Cell().Text(resumen.TotalAlumnos.ToString());
-                            table.Cell().Text("Total Homework").Bold();
+                            table.Cell().Text("Total de tareas").Bold();
                             table.Cell().Text(resumen.TotalHomework.ToString());
 
                             table.Cell().Text("Total Deliveries").Bold();
@@ -529,8 +529,8 @@ namespace BlossomInstitute.Application.Services.Export
 
                             table.Cell().Text("Approved").Bold();
                             table.Cell().Text(resumen.TotalAprobadas.ToString());
-                            table.Cell().Text("Homework Avg").Bold();
-                            table.Cell().Text(FormatScoreForReport(TipoCalificacion.Homework, resumen.PromedioHomeworkCurso));
+                            table.Cell().Text("Promedio de tareas").Bold();
+                            table.Cell().Text(FormatearNotaParaReporte(TipoCalificacion.Homework, resumen.PromedioHomeworkCurso));
                         });
 
                         column.Item().Table(table =>
@@ -551,7 +551,7 @@ namespace BlossomInstitute.Application.Services.Export
 
                             void Header(string text) => table.Cell().BorderBottom(1).Padding(4).Text(text).Bold();
 
-                            Header("Student");
+                            Header("Alumno");
                             Header("DNI");
                             Header("Email");
                             Header("HW Total");
@@ -573,7 +573,7 @@ namespace BlossomInstitute.Application.Services.Export
                                 table.Cell().Padding(4).Text(item.HomeworkPendientesCorreccion.ToString());
                                 table.Cell().Padding(4).Text(item.HomeworkRehacer.ToString());
                                 table.Cell().Padding(4).Text(item.HomeworkAprobadas.ToString());
-                                table.Cell().Padding(4).Text(FormatScoreForReport(TipoCalificacion.Homework, item.HomeworkPromedio));
+                                table.Cell().Padding(4).Text(FormatearNotaParaReporte(TipoCalificacion.Homework, item.HomeworkPromedio));
                             }
                         });
                     });
@@ -592,7 +592,7 @@ namespace BlossomInstitute.Application.Services.Export
 
             return document.GeneratePdf();
         }
-        public byte[] ExportStudentAssessmentsDetailByCourseTermToPdf(
+        public byte[] ExportarDetalleEvaluacionesAlumnoPorCursoYTrimestreAPdf(
              ReporteStudentMarksDetailResponseModel data)
         {
             var document = Document.Create(container =>
@@ -605,8 +605,8 @@ namespace BlossomInstitute.Application.Services.Export
 
                     page.Header().Element(header => ComposePdfHeader(
                         header,
-                        $"Student Assessments Detail - {data.CursoNombre}",
-                        $"Year {data.Year} - Term {data.Term} ({data.From:yyyy-MM-dd} to {data.To:yyyy-MM-dd})"));
+                        $"Detalle de evaluaciones del alumno - {data.CursoNombre}",
+                        $"Año {data.Year} - Trimestre {data.Term} ({data.From:yyyy-MM-dd} a {data.To:yyyy-MM-dd})"));
 
                     page.Content().Column(column =>
                     {
@@ -616,7 +616,7 @@ namespace BlossomInstitute.Application.Services.Export
                         column.Item().Border(1).Padding(8).Column(c =>
                         {
                             c.Spacing(4);
-                            c.Item().Text("Student Information").Bold().FontSize(12);
+                            c.Item().Text("Información del alumno").Bold().FontSize(12);
 
                             c.Item().Table(table =>
                             {
@@ -628,7 +628,7 @@ namespace BlossomInstitute.Application.Services.Export
                                     columns.RelativeColumn(2);
                                 });
 
-                                table.Cell().Padding(2).Text("Student").Bold();
+                                table.Cell().Padding(2).Text("Alumno").Bold();
                                 table.Cell().Padding(2).Text($"{data.AlumnoApellido}, {data.AlumnoNombre}");
 
                                 table.Cell().Padding(2).Text("DNI").Bold();
@@ -637,7 +637,7 @@ namespace BlossomInstitute.Application.Services.Export
                                 table.Cell().Padding(2).Text("Email").Bold();
                                 table.Cell().Padding(2).Text(data.AlumnoEmail ?? "-");
 
-                                table.Cell().Padding(2).Text("Course").Bold();
+                                table.Cell().Padding(2).Text("Curso").Bold();
                                 table.Cell().Padding(2).Text(data.CursoNombre);
                             });
                         });
@@ -646,7 +646,7 @@ namespace BlossomInstitute.Application.Services.Export
                         column.Item().Border(1).Padding(8).Column(c =>
                         {
                             c.Spacing(4);
-                            c.Item().Text("Summary").Bold().FontSize(12);
+                            c.Item().Text("Resumen").Bold().FontSize(12);
 
                             c.Item().Table(table =>
                             {
@@ -661,7 +661,7 @@ namespace BlossomInstitute.Application.Services.Export
                                 table.Cell().Padding(2).Text("Year").Bold();
                                 table.Cell().Padding(2).Text(data.Year.ToString());
 
-                                table.Cell().Padding(2).Text("Term").Bold();
+                                table.Cell().Padding(2).Text("Trimestre").Bold();
                                 table.Cell().Padding(2).Text(data.Term.ToString());
 
                                 table.Cell().Padding(2).Text("From").Bold();
@@ -697,7 +697,7 @@ namespace BlossomInstitute.Application.Services.Export
                                          .Bold()
                                          .FontSize(12);
 
-                                    c.Item().Text($"Date: {item.Fecha:yyyy-MM-dd} | Grade: {FormatScoreForReport(item.Tipo, item.Nota)}");
+                                    c.Item().Text($"Fecha: {item.Fecha:yyyy-MM-dd} | Nota: {FormatearNotaParaReporte(item.Tipo, item.Nota)}");
 
                                     if (!string.IsNullOrWhiteSpace(item.Descripcion))
                                         c.Item().Text($"Description: {item.Descripcion}");
@@ -766,7 +766,7 @@ namespace BlossomInstitute.Application.Services.Export
         {
             return tipo switch
             {
-                TipoCalificacion.Homework => "Homework",
+                TipoCalificacion.Homework => "Tareas",
                 TipoCalificacion.Quiz => "Quiz",
                 TipoCalificacion.Test => "Test",
                 TipoCalificacion.Participation => "Participation",
@@ -775,7 +775,7 @@ namespace BlossomInstitute.Application.Services.Export
             };
         }
 
-        private static string FormatScoreForReport(TipoCalificacion tipo, decimal? nota)
+        private static string FormatearNotaParaReporte(TipoCalificacion tipo, decimal? nota)
         {
             if (tipo == TipoCalificacion.Participation || tipo == TipoCalificacion.Behaviour)
             {
@@ -815,7 +815,7 @@ namespace BlossomInstitute.Application.Services.Export
             };
         }
 
-        public byte[] ExportStudentSummaryByCourseTermToPdf(
+        public byte[] ExportarResumenAlumnoPorCursoYTrimestreAPdf(
              ReporteStudentSummaryByCursoAndTermResponseModel data)
         {
             var document = Document.Create(container =>
@@ -828,8 +828,8 @@ namespace BlossomInstitute.Application.Services.Export
 
                     page.Header().Element(header => ComposePdfHeader(
                         header,
-                        $"Student Summary Report - {data.CursoNombre}",
-                        $"Year {data.Year} - Term {data.Term} ({data.From:yyyy-MM-dd} to {data.To:yyyy-MM-dd})"));
+                        $"Reporte resumen del alumno - {data.CursoNombre}",
+                        $"Año {data.Year} - Trimestre {data.Term} ({data.From:yyyy-MM-dd} a {data.To:yyyy-MM-dd})"));
 
                     page.Content().Column(column =>
                     {
@@ -839,7 +839,7 @@ namespace BlossomInstitute.Application.Services.Export
                         column.Item().Border(1).Padding(8).Column(c =>
                         {
                             c.Spacing(4);
-                            c.Item().Text("Student Information").Bold().FontSize(12);
+                            c.Item().Text("Información del alumno").Bold().FontSize(12);
 
                             c.Item().Table(table =>
                             {
@@ -851,7 +851,7 @@ namespace BlossomInstitute.Application.Services.Export
                                     columns.RelativeColumn(2);
                                 });
 
-                                table.Cell().Padding(2).Text("Student").Bold();
+                                table.Cell().Padding(2).Text("Alumno").Bold();
                                 table.Cell().Padding(2).Text($"{data.AlumnoApellido}, {data.AlumnoNombre}");
 
                                 table.Cell().Padding(2).Text("DNI").Bold();
@@ -860,7 +860,7 @@ namespace BlossomInstitute.Application.Services.Export
                                 table.Cell().Padding(2).Text("Email").Bold();
                                 table.Cell().Padding(2).Text(data.AlumnoEmail ?? "-");
 
-                                table.Cell().Padding(2).Text("Course").Bold();
+                                table.Cell().Padding(2).Text("Curso").Bold();
                                 table.Cell().Padding(2).Text(data.CursoNombre);
                             });
                         });
@@ -869,7 +869,7 @@ namespace BlossomInstitute.Application.Services.Export
                         column.Item().Border(1).Padding(8).Column(c =>
                         {
                             c.Spacing(4);
-                            c.Item().Text("Attendance").Bold().FontSize(12);
+                            c.Item().Text("Asistencia").Bold().FontSize(12);
 
                             c.Item().Table(table =>
                             {
@@ -890,7 +890,7 @@ namespace BlossomInstitute.Application.Services.Export
                                 table.Cell().Padding(2).Text("Absent").Bold();
                                 table.Cell().Padding(2).Text(data.Attendance.Ausentes.ToString());
 
-                                table.Cell().Padding(2).Text("Attendance %").Bold();
+                                table.Cell().Padding(2).Text("Asistencia %").Bold();
                                 table.Cell().Padding(2).Text(data.Attendance.PorcentajeAsistencia.ToString("0.00"));
                             });
                         });
@@ -899,7 +899,7 @@ namespace BlossomInstitute.Application.Services.Export
                         column.Item().Border(1).Padding(8).Column(c =>
                         {
                             c.Spacing(4);
-                            c.Item().Text("Homework").Bold().FontSize(12);
+                            c.Item().Text("Tareas").Bold().FontSize(12);
 
                             c.Item().Table(table =>
                             {
@@ -952,19 +952,19 @@ namespace BlossomInstitute.Application.Services.Export
                                 table.Cell().Padding(2).Text(data.Marks.QuizCount.ToString());
 
                                 table.Cell().Padding(2).Text("Quiz Avg").Bold();
-                                table.Cell().Padding(2).Text(FormatScoreForReport(TipoCalificacion.Quiz, data.Marks.QuizPromedio));
+                                table.Cell().Padding(2).Text(FormatearNotaParaReporte(TipoCalificacion.Quiz, data.Marks.QuizPromedio));
 
                                 table.Cell().Padding(2).Text("Test Count").Bold();
                                 table.Cell().Padding(2).Text(data.Marks.TestCount.ToString());
 
                                 table.Cell().Padding(2).Text("Test Avg").Bold();
-                                table.Cell().Padding(2).Text(FormatScoreForReport(TipoCalificacion.Test, data.Marks.TestPromedio));
+                                table.Cell().Padding(2).Text(FormatearNotaParaReporte(TipoCalificacion.Test, data.Marks.TestPromedio));
 
-                                table.Cell().Padding(2).Text("Marks Count").Bold();
+                                table.Cell().Padding(2).Text("Cantidad de calificaciones").Bold();
                                 table.Cell().Padding(2).Text(data.Marks.MarksCount.ToString());
 
                                 table.Cell().Padding(2).Text("General Avg").Bold();
-                                table.Cell().Padding(2).Text(FormatScoreForReport(TipoCalificacion.Quiz, data.Marks.PromedioGeneral));
+                                table.Cell().Padding(2).Text(FormatearNotaParaReporte(TipoCalificacion.Quiz, data.Marks.PromedioGeneral));
                             });
                         });
 

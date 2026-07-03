@@ -1,5 +1,5 @@
 using BlossomInstitute.Common.Features;
-using BlossomInstitute.Application.Common.Academic;
+using BlossomInstitute.Application.Common.Academico;
 using BlossomInstitute.Application.DataBase.Curso.Shared;
 using BlossomInstitute.Domain.Entidades.Clase;
 using BlossomInstitute.Domain.Model;
@@ -53,16 +53,16 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAllCursos
 
             var total = await query.CountAsync();
             var today = GetArgentinaToday();
-            var periodContext = AcademicQuarterHelper.GetContext(today);
-            var currentFrom = periodContext.From;
-            var currentTo = periodContext.To;
+            var periodContext = PeriodoAcademicoHelper.ObtenerContexto(today);
+            var currentFrom = periodContext.Desde;
+            var currentTo = periodContext.Hasta;
             var period = new CourseAcademicPeriodModel
             {
-                Label = periodContext.Label,
-                From = periodContext.From,
-                To = periodContext.To,
-                Year = periodContext.Year,
-                QuarterNumber = periodContext.QuarterNumber
+                Label = periodContext.Etiqueta,
+                From = periodContext.Desde,
+                To = periodContext.Hasta,
+                Year = periodContext.Anio,
+                QuarterNumber = periodContext.NumeroTrimestre
             };
 
             var data = await query
@@ -361,8 +361,8 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAllCursos
             var classCountByPeriod = historicalClasses
                 .GroupBy(x =>
                 {
-                    var period = AcademicQuarterHelper.GetCurrent(x.Date);
-                    return new CoursePeriodKey(x.CourseId, period.Year, period.Quarter);
+                    var period = PeriodoAcademicoHelper.ObtenerActual(x.Date);
+                    return new CoursePeriodKey(x.CourseId, period.Anio, period.Trimestre);
                 })
                 .ToDictionary(x => x.Key, x => x.Count());
 
@@ -370,8 +370,8 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAllCursos
 
             foreach (var group in historicalGrades.GroupBy(x =>
             {
-                var period = AcademicQuarterHelper.GetCurrent(x.Date);
-                return new PendingFollowUpKey(x.CourseId, x.StudentId, period.Year, period.Quarter);
+                var period = PeriodoAcademicoHelper.ObtenerActual(x.Date);
+                return new PendingFollowUpKey(x.CourseId, x.StudentId, period.Anio, period.Trimestre);
             }))
             {
                 var average = Math.Round(group.Average(x => x.Grade), 2);
@@ -386,8 +386,8 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAllCursos
 
             foreach (var group in historicalAttendanceRows.GroupBy(x =>
             {
-                var period = AcademicQuarterHelper.GetCurrent(x.Date);
-                return new PendingFollowUpKey(x.CourseId, x.StudentId, period.Year, period.Quarter);
+                var period = PeriodoAcademicoHelper.ObtenerActual(x.Date);
+                return new PendingFollowUpKey(x.CourseId, x.StudentId, period.Anio, period.Trimestre);
             }))
             {
                 var classCountKey = new CoursePeriodKey(group.Key.CourseId, group.Key.Year, group.Key.QuarterNumber);
@@ -424,7 +424,7 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAllCursos
             if (accumulators.TryGetValue(key, out var accumulator))
                 return accumulator;
 
-            var period = AcademicQuarterHelper.GetCurrent(signal.Date);
+            var period = PeriodoAcademicoHelper.ObtenerActual(signal.Date);
             accumulator = new PendingFollowUpAccumulator
             {
                 StudentId = signal.StudentId,
@@ -433,9 +433,9 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAllCursos
                 AvatarUrl = signal.AvatarUrl,
                 CourseId = signal.CourseId,
                 CourseName = courseNames.GetValueOrDefault(signal.CourseId) ?? string.Empty,
-                PeriodLabel = period.Label,
-                QuarterNumber = period.Quarter,
-                Year = period.Year
+                PeriodLabel = period.Etiqueta,
+                QuarterNumber = period.Trimestre,
+                Year = period.Anio
             };
             accumulators[key] = accumulator;
 

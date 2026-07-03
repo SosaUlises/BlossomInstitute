@@ -38,7 +38,7 @@ namespace BlossomInstitute.Controllers.Me.Alumnos
         {
             var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (!int.TryParse(userIdStr, out var userId) || userId <= 0)
-                return Unauthorized(ResponseApiService.Response(401, message: "Token invÃ¡lido"));
+                return Unauthorized(ResponseApiService.Response(401, message: "Token inválido"));
 
             var result = await query.Execute(userId, cursoId, ct);
             return StatusCode(result.StatusCode, result);

@@ -255,7 +255,7 @@ namespace BlossomInstitute.Controllers.Reportes
                         message: "No se encontraron datos para exportar"));
             }
 
-            var bytes = exportService.ExportMarksByCourseTermToExcel(
+            var bytes = exportService.ExportarCalificacionesPorCursoYTrimestreAExcel(
                 data.Resumen,
                 data.Items);
 
@@ -299,7 +299,7 @@ namespace BlossomInstitute.Controllers.Reportes
                         message: "No se encontraron datos para exportar"));
             }
 
-            var bytes = exportService.ExportMarksByCourseTermToPdf(
+            var bytes = exportService.ExportarCalificacionesPorCursoYTrimestreAPdf(
                 data.Resumen,
                 data.Items);
 
@@ -341,7 +341,7 @@ namespace BlossomInstitute.Controllers.Reportes
                         message: "No se encontraron datos para exportar"));
             }
 
-            var bytes = exportService.ExportAttendanceByCourseTermToExcel(
+            var bytes = exportService.ExportarAsistenciaPorCursoYTrimestreAExcel(
                 data.Resumen,
                 data.Items);
 
@@ -386,7 +386,7 @@ namespace BlossomInstitute.Controllers.Reportes
                         message: "No se encontraron datos para exportar"));
             }
 
-            var bytes = exportService.ExportAttendanceByCourseTermToPdf(
+            var bytes = exportService.ExportarAsistenciaPorCursoYTrimestreAPdf(
                 data.Resumen,
                 data.Items);
 
@@ -428,7 +428,7 @@ namespace BlossomInstitute.Controllers.Reportes
                         message: "No se encontraron datos para exportar"));
             }
 
-            var bytes = exportService.ExportHomeworkByCourseTermToExcel(
+            var bytes = exportService.ExportarTareasPorCursoYTrimestreAExcel(
                 data.Resumen,
                 data.Items);
 
@@ -473,7 +473,7 @@ namespace BlossomInstitute.Controllers.Reportes
                         message: "No se encontraron datos para exportar"));
             }
 
-            var bytes = exportService.ExportHomeworkByCourseTermToPdf(
+            var bytes = exportService.ExportarTareasPorCursoYTrimestreAPdf(
                 data.Resumen,
                 data.Items);
 
@@ -513,7 +513,7 @@ namespace BlossomInstitute.Controllers.Reportes
                         message: "No se encontraron datos para exportar"));
             }
 
-            var bytes = exportService.ExportStudentSummaryByCourseTermToPdf(data);
+            var bytes = exportService.ExportarResumenAlumnoPorCursoYTrimestreAPdf(data);
 
             var fileName = $"student-summary-course-{cursoId}-student-{alumnoId}-year-{year}-term-{term}.pdf";
 
@@ -576,7 +576,7 @@ namespace BlossomInstitute.Controllers.Reportes
                         message: "No se encontraron datos para exportar"));
             }
 
-            var bytes = exportService.ExportStudentAssessmentsDetailByCourseTermToPdf(data);
+            var bytes = exportService.ExportarDetalleEvaluacionesAlumnoPorCursoYTrimestreAPdf(data);
 
             var fileName = $"student-assessments-course-{cursoId}-student-{alumnoId}-year-{year}-term-{term}.pdf";
 
