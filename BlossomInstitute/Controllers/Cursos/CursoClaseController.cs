@@ -1,5 +1,5 @@
 using BlossomInstitute.Application.DataBase.Asistencia.Queries.GetAsistenciasByClase;
-using BlossomInstitute.Application.DataBase.Clase.Command;
+using BlossomInstitute.Application.DataBase.Clase.Commands;
 using BlossomInstitute.Application.DataBase.Clase.Queries.GetClasesByCurso;
 using BlossomInstitute.Common.Features;
 using Microsoft.AspNetCore.Authorization;

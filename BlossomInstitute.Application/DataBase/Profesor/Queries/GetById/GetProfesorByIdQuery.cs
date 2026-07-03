@@ -1,5 +1,5 @@
-﻿using AutoMapper;
-using BlossomInstitute.Application.DataBase.Profesor.Queries.GetAllProfesores;
+using AutoMapper;
+using BlossomInstitute.Application.DataBase.Profesor.Queries.GetAll;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Usuario;
 using BlossomInstitute.Domain.Model;

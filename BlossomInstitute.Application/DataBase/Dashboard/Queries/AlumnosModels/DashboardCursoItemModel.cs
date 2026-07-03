@@ -1,6 +1,6 @@
-﻿using BlossomInstitute.Domain.Entidades.Curso;
+using BlossomInstitute.Domain.Entidades.Curso;
 
-namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.Models
+namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.AlumnosModels
 {
     public class DashboardCursoItemModel
     {

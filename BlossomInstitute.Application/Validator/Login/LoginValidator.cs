@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Login.Command;
+using BlossomInstitute.Application.DataBase.Login.Commands;
 using FluentValidation;
 
 namespace BlossomInstitute.Application.Validator.Login

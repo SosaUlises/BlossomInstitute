@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Password.Command.ForgotPassword;
+using BlossomInstitute.Application.DataBase.Password.Commands.ForgotPassword;
 using BlossomInstitute.Application.External;
 using BlossomInstitute.Domain.Entidades.Usuario;
 using BlossomInstitute.UnitTests.Helpers;

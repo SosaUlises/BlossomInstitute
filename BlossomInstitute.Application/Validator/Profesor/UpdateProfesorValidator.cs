@@ -1,5 +1,5 @@
-﻿using BlossomInstitute.Application.DataBase.Profesor.Command.CreateProfesor;
-using BlossomInstitute.Application.DataBase.Profesor.Command.UpdateProfesor;
+using BlossomInstitute.Application.DataBase.Profesor.Commands.CreateProfesor;
+using BlossomInstitute.Application.DataBase.Profesor.Commands.UpdateProfesor;
 using FluentValidation;
 using System;
 using System.Collections.Generic;

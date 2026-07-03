@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Alumno.Command.CreateAlumno;
+using BlossomInstitute.Application.DataBase.Alumno.Commands.CreateAlumno;
 using FluentValidation;
 
 namespace BlossomInstitute.Application.Validator.Alumno

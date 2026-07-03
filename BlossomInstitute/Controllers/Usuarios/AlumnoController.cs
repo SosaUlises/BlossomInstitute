@@ -1,7 +1,7 @@
-using BlossomInstitute.Application.DataBase.Alumno.Command.ActivarAlumno;
-using BlossomInstitute.Application.DataBase.Alumno.Command.CreateAlumno;
-using BlossomInstitute.Application.DataBase.Alumno.Command.DesactivarAlumno;
-using BlossomInstitute.Application.DataBase.Alumno.Command.UpdateAlumno;
+using BlossomInstitute.Application.DataBase.Alumno.Commands.ActivarAlumno;
+using BlossomInstitute.Application.DataBase.Alumno.Commands.CreateAlumno;
+using BlossomInstitute.Application.DataBase.Alumno.Commands.DesactivarAlumno;
+using BlossomInstitute.Application.DataBase.Alumno.Commands.UpdateAlumno;
 using BlossomInstitute.Application.DataBase.Alumno.Queries.GetAll;
 using BlossomInstitute.Application.DataBase.Alumno.Queries.GetAsignableByCurso;
 using BlossomInstitute.Application.DataBase.Alumno.Queries.GetById;

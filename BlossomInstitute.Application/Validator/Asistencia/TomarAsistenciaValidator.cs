@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Asistencia.Command.TomarAsistencia;
+using BlossomInstitute.Application.DataBase.Asistencia.Commands.TomarAsistencia;
 using FluentValidation;
 
 namespace BlossomInstitute.Application.Validator.Asistencia

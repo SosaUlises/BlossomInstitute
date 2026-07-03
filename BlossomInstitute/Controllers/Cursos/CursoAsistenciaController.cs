@@ -1,4 +1,4 @@
-using BlossomInstitute.Application.DataBase.Asistencia.Command.TomarAsistencia;
+using BlossomInstitute.Application.DataBase.Asistencia.Commands.TomarAsistencia;
 using BlossomInstitute.Application.DataBase.Asistencia.Queries.GetAsistenciasByAlumno;
 using BlossomInstitute.Application.DataBase.Asistencia.Queries.GetAsistenciasByClase;
 using BlossomInstitute.Common.Features;

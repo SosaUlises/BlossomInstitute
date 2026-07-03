@@ -19,17 +19,17 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetMyCursos.Alumno
         public async Task<BaseResponseModel> Execute(int userId, int cursoId, CancellationToken ct = default)
         {
             if (userId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, message: "Usuario invÃ¡lido");
+                return ResponseApiService.Response(StatusCodes.Status401Unauthorized, message: "Usuario inválido");
 
             if (cursoId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "CursoId invÃ¡lido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "CursoId inválido");
 
             var matriculado = await _db.Matriculas
                 .AsNoTracking()
                 .AnyAsync(x => x.CursoId == cursoId && x.AlumnoId == userId, ct);
 
             if (!matriculado)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "No estÃ¡s matriculado en este curso");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "No estás matriculado en este curso");
 
             var curso = await _db.Cursos
                 .AsNoTracking()

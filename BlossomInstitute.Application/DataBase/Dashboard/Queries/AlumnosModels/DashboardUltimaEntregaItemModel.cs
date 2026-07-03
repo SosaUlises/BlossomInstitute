@@ -1,6 +1,6 @@
-﻿using BlossomInstitute.Domain.Entidades.Entrega;
+using BlossomInstitute.Domain.Entidades.Entrega;
 
-namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.Models
+namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.AlumnosModels
 {
     public class DashboardUltimaEntregaItemModel
     {

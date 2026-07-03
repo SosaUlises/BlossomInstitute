@@ -1,6 +1,6 @@
-﻿using BlossomInstitute.Domain.Entidades.Calificacion;
+using BlossomInstitute.Domain.Entidades.Calificacion;
 
-namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.Models
+namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.AlumnosModels
 {
     public class DashboardUltimaCalificacionItemModel
     {

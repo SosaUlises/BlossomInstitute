@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Login.Command;
+using BlossomInstitute.Application.DataBase.Login.Commands;
 using BlossomInstitute.Application.External;
 using BlossomInstitute.Domain.Entidades.Usuario;
 using BlossomInstitute.UnitTests.Helpers;

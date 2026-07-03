@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Settings.Command.ChangePassword;
+using BlossomInstitute.Application.DataBase.Settings.Commands.ChangePassword;
 using FluentValidation;
 
 namespace BlossomInstitute.Application.Validator.Settings

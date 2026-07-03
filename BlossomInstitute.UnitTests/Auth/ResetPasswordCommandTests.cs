@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Password.Command.ResetPassword;
+using BlossomInstitute.Application.DataBase.Password.Commands.ResetPassword;
 using BlossomInstitute.Domain.Entidades.Usuario;
 using BlossomInstitute.UnitTests.Helpers;
 using FluentAssertions;

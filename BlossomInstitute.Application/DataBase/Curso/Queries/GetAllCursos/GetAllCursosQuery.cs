@@ -606,7 +606,7 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAllCursos
                     Reason = reason,
                     AverageValue = AverageValue,
                     AttendanceValue = AttendanceValue,
-                    Description = $"{(isCritical ? "CrÃ­tico" : "Seguimiento")} en {PeriodLabel} {Year}: {reason}"
+                    Description = $"{(isCritical ? "Crítico" : "Seguimiento")} en {PeriodLabel} {Year}: {reason}"
                 };
             }
         }

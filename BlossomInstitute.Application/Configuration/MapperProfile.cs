@@ -1,6 +1,6 @@
-﻿using AutoMapper;
+using AutoMapper;
 using BlossomInstitute.Application.DataBase.Alumno.Queries.GetAll;
-using BlossomInstitute.Application.DataBase.Profesor.Queries.GetAllProfesores;
+using BlossomInstitute.Application.DataBase.Profesor.Queries.GetAll;
 using BlossomInstitute.Domain.Entidades.Usuario;
 
 namespace BlossomInstitute.Application.Configuration

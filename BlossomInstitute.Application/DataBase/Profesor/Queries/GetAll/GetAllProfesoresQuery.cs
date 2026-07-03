@@ -5,7 +5,7 @@ using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlossomInstitute.Application.DataBase.Profesor.Queries.GetAllProfesores
+namespace BlossomInstitute.Application.DataBase.Profesor.Queries.GetAll
 {
     public class GetAllProfesoresQuery : IGetAllProfesoresQuery
     {
