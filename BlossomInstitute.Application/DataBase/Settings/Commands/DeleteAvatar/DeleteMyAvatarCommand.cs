@@ -1,4 +1,4 @@
-using BlossomInstitute.Application.DataBase.CloudinaryService.Commands.UploadFile;
+using BlossomInstitute.Application.External.Archivos;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Usuario;
 using BlossomInstitute.Domain.Model;
@@ -11,14 +11,14 @@ namespace BlossomInstitute.Application.DataBase.Settings.Commands.DeleteAvatar
     public class DeleteMyAvatarCommand : IDeleteMyAvatarCommand
     {
         private readonly UserManager<UsuarioEntity> _userManager;
-        private readonly IFileStorageService _fileStorageService;
+        private readonly IAlmacenamientoArchivoService _almacenamientoArchivoService;
 
         public DeleteMyAvatarCommand(
             UserManager<UsuarioEntity> userManager,
-            IFileStorageService fileStorageService)
+            IAlmacenamientoArchivoService almacenamientoArchivoService)
         {
             _userManager = userManager;
-            _fileStorageService = fileStorageService;
+            _almacenamientoArchivoService = almacenamientoArchivoService;
         }
 
         public async Task<BaseResponseModel> Execute(
@@ -51,7 +51,7 @@ namespace BlossomInstitute.Application.DataBase.Settings.Commands.DeleteAvatar
             {
                 try
                 {
-                    await _fileStorageService.DeleteFileAsync(previousAvatarPublicId, ct);
+                    await _almacenamientoArchivoService.EliminarImagenAsync(previousAvatarPublicId, ct);
                 }
                 catch
                 {

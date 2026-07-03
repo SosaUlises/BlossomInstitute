@@ -1,39 +1,37 @@
-﻿using BlossomInstitute.Domain.Entidades.Common;
+using BlossomInstitute.Application.External.Archivos;
+using BlossomInstitute.Domain.Entidades.Common;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
-namespace BlossomInstitute.Application.DataBase.CloudinaryService.Commands.UploadFile
+namespace BlossomInstitute.Infraestructure.Archivos.Cloudinary
 {
-    public class CloudinaryFileStorageService : IFileStorageService
+    public class CloudinaryAlmacenamientoArchivoService : IAlmacenamientoArchivoService
     {
-        private readonly Cloudinary _cloudinary;
-        private readonly CloudinaryStorageOptions _options;
+        private readonly CloudinaryDotNet.Cloudinary _cloudinary;
+        private readonly OpcionesCloudinary _options;
 
-        public CloudinaryFileStorageService(IOptions<CloudinaryStorageOptions> options)
+        public CloudinaryAlmacenamientoArchivoService(IOptions<OpcionesCloudinary> options)
         {
             _options = options.Value;
 
             var account = new Account(
                 _options.CloudName,
                 _options.ApiKey,
-                _options.ApiSecret
-            );
+                _options.ApiSecret);
 
-            _cloudinary = new Cloudinary(account);
-
-
+            _cloudinary = new CloudinaryDotNet.Cloudinary(account);
             _cloudinary.Api.Secure = true;
         }
 
-        public async Task<UploadFileResponseModel> UploadAsync(
+        public async Task<ArchivoSubidoResponseModel> SubirAsync(
             IFormFile file,
             string folder,
             CancellationToken ct = default)
         {
             if (file == null || file.Length == 0)
-                throw new InvalidOperationException("Archivo inválido");
+                throw new InvalidOperationException("Archivo invalido");
 
             await using var stream = file.OpenReadStream();
 
@@ -53,7 +51,7 @@ namespace BlossomInstitute.Application.DataBase.CloudinaryService.Commands.Uploa
             if (result.Error != null)
                 throw new InvalidOperationException(result.Error.Message);
 
-            return new UploadFileResponseModel
+            return new ArchivoSubidoResponseModel
             {
                 Url = result.SecureUrl?.ToString() ?? result.Url?.ToString() ?? "",
                 Nombre = file.FileName,
@@ -64,12 +62,12 @@ namespace BlossomInstitute.Application.DataBase.CloudinaryService.Commands.Uploa
             };
         }
 
-        public async Task<UploadFileResponseModel> UploadAvatarAsync(
+        public async Task<ArchivoSubidoResponseModel> SubirAvatarAsync(
             IFormFile file,
             CancellationToken ct = default)
         {
             if (file == null || file.Length == 0)
-                throw new InvalidOperationException("Archivo inválido");
+                throw new InvalidOperationException("Archivo invalido");
 
             await using var stream = file.OpenReadStream();
 
@@ -92,7 +90,7 @@ namespace BlossomInstitute.Application.DataBase.CloudinaryService.Commands.Uploa
             if (result.Error != null)
                 throw new InvalidOperationException(result.Error.Message);
 
-            return new UploadFileResponseModel
+            return new ArchivoSubidoResponseModel
             {
                 Url = result.SecureUrl?.ToString() ?? result.Url?.ToString() ?? "",
                 Nombre = file.FileName,
@@ -103,10 +101,10 @@ namespace BlossomInstitute.Application.DataBase.CloudinaryService.Commands.Uploa
             };
         }
 
-        public async Task DeleteAsync(string storageKey, CancellationToken ct = default)
+        public async Task EliminarAsync(string storageKey, CancellationToken ct = default)
         {
             if (string.IsNullOrWhiteSpace(storageKey))
-                throw new InvalidOperationException("StorageKey inválido");
+                throw new InvalidOperationException("StorageKey invalido");
 
             var deleteParams = new DeletionParams(storageKey)
             {
@@ -122,10 +120,10 @@ namespace BlossomInstitute.Application.DataBase.CloudinaryService.Commands.Uploa
                 throw new InvalidOperationException($"No se pudo eliminar el archivo. Resultado: {result.Result}");
         }
 
-        public async Task DeleteFileAsync(string storageKey, CancellationToken ct = default)
+        public async Task EliminarImagenAsync(string storageKey, CancellationToken ct = default)
         {
             if (string.IsNullOrWhiteSpace(storageKey))
-                throw new InvalidOperationException("StorageKey inválido");
+                throw new InvalidOperationException("StorageKey invalido");
 
             var deleteParams = new DeletionParams(storageKey)
             {
@@ -142,5 +140,3 @@ namespace BlossomInstitute.Application.DataBase.CloudinaryService.Commands.Uploa
         }
     }
 }
-
-

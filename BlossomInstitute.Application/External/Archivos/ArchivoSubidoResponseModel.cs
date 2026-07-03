@@ -1,8 +1,8 @@
 ﻿using BlossomInstitute.Domain.Entidades.Common;
 
-namespace BlossomInstitute.Application.DataBase.CloudinaryService.Commands.UploadFile
+namespace BlossomInstitute.Application.External.Archivos
 {
-    public class UploadFileResponseModel
+    public class ArchivoSubidoResponseModel
     {
         public string Url { get; set; } = default!;
         public string Nombre { get; set; } = default!;

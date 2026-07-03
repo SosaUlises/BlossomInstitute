@@ -1,6 +1,6 @@
-﻿namespace BlossomInstitute.Application.DataBase.CloudinaryService.Commands.UploadFile
+namespace BlossomInstitute.Infraestructure.Archivos.Cloudinary
 {
-    public class CloudinaryStorageOptions
+    public class OpcionesCloudinary
     {
         public string CloudName { get; set; } = default!;
         public string ApiKey { get; set; } = default!;

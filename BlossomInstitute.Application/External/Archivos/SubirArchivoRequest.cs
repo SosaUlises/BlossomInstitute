@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace BlossomInstitute.Application.DataBase.CloudinaryService.Commands.UploadFile
+namespace BlossomInstitute.Application.External.Archivos
 {
-    public class UploadFileRequest
+    public class SubirArchivoRequest
     {
         public IFormFile File { get; set; } = default!;
         public string? Folder { get; set; }
     }
-    public class DeleteUploadRequest
+    public class EliminarArchivoRequest
     {
         public string StorageKey { get; set; } = default!;
     }

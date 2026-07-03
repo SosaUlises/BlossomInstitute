@@ -1,6 +1,8 @@
-﻿using BlossomInstitute.Application.DataBase;
+using BlossomInstitute.Application.DataBase;
 using BlossomInstitute.Application.External;
+using BlossomInstitute.Application.External.Archivos;
 using BlossomInstitute.Domain.Entidades.Usuario;
+using BlossomInstitute.Infraestructure.Archivos.Cloudinary;
 using BlossomInstitute.Infraestructure.DataBase;
 using BlossomInstitute.Infraestructure.Email;
 using BlossomInstitute.Infraestructure.GetTokenJWT;
@@ -92,6 +94,9 @@ namespace BlossomInstitute.Infraestructure
             });
 
             services.AddScoped<IGetTokenJWTService, GetTokenJWTService>();
+
+            services.Configure<OpcionesCloudinary>(configuration.GetSection("CloudinaryStorage"));
+            services.AddTransient<IAlmacenamientoArchivoService, CloudinaryAlmacenamientoArchivoService>();
 
             // Cargar conf de email
             services.Configure<EmailSettings>(configuration.GetSection("Email"));

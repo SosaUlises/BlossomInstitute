@@ -19,7 +19,6 @@ using BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalificacion
 using BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalificacionesByCurso;
 using BlossomInstitute.Application.DataBase.Clase.Commands;
 using BlossomInstitute.Application.DataBase.Clase.Queries.GetClasesByCurso;
-using BlossomInstitute.Application.DataBase.CloudinaryService.Commands.UploadFile;
 using BlossomInstitute.Application.DataBase.Curso.Commands.ActivarCurso;
 using BlossomInstitute.Application.DataBase.Curso.Commands.ArchivarCurso;
 using BlossomInstitute.Application.DataBase.Curso.Commands.AsignarAlumnos;
@@ -221,10 +220,6 @@ namespace BlossomInstitute.Application
             services.AddTransient<IChangeMyPasswordCommand, ChangeMyPasswordCommand>();
             services.AddTransient<IUpdateMyAvatarCommand, UpdateMyAvatarCommand>();
             services.AddTransient<IDeleteMyAvatarCommand, DeleteMyAvatarCommand>();
-
-            // Cloudinary
-            services.AddTransient<IFileStorageService, CloudinaryFileStorageService>();
-
 
             // Validators
             services.AddScoped<IValidator<LoginModel>, LoginValidator>();

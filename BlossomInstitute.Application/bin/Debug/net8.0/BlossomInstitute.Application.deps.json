@@ -13,7 +13,6 @@
           "BlossomInstitute.Common": "1.0.0",
           "BlossomInstitute.Domain": "1.0.0",
           "ClosedXML": "0.105.0",
-          "CloudinaryDotNet": "1.28.0",
           "FluentValidation": "12.1.1",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "8.0.22",
           "Microsoft.AspNetCore.Identity": "2.3.9",

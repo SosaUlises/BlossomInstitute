@@ -1,11 +1,10 @@
-using BlossomInstitute.Application.DataBase.CloudinaryService.Commands.UploadFile;
+using BlossomInstitute.Application.External.Archivos;
 using BlossomInstitute.Common.Features;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlossomInstitute.Controllers.Uploads
 {
-
     [ApiController]
     [Route("api/v1/uploads")]
     [Authorize(Roles = "Profesor,Administrador,Alumno")]
@@ -15,8 +14,8 @@ namespace BlossomInstitute.Controllers.Uploads
         [Consumes("multipart/form-data")]
         [RequestSizeLimit(25_000_000)]
         public async Task<IActionResult> Upload(
-            [FromForm] UploadFileRequest request,
-            [FromServices] IFileStorageService storage,
+            [FromForm] SubirArchivoRequest request,
+            [FromServices] IAlmacenamientoArchivoService storage,
             CancellationToken ct)
         {
             if (request.File == null || request.File.Length == 0)
@@ -34,28 +33,26 @@ namespace BlossomInstitute.Controllers.Uploads
             if (!allowedExtensions.Contains(extension))
                 return BadRequest(ResponseApiService.Response(400, message: "Tipo de archivo no permitido"));
 
-            var result = await storage.UploadAsync(
+            var result = await storage.SubirAsync(
                 request.File,
                 request.Folder ?? "general",
-                ct
-            );
+                ct);
 
             return StatusCode(
                 201,
-                ResponseApiService.Response(201, result, "Archivo subido correctamente")
-            );
+                ResponseApiService.Response(201, result, "Archivo subido correctamente"));
         }
 
         [HttpDelete]
         public async Task<IActionResult> Delete(
-            [FromBody] DeleteUploadRequest request,
-            [FromServices] IFileStorageService storage,
+            [FromBody] EliminarArchivoRequest request,
+            [FromServices] IAlmacenamientoArchivoService storage,
             CancellationToken ct)
         {
             if (string.IsNullOrWhiteSpace(request.StorageKey))
-                return BadRequest(ResponseApiService.Response(400, message: "StorageKey inválido"));
+                return BadRequest(ResponseApiService.Response(400, message: "StorageKey invalido"));
 
-            await storage.DeleteAsync(request.StorageKey, ct);
+            await storage.EliminarAsync(request.StorageKey, ct);
 
             return Ok(ResponseApiService.Response(200, true, "Archivo eliminado correctamente"));
         }
