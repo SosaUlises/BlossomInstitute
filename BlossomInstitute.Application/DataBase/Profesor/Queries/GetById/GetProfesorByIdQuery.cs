@@ -1,4 +1,3 @@
-using AutoMapper;
 using BlossomInstitute.Application.DataBase.Profesor.Queries.GetAll;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Usuario;

@@ -1,4 +1,3 @@
-using BlossomInstitute.Application.Configuration;
 using BlossomInstitute.Application.DataBase.Alumno.Commands.ActivarAlumno;
 using BlossomInstitute.Application.DataBase.Alumno.Commands.CreateAlumno;
 using BlossomInstitute.Application.DataBase.Alumno.Commands.DesactivarAlumno;
@@ -101,8 +100,6 @@ namespace BlossomInstitute.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(MapperProfile).Assembly);
-
             // Login
             services.AddTransient<ILoginCommand, LoginCommand>();
 
