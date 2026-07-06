@@ -26,14 +26,14 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Commands.CreateCali
             int cursoId,
             int alumnoId,
             int profesorUserId,
-            CreateCalificacionModel model,
+            CreateCalificacionModel? model,
             CancellationToken ct)
         {
             if (cursoId <= 0 || alumnoId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Parámetros inválidos");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Parametros invalidos");
 
             if (model == null)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Modelo inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Modelo invalido");
 
             var profesor = await _userManager.FindByIdAsync(profesorUserId.ToString());
             if (profesor == null)
@@ -119,7 +119,7 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Commands.CreateCali
                         !x.Archivado, ct);
 
                 if (existeHomework)
-                    return ResponseApiService.Response(StatusCodes.Status409Conflict, message: "Ya existe una calificación activa para esa tarea y entrega");
+                    return ResponseApiService.Response(StatusCodes.Status409Conflict, message: "Ya existe una calificacion activa para esa tarea y entrega");
             }
 
             decimal notaFinal;
@@ -161,7 +161,7 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Commands.CreateCali
                     .ToList();
             }
 
-            await using var tx = await _db.BeginTransactionAsync(ct);
+            await using var transaccion = await _db.BeginTransactionAsync(ct);
 
             try
             {
@@ -170,11 +170,11 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Commands.CreateCali
                 var ok = await _db.SaveAsync(ct);
                 if (!ok)
                 {
-                    await tx.RollbackAsync(ct);
-                    return ResponseApiService.Response(StatusCodes.Status500InternalServerError, message: "No se pudo guardar la calificación");
+                    await transaccion.RollbackAsync(ct);
+                    return ResponseApiService.Response(StatusCodes.Status500InternalServerError, message: "No se pudo guardar la calificacion");
                 }
 
-                await tx.CommitAsync(ct);
+                await transaccion.CommitAsync(ct);
 
                 return ResponseApiService.Response(StatusCodes.Status201Created, new
                 {
@@ -193,16 +193,16 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Commands.CreateCali
                         d.PuntajeObtenido,
                         d.PuntajeMaximo
                     })
-                }, "Calificación registrada correctamente");
+                }, "Calificacion registrada correctamente");
             }
             catch (DbUpdateException)
             {
-                await tx.RollbackAsync(ct);
-                return ResponseApiService.Response(StatusCodes.Status409Conflict, message: "No se pudo guardar la calificación por conflicto de datos");
+                await transaccion.RollbackAsync(ct);
+                return ResponseApiService.Response(StatusCodes.Status409Conflict, message: "No se pudo guardar la calificacion por conflicto de datos");
             }
             catch
             {
-                await tx.RollbackAsync(ct);
+                await transaccion.RollbackAsync(ct);
                 throw;
             }
         }
@@ -212,13 +212,13 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Commands.CreateCali
             List<CreateCalificacionDetalleModel> detalles)
         {
             if (string.IsNullOrWhiteSpace(model.Titulo))
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "El título es obligatorio");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "El titulo es obligatorio");
 
             if (model.Titulo.Trim().Length > 100)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "El título no puede superar los 100 caracteres");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "El titulo no puede superar los 100 caracteres");
 
             if (!string.IsNullOrWhiteSpace(model.Descripcion) && model.Descripcion.Trim().Length > 500)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "La descripción no puede superar los 500 caracteres");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "La descripcion no puede superar los 500 caracteres");
 
             var tieneDetalles = detalles.Count > 0;
 
@@ -245,7 +245,7 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Commands.CreateCali
             }
 
             if (model.EntregaId.HasValue && !model.TareaId.HasValue && model.Tipo == TipoCalificacion.Homework)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Si se informa una entrega de homework, también debe informarse la tarea");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Si se informa una entrega de homework, tambien debe informarse la tarea");
 
             if (tieneDetalles)
             {
@@ -256,16 +256,16 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Commands.CreateCali
                     .ToList();
 
                 if (skillsDuplicadas.Count > 0)
-                    return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "No se puede repetir la misma skill dentro de una misma calificación");
+                    return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "No se puede repetir la misma skill dentro de una misma calificacion");
 
                 if (detalles.Any(x => x.PuntajeMaximo <= 0))
-                    return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "El puntaje máximo debe ser mayor a cero");
+                    return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "El puntaje maximo debe ser mayor a cero");
 
                 if (detalles.Any(x => x.PuntajeObtenido < 0))
                     return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "El puntaje obtenido no puede ser negativo");
 
                 if (detalles.Any(x => x.PuntajeObtenido > x.PuntajeMaximo))
-                    return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "El puntaje obtenido no puede superar el puntaje máximo");
+                    return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "El puntaje obtenido no puede superar el puntaje maximo");
             }
             else
             {
@@ -285,7 +285,7 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Commands.CreateCali
             var totalMaximo = detalles.Sum(x => x.PuntajeMaximo);
 
             if (totalMaximo <= 0)
-                throw new InvalidOperationException("No se puede calcular la nota con puntaje máximo total menor o igual a cero");
+                throw new InvalidOperationException("No se puede calcular la nota con puntaje maximo total menor o igual a cero");
 
             return (totalObtenido / totalMaximo) * 100m;
         }

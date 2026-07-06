@@ -8,7 +8,7 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Commands.CreateCali
               int cursoId,
               int alumnoId,
               int profesorUserId,
-              CreateCalificacionModel model,
+              CreateCalificacionModel? model,
               CancellationToken ct);
     }
 }
