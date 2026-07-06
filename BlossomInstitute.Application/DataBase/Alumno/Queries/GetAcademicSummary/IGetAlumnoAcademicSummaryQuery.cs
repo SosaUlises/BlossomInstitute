@@ -4,6 +4,6 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAcademicSummar
 {
     public interface IGetAlumnoAcademicSummaryQuery
     {
-        Task<BaseResponseModel> Execute(int studentId, CancellationToken ct);
+        Task<BaseResponseModel> Execute(int alumnoId, CancellationToken ct);
     }
 }

@@ -79,23 +79,25 @@ namespace BlossomInstitute.Controllers.Usuarios
              [FromServices] IGetAllAlumnosQuery query,
              [FromQuery] int pageNumber = 1,
              [FromQuery] int pageSize = 10,
-             [FromQuery] string? search = null)
+             [FromQuery] string? search = null,
+             CancellationToken ct = default)
         {
             if (pageNumber <= 0) pageNumber = 1;
             if (pageSize <= 0) pageSize = 10;
             if (pageSize > 100) pageSize = 100;
 
-            var result = await query.Execute(pageNumber, pageSize, search);
+            var result = await query.Execute(pageNumber, pageSize, search, ct);
             return StatusCode(result.StatusCode, result);
         }
 
         [HttpGet("{userId:int}")]
         public async Task<IActionResult> GetById(
             [FromRoute] int userId,
-            [FromServices] IGetAlumnoByIdQuery query)
+            [FromServices] IGetAlumnoByIdQuery query,
+            CancellationToken ct = default)
         {
             if (userId <= 0) return BadRequest(ResponseApiService.Response(400, message: "Id inválido"));
-            var result = await query.Execute(userId);
+            var result = await query.Execute(userId, ct);
             return StatusCode(result.StatusCode, result);
         }
 
@@ -105,7 +107,8 @@ namespace BlossomInstitute.Controllers.Usuarios
             [FromServices] IGetAsignableAlumnosByCursoQuery query,
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10,
-            [FromQuery] string? search = null)
+            [FromQuery] string? search = null,
+            CancellationToken ct = default)
         {
             if (cursoId <= 0)
                 return BadRequest(ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Curso inválido"));
@@ -114,7 +117,7 @@ namespace BlossomInstitute.Controllers.Usuarios
             if (pageSize <= 0) pageSize = 10;
             if (pageSize > 100) pageSize = 100;
 
-            var result = await query.Execute(cursoId, pageNumber, pageSize, search);
+            var result = await query.Execute(cursoId, pageNumber, pageSize, search, ct);
             return StatusCode(result.StatusCode, result);
         }
     }

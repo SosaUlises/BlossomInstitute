@@ -18,7 +18,7 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Commands.ActivarAlumno
         public async Task<BaseResponseModel> Execute(int userId)
         {
             if (userId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Id inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Id invalido");
 
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
@@ -37,12 +37,14 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Commands.ActivarAlumno
 
             user.Activo = true;
 
-            var updateRes = await _userManager.UpdateAsync(user);
-            if (!updateRes.Succeeded)
+            var updateResult = await _userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+            {
                 return ResponseApiService.Response(
                     StatusCodes.Status400BadRequest,
-                    updateRes.Errors.Select(e => e.Description).ToList(),
+                    updateResult.Errors.Select(e => e.Description).ToList(),
                     "Error al activar al alumno");
+            }
 
             return ResponseApiService.Response(StatusCodes.Status200OK, message: "Alumno activado correctamente");
         }

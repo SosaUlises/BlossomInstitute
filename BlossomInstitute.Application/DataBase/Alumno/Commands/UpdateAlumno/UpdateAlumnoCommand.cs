@@ -1,4 +1,3 @@
-using BlossomInstitute.Application.DataBase.Profesor.Commands.UpdateProfesor;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Usuario;
 using BlossomInstitute.Domain.Model;
@@ -23,16 +22,27 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Commands.UpdateAlumno
 
         public async Task<BaseResponseModel> Execute(int userId, UpdateAlumnoModel model)
         {
+            if (userId <= 0)
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Id invalido");
+
+            if (model == null)
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Datos del alumno invalidos");
+
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
                 return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Alumno no encontrado");
 
-            if (!await _userManager.IsInRoleAsync(user, "Alumno"))
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "El usuario no es Alumno");
+            var roles = await _userManager.GetRolesAsync(user);
+
+            if (roles.Contains("Administrador"))
+                return ResponseApiService.Response(StatusCodes.Status409Conflict, message: "No se puede actualizar a un Administrador");
+
+            if (!roles.Contains("Alumno"))
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Alumno no encontrado");
 
             var email = model.Email?.Trim().ToLowerInvariant();
             if (string.IsNullOrWhiteSpace(email))
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Email inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Email invalido");
 
             var normalizedEmail = _userManager.NormalizeEmail(email);
             var existeEmail = await _userManager.Users
@@ -46,45 +56,66 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Commands.UpdateAlumno
 
             await using var tx = await _dataBaseService.BeginTransactionAsync();
 
-            user.Nombre = model.Nombre;
-            user.Apellido = model.Apellido;
-            user.Dni = model.Dni;
-            user.PhoneNumber = model.Telefono?.Trim();
-
-            var setEmailRes = await _userManager.SetEmailAsync(user, email);
-            if (!setEmailRes.Succeeded)
+            try
             {
-                await tx.RollbackAsync();
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, setEmailRes.Errors, "Error al actualizar email");
-            }
+                user.Nombre = model.Nombre;
+                user.Apellido = model.Apellido;
+                user.Dni = model.Dni;
+                user.PhoneNumber = model.Telefono?.Trim();
 
-            var setUserNameRes = await _userManager.SetUserNameAsync(user, email);
-            if (!setUserNameRes.Succeeded)
-            {
-                await tx.RollbackAsync();
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, setUserNameRes.Errors, "Error al actualizar username");
-            }
-
-            var updRes = await _userManager.UpdateAsync(user);
-            if (!updRes.Succeeded)
-            {
-                await tx.RollbackAsync();
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, updRes.Errors, "Error al actualizar al alumno");
-            }
-
-            if (!string.IsNullOrWhiteSpace(model.Password))
-            {
-                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var passRes = await _userManager.ResetPasswordAsync(user, token, model.Password);
-                if (!passRes.Succeeded)
+                var setEmailResult = await _userManager.SetEmailAsync(user, email);
+                if (!setEmailResult.Succeeded)
                 {
                     await tx.RollbackAsync();
-                    return ResponseApiService.Response(StatusCodes.Status400BadRequest, passRes.Errors, "Error al actualizar contraseña");
+                    return ResponseApiService.Response(
+                        StatusCodes.Status400BadRequest,
+                        setEmailResult.Errors.Select(e => e.Description).ToList(),
+                        "Error al actualizar email");
                 }
-            }
 
-            await tx.CommitAsync();
-            return ResponseApiService.Response(StatusCodes.Status200OK, message: "Alumno actualizado correctamente");
+                var setUserNameResult = await _userManager.SetUserNameAsync(user, email);
+                if (!setUserNameResult.Succeeded)
+                {
+                    await tx.RollbackAsync();
+                    return ResponseApiService.Response(
+                        StatusCodes.Status400BadRequest,
+                        setUserNameResult.Errors.Select(e => e.Description).ToList(),
+                        "Error al actualizar username");
+                }
+
+                var updateResult = await _userManager.UpdateAsync(user);
+                if (!updateResult.Succeeded)
+                {
+                    await tx.RollbackAsync();
+                    return ResponseApiService.Response(
+                        StatusCodes.Status400BadRequest,
+                        updateResult.Errors.Select(e => e.Description).ToList(),
+                        "Error al actualizar al alumno");
+                }
+
+                if (!string.IsNullOrWhiteSpace(model.Password))
+                {
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var passwordResult = await _userManager.ResetPasswordAsync(user, token, model.Password);
+                    if (!passwordResult.Succeeded)
+                    {
+                        await tx.RollbackAsync();
+                        return ResponseApiService.Response(
+                            StatusCodes.Status400BadRequest,
+                            passwordResult.Errors.Select(e => e.Description).ToList(),
+                            "Error al actualizar contrasena");
+                    }
+                }
+
+                await tx.CommitAsync();
+
+                return ResponseApiService.Response(StatusCodes.Status200OK, message: "Alumno actualizado correctamente");
+            }
+            catch
+            {
+                await tx.RollbackAsync();
+                throw;
+            }
         }
     }
 }

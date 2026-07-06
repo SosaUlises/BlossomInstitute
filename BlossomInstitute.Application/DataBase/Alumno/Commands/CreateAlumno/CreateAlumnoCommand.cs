@@ -22,6 +22,9 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Commands.CreateAlumno
 
         public async Task<BaseResponseModel> Execute(CreateAlumnoModel model)
         {
+            if (model == null)
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Datos del alumno invalidos");
+
             var email = model.Email?.Trim().ToLowerInvariant();
             if (string.IsNullOrWhiteSpace(email))
                 return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Email inválido");

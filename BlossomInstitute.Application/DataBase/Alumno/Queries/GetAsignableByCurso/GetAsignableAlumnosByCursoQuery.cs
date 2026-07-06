@@ -2,11 +2,6 @@ using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAsignableByCurso
 {
@@ -19,8 +14,16 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAsignableByCur
             _db = db;
         }
 
-        public async Task<BaseResponseModel> Execute(int cursoId, int pageNumber, int pageSize, string? search)
+        public async Task<BaseResponseModel> Execute(
+            int cursoId,
+            int pageNumber,
+            int pageSize,
+            string? search,
+            CancellationToken ct = default)
         {
+            if (cursoId <= 0)
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Curso invalido");
+
             if (pageNumber <= 0) pageNumber = 1;
             if (pageSize <= 0) pageSize = 10;
             if (pageSize > 100) pageSize = 100;
@@ -35,7 +38,7 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAsignableByCur
                     x.Id,
                     x.Anio
                 })
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(ct);
 
             if (curso == null)
                 return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Curso no encontrado");
@@ -43,7 +46,7 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAsignableByCur
             var rolAlumnoId = await _db.Roles
                 .Where(r => r.Name == "Alumno")
                 .Select(r => r.Id)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(ct);
 
             if (rolAlumnoId == 0)
                 return ResponseApiService.Response(StatusCodes.Status500InternalServerError, message: "Rol Alumno no existe");
@@ -53,14 +56,16 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAsignableByCur
                 .Where(m => m.Curso.Anio == curso.Anio)
                 .Select(m => m.AlumnoId)
                 .Distinct()
-                .ToListAsync();
+                .ToListAsync(ct);
 
-            var query = from u in _db.Usuarios.AsNoTracking()
-                        join ur in _db.UserRoles.AsNoTracking() on u.Id equals ur.UserId
-                        where ur.RoleId == rolAlumnoId
-                              && u.Activo
-                              && !alumnosYaMatriculadosEnEseAnio.Contains(u.Id)
-                        select u;
+            var query = _db.Usuarios
+                .AsNoTracking()
+                .Where(u =>
+                    u.Activo &&
+                    !alumnosYaMatriculadosEnEseAnio.Contains(u.Id) &&
+                    _db.UserRoles
+                        .AsNoTracking()
+                        .Any(ur => ur.UserId == u.Id && ur.RoleId == rolAlumnoId));
 
             if (!string.IsNullOrWhiteSpace(search))
             {
@@ -72,7 +77,7 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAsignableByCur
                     u.Dni.ToString().Contains(s));
             }
 
-            var total = await query.CountAsync();
+            var total = await query.CountAsync(ct);
 
             var data = await query
                 .OrderBy(u => u.Apellido)
@@ -89,7 +94,7 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAsignableByCur
                     Telefono = u.PhoneNumber ?? "",
                     Activo = u.Activo
                 })
-                .ToListAsync();
+                .ToListAsync(ct);
 
             return ResponseApiService.Response(StatusCodes.Status200OK, new
             {
