@@ -8,12 +8,21 @@ namespace BlossomInstitute.Application.Validator.Asistencia
         public TomarAsistenciaValidator()
         {
             RuleFor(x => x.Asistencias)
+                .Cascade(CascadeMode.Stop)
                 .NotNull().WithMessage("Asistencias es obligatorio.")
-                .Must(x => x.Count > 0).WithMessage("Debe enviar al menos una asistencia.");
+                .NotEmpty().WithMessage("Debe enviar al menos una asistencia.")
+                .Must(asistencias => asistencias.Select(x => x.AlumnoId).Distinct().Count() == asistencias.Count)
+                .WithMessage("No puede repetir alumnos en la misma toma de asistencia.");
 
             RuleForEach(x => x.Asistencias).ChildRules(item =>
             {
-                item.RuleFor(x => x.AlumnoId).GreaterThan(0);
+                item.RuleFor(x => x.AlumnoId)
+                    .GreaterThan(0)
+                    .WithMessage("AlumnoId invalido.");
+
+                item.RuleFor(x => x.Estado)
+                    .IsInEnum()
+                    .WithMessage("Estado de asistencia invalido.");
             });
 
             RuleFor(x => x.DescripcionClase)

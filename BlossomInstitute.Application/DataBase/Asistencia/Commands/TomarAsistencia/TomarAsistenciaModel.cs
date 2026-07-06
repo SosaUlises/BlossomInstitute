@@ -3,6 +3,6 @@ namespace BlossomInstitute.Application.DataBase.Asistencia.Commands.TomarAsisten
     public class TomarAsistenciaModel
     {
         public List<TomarAsistenciaItemModel> Asistencias { get; set; } = new();
-        public string? DescripcionClase { get; set; } // temas vistos
+        public string? DescripcionClase { get; set; }
     }
 }

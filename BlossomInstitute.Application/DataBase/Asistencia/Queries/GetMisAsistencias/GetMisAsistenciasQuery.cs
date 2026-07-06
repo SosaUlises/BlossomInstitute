@@ -23,8 +23,8 @@ namespace BlossomInstitute.Application.DataBase.Asistencia.Queries.GetMisAsisten
         public async Task<BaseResponseModel> Execute(
             int userId,
             int? cursoId,
-            DateOnly? from,
-            DateOnly? to,
+            DateOnly? fechaDesde,
+            DateOnly? fechaHasta,
             int pageNumber,
             int pageSize,
             CancellationToken ct = default)
@@ -34,43 +34,47 @@ namespace BlossomInstitute.Application.DataBase.Asistencia.Queries.GetMisAsisten
 
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null || !user.Activo)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Usuario inválido o inactivo");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Usuario invalido o inactivo");
 
             if (!await _userManager.IsInRoleAsync(user, "Alumno"))
                 return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "Acceso denegado");
 
             var alumnoId = userId;
 
+            if (cursoId.HasValue && cursoId.Value <= 0)
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "CursoId invalido");
+
+            if (fechaDesde.HasValue && fechaHasta.HasValue && fechaDesde.Value > fechaHasta.Value)
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "El rango de fechas es invalido (from > to)");
+
             if (pageNumber <= 0) pageNumber = 1;
             if (pageSize <= 0) pageSize = 10;
             if (pageSize > 200) pageSize = 200;
 
-            // cursos donde el alumno está matriculado
             var matriculasQuery = _db.Matriculas.AsNoTracking()
                 .Where(m => m.AlumnoId == alumnoId);
 
-            if (cursoId.HasValue && cursoId.Value > 0)
+            if (cursoId.HasValue)
                 matriculasQuery = matriculasQuery.Where(m => m.CursoId == cursoId.Value);
 
             var cursoIds = await matriculasQuery.Select(m => m.CursoId).Distinct().ToListAsync(ct);
 
             if (cursoIds.Count == 0)
             {
-                return ResponseApiService.Response(StatusCodes.Status200OK, new
+                return ResponseApiService.Response(StatusCodes.Status200OK, new MisAsistenciasResponseModel
                 {
-                    total = 0,
-                    pageNumber,
-                    pageSize,
-                    items = new List<MisAsistenciasItemModel>()
+                    Total = 0,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                    Items = new List<MisAsistenciasItemModel>()
                 });
             }
 
-            // clases de esos cursos
             var clasesQuery = _db.Clases.AsNoTracking()
                 .Where(c => cursoIds.Contains(c.CursoId));
 
-            if (from.HasValue) clasesQuery = clasesQuery.Where(c => c.Fecha >= from.Value);
-            if (to.HasValue) clasesQuery = clasesQuery.Where(c => c.Fecha <= to.Value);
+            if (fechaDesde.HasValue) clasesQuery = clasesQuery.Where(c => c.Fecha >= fechaDesde.Value);
+            if (fechaHasta.HasValue) clasesQuery = clasesQuery.Where(c => c.Fecha <= fechaHasta.Value);
 
             var total = await clasesQuery.CountAsync(ct);
 
@@ -90,14 +94,12 @@ namespace BlossomInstitute.Application.DataBase.Asistencia.Queries.GetMisAsisten
 
             var claseIds = clases.Select(x => x.Id).ToList();
 
-            // Asistencias del alumno para esas clases
             var asistencias = await _db.Asistencias.AsNoTracking()
                 .Where(a => a.AlumnoId == alumnoId && claseIds.Contains(a.ClaseId))
                 .ToListAsync(ct);
 
-            var asisByClaseId = asistencias.ToDictionary(x => x.ClaseId, x => x);
+            var asistenciasPorClaseId = asistencias.ToDictionary(x => x.ClaseId, x => x);
 
-            // Nombres de cursos
             var cursos = await _db.Cursos.AsNoTracking()
                 .Where(c => cursoIds.Contains(c.Id))
                 .Select(c => new { c.Id, c.Nombre })
@@ -107,7 +109,7 @@ namespace BlossomInstitute.Application.DataBase.Asistencia.Queries.GetMisAsisten
 
             var items = clases.Select(c =>
             {
-                asisByClaseId.TryGetValue(c.Id, out var reg);
+                asistenciasPorClaseId.TryGetValue(c.Id, out var registroAsistencia);
                 cursoNombreById.TryGetValue(c.CursoId, out var nombreCurso);
 
                 return new MisAsistenciasItemModel
@@ -117,17 +119,17 @@ namespace BlossomInstitute.Application.DataBase.Asistencia.Queries.GetMisAsisten
                     ClaseId = c.Id,
                     Fecha = c.Fecha.ToString("yyyy-MM-dd"),
                     EstadoClase = c.Estado,
-                    Estado = reg?.Estado,
+                    Estado = registroAsistencia?.Estado,
                     DescripcionClase = c.Descripcion
                 };
             }).ToList();
 
-            return ResponseApiService.Response(StatusCodes.Status200OK, new
+            return ResponseApiService.Response(StatusCodes.Status200OK, new MisAsistenciasResponseModel
             {
-                total,
-                pageNumber,
-                pageSize,
-                items
+                Total = total,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                Items = items
             });
         }
     }

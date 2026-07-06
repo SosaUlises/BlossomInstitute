@@ -17,7 +17,7 @@ namespace BlossomInstitute.Application.DataBase.Asistencia.Queries.GetAsistencia
         public async Task<BaseResponseModel> Execute(int cursoId, DateOnly fecha, CancellationToken ct = default)
         {
             if (cursoId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "CursoId inválido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "CursoId invalido");
 
             var curso = await _db.Cursos.AsNoTracking().FirstOrDefaultAsync(x => x.Id == cursoId, ct);
             if (curso == null)
@@ -28,11 +28,9 @@ namespace BlossomInstitute.Application.DataBase.Asistencia.Queries.GetAsistencia
 
             if (clase == null)
             {
-                // No hay clase creada => nadie tomó asistencia ese día
                 return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "No existe clase registrada para esa fecha");
             }
 
-            // Traer alumnos matriculados
             var alumnos = await _db.Matriculas.AsNoTracking()
                 .Where(m => m.CursoId == cursoId)
                 .Select(m => new
@@ -48,19 +46,19 @@ namespace BlossomInstitute.Application.DataBase.Asistencia.Queries.GetAsistencia
                 .Where(a => a.ClaseId == clase.Id)
                 .ToListAsync(ct);
 
-            var asisByAlumnoId = asistencias.ToDictionary(x => x.AlumnoId, x => x);
+            var asistenciasPorAlumnoId = asistencias.ToDictionary(x => x.AlumnoId, x => x);
 
             var items = alumnos
                 .OrderBy(x => x.Apellido).ThenBy(x => x.Nombre)
                 .Select(a =>
                 {
-                    asisByAlumnoId.TryGetValue(a.AlumnoId, out var reg);
+                    asistenciasPorAlumnoId.TryGetValue(a.AlumnoId, out var registroAsistencia);
                     return new AsistenciaAlumnoModel
                     {
                         AlumnoId = a.AlumnoId,
                         NombreCompleto = $"{a.Apellido} {a.Nombre}",
                         AvatarUrl = a.AvatarUrl,
-                        Estado = reg?.Estado
+                        Estado = registroAsistencia?.Estado
                     };
                 })
                 .ToList();

@@ -4,6 +4,6 @@ namespace BlossomInstitute.Application.DataBase.Asistencia.Commands.TomarAsisten
 {
     public interface ITomarAsistenciaCommand
     {
-        Task<BaseResponseModel> Execute(int cursoId, DateOnly fecha, TomarAsistenciaModel model, CancellationToken ct = default);
+        Task<BaseResponseModel> Execute(int cursoId, DateOnly fecha, TomarAsistenciaModel? model, CancellationToken ct = default);
     }
 }

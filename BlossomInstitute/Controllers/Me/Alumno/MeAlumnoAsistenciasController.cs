@@ -24,30 +24,36 @@ namespace BlossomInstitute.Controllers.Me.Alumnos
         {
             var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (!int.TryParse(userIdStr, out var userId) || userId <= 0)
-                return Unauthorized(ResponseApiService.Response(401, message: "Token inválido"));
+                return Unauthorized(ResponseApiService.Response(401, message: "Token invalido"));
 
-            DateOnly? fromDate = null;
-            DateOnly? toDate = null;
+            if (cursoId.HasValue && cursoId.Value <= 0)
+                return BadRequest(ResponseApiService.Response(400, message: "CursoId invalido"));
+
+            DateOnly? fechaDesde = null;
+            DateOnly? fechaHasta = null;
 
             if (!string.IsNullOrWhiteSpace(from))
             {
                 if (!DateOnly.TryParse(from, out var d))
-                    return BadRequest(ResponseApiService.Response(400, message: "from inválido. Formato esperado: yyyy-MM-dd"));
-                fromDate = d;
+                    return BadRequest(ResponseApiService.Response(400, message: "from invalido. Formato esperado: yyyy-MM-dd"));
+                fechaDesde = d;
             }
 
             if (!string.IsNullOrWhiteSpace(to))
             {
                 if (!DateOnly.TryParse(to, out var d))
-                    return BadRequest(ResponseApiService.Response(400, message: "to inválido. Formato esperado: yyyy-MM-dd"));
-                toDate = d;
+                    return BadRequest(ResponseApiService.Response(400, message: "to invalido. Formato esperado: yyyy-MM-dd"));
+                fechaHasta = d;
             }
+
+            if (fechaDesde.HasValue && fechaHasta.HasValue && fechaDesde > fechaHasta)
+                return BadRequest(ResponseApiService.Response(400, message: "El rango de fechas es invalido (from > to)"));
 
             if (pageNumber <= 0) pageNumber = 1;
             if (pageSize <= 0) pageSize = 10;
             if (pageSize > 200) pageSize = 200;
 
-            var result = await query.Execute(userId, cursoId, fromDate, toDate, pageNumber, pageSize, ct);
+            var result = await query.Execute(userId, cursoId, fechaDesde, fechaHasta, pageNumber, pageSize, ct);
             return StatusCode(result.StatusCode, result);
         }
     }
