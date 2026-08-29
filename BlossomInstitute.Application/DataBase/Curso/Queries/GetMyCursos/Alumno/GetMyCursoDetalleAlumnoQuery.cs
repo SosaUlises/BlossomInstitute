@@ -41,6 +41,8 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetMyCursos.Alumno
                     c.Anio,
                     c.Estado,
                     c.Descripcion,
+                    c.ThemeIcon,
+                    CantidadAlumnos = c.Matriculas.Count,
                     Horarios = c.Horarios
                         .OrderBy(h => h.Dia)
                         .ThenBy(h => h.HoraInicio)
@@ -113,6 +115,9 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetMyCursos.Alumno
                 curso.Anio,
                 curso.Estado,
                 curso.Descripcion,
+                curso.ThemeIcon,
+                curso.CantidadAlumnos,
+                cantidadCompaneros = Math.Max(0, curso.CantidadAlumnos - 1),
                 curso.Horarios,
                 curso.Profesores,
                 cantidadClases,
