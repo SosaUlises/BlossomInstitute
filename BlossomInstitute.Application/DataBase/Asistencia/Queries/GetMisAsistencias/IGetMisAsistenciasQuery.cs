@@ -1,9 +1,4 @@
-﻿using BlossomInstitute.Domain.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BlossomInstitute.Domain.Model;
 
 namespace BlossomInstitute.Application.DataBase.Asistencia.Queries.GetMisAsistencias
 {
@@ -12,8 +7,8 @@ namespace BlossomInstitute.Application.DataBase.Asistencia.Queries.GetMisAsisten
         Task<BaseResponseModel> Execute(
             int userId,
             int? cursoId,
-            DateOnly? from,
-            DateOnly? to,
+            DateOnly? fechaDesde,
+            DateOnly? fechaHasta,
             int pageNumber,
             int pageSize,
             CancellationToken ct = default);

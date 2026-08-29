@@ -1,4 +1,4 @@
-using BlossomInstitute.Application.DataBase.Settings.Command.UpdateAvatar;
+using BlossomInstitute.Application.DataBase.Settings.Commands.UpdateAvatar;
 using FluentValidation;
 
 namespace BlossomInstitute.Application.Validator.Settings

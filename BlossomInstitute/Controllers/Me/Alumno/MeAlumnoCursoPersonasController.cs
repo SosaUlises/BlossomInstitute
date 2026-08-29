@@ -25,7 +25,7 @@ namespace BlossomInstitute.Controllers.Me.Alumnos
         {
             var userId = GetUserId();
             if (userId <= 0)
-                return Unauthorized(ResponseApiService.Response(StatusCodes.Status401Unauthorized, message: "Token invÃ¡lido"));
+                return Unauthorized(ResponseApiService.Response(StatusCodes.Status401Unauthorized, message: "Token inválido"));
 
             var result = await query.Execute(cursoId, userId, ct);
             return StatusCode(result.StatusCode, result);

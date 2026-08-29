@@ -1,6 +1,8 @@
-﻿using BlossomInstitute.Application.DataBase;
+using BlossomInstitute.Application.DataBase;
 using BlossomInstitute.Application.External;
+using BlossomInstitute.Application.External.Archivos;
 using BlossomInstitute.Domain.Entidades.Usuario;
+using BlossomInstitute.Infraestructure.Archivos.Cloudinary;
 using BlossomInstitute.Infraestructure.DataBase;
 using BlossomInstitute.Infraestructure.Email;
 using BlossomInstitute.Infraestructure.GetTokenJWT;
@@ -66,7 +68,8 @@ namespace BlossomInstitute.Infraestructure
 
             if (string.IsNullOrWhiteSpace(jwtAudience))
                 throw new InvalidOperationException("Jwt_Audience no está configurado.");
-
+            
+            // Registrar autenticacion con Bearer Token. Validamos token
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -90,9 +93,12 @@ namespace BlossomInstitute.Infraestructure
 
             });
 
-            // Servicios
-
             services.AddScoped<IGetTokenJWTService, GetTokenJWTService>();
+
+            services.Configure<OpcionesCloudinary>(configuration.GetSection("CloudinaryStorage"));
+            services.AddTransient<IAlmacenamientoArchivoService, CloudinaryAlmacenamientoArchivoService>();
+
+            // Cargar conf de email
             services.Configure<EmailSettings>(configuration.GetSection("Email"));
 
             services.AddHttpClient<IEmailService, BrevoEmailService>(client =>

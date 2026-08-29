@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BlossomInstitute.Domain.Entidades.Tarea
+﻿namespace BlossomInstitute.Domain.Entidades.Tarea
 {
     public enum TipoRecursoTarea
     {

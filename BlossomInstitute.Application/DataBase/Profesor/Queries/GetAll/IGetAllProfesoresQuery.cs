@@ -1,11 +1,11 @@
-﻿using BlossomInstitute.Domain.Model;
+using BlossomInstitute.Domain.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlossomInstitute.Application.DataBase.Profesor.Queries.GetAllProfesores
+namespace BlossomInstitute.Application.DataBase.Profesor.Queries.GetAll
 {
     public interface IGetAllProfesoresQuery
     {

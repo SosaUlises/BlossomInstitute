@@ -1,4 +1,4 @@
-namespace BlossomInstitute.Application.DataBase.Profesor.Queries.GetAllProfesores
+namespace BlossomInstitute.Application.DataBase.Profesor.Queries.GetAll
 {
     public class GetProfesorCourseModel
     {

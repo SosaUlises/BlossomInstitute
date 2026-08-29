@@ -1,4 +1,4 @@
-using BlossomInstitute.Application.Common.Academic;
+using BlossomInstitute.Application.Common.Academico;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Clase;
 using BlossomInstitute.Domain.Entidades.Curso;
@@ -17,7 +17,11 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAll
             _db = db;
         }
 
-        public async Task<BaseResponseModel> Execute(int pageNumber, int pageSize, string? search)
+        public async Task<BaseResponseModel> Execute(
+            int pageNumber,
+            int pageSize,
+            string? search,
+            CancellationToken ct = default)
         {
             if (pageNumber <= 0) pageNumber = 1;
             if (pageSize <= 0) pageSize = 10;
@@ -28,333 +32,302 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAll
             var rolAlumnoId = await _db.Roles
                 .Where(r => r.Name == "Alumno")
                 .Select(r => r.Id)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(ct);
 
             if (rolAlumnoId == 0)
                 return ResponseApiService.Response(StatusCodes.Status500InternalServerError, message: "Rol Alumno no existe");
 
-            // Usuarios que son Alumnos
-            var query = from u in _db.Usuarios.AsNoTracking()
-                        join ur in _db.UserRoles.AsNoTracking() on u.Id equals ur.UserId
-                        where ur.RoleId == rolAlumnoId
-                        select u;
+            var query = _db.Usuarios
+                .AsNoTracking()
+                .Where(usuario => _db.UserRoles
+                    .AsNoTracking()
+                    .Any(rolUsuario => rolUsuario.UserId == usuario.Id && rolUsuario.RoleId == rolAlumnoId));
 
-            // Search (Nombre/Apellido/Email)
             if (!string.IsNullOrWhiteSpace(search))
             {
-                var s = search.ToLowerInvariant();
-                query = query.Where(u =>
-                    (u.Nombre ?? "").ToLower().Contains(s) ||
-                    (u.Apellido ?? "").ToLower().Contains(s) ||
-                    (u.Email ?? "").ToLower().Contains(s));
+                var textoBusqueda = search.ToLowerInvariant();
+                query = query.Where(usuario =>
+                    (usuario.Nombre ?? "").ToLower().Contains(textoBusqueda) ||
+                    (usuario.Apellido ?? "").ToLower().Contains(textoBusqueda) ||
+                    (usuario.Email ?? "").ToLower().Contains(textoBusqueda) ||
+                    usuario.Dni.ToString().Contains(textoBusqueda));
             }
 
-            var total = await query.CountAsync();
+            var total = await query.CountAsync(ct);
 
-            var data = await query
-                .OrderBy(u => u.Apellido)
-                .ThenBy(u => u.Nombre)
+            var alumnos = await query
+                .OrderBy(usuario => usuario.Apellido)
+                .ThenBy(usuario => usuario.Nombre)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .Select(u => new GetAlumnoModel
+                .Select(usuario => new GetAlumnoModel
                 {
-                    Id = u.Id,
-                    Email = u.Email!,
-                    Nombre = u.Nombre!,
-                    Apellido = u.Apellido!,
-                    Dni = u.Dni,
-                    Telefono = u.PhoneNumber ?? "",
-                    Activo = u.Activo,
-                    IsActive = u.Activo,
-                    AvatarUrl = u.AvatarUrl
+                    Id = usuario.Id,
+                    Email = usuario.Email!,
+                    Nombre = usuario.Nombre!,
+                    Apellido = usuario.Apellido!,
+                    Dni = usuario.Dni,
+                    Telefono = usuario.PhoneNumber ?? "",
+                    Activo = usuario.Activo,
+                    IsActive = usuario.Activo,
+                    AvatarUrl = usuario.AvatarUrl
                 })
-                .ToListAsync();
+                .ToListAsync(ct);
 
-            await AddAcademicContextAsync(data);
+            await AgregarContextoAcademicoAsync(alumnos, ct);
 
             return ResponseApiService.Response(StatusCodes.Status200OK, new
             {
                 pageNumber,
                 pageSize,
                 total,
-                items = data
+                items = alumnos
             });
         }
 
-        private async Task AddAcademicContextAsync(List<GetAlumnoModel> students)
+        private async Task AgregarContextoAcademicoAsync(List<GetAlumnoModel> alumnos, CancellationToken ct)
         {
-            if (students.Count == 0)
+            if (alumnos.Count == 0)
                 return;
 
-            var studentIds = students.Select(x => x.Id).ToList();
-            var today = DateOnly.FromDateTime(DateTime.Now);
-            var periodContext = AcademicQuarterHelper.GetContext(today);
-            var quarter = periodContext.CurrentQuarter;
-            var dataTo = periodContext.To;
+            var alumnoIds = alumnos.Select(x => x.Id).ToList();
+            var hoy = DateOnly.FromDateTime(DateTime.Now);
+            var contextoPeriodo = PeriodoAcademicoHelper.ObtenerContexto(hoy);
+            var trimestre = contextoPeriodo.TrimestreActual;
+            var fechaHasta = contextoPeriodo.Hasta;
 
-            var enrollments = await _db.Matriculas
+            var matriculas = await _db.Matriculas
                 .AsNoTracking()
                 .Where(x =>
-                    studentIds.Contains(x.AlumnoId) &&
+                    alumnoIds.Contains(x.AlumnoId) &&
                     x.Curso.Estado == EstadoCurso.Activo)
-                .Select(x => new EnrollmentProjection
+                .Select(x => new MatriculaAlumnoProjection
                 {
-                    StudentId = x.AlumnoId,
-                    CourseId = x.CursoId,
-                    CourseName = x.Curso.Nombre,
-                    CourseDescription = x.Curso.Descripcion
+                    AlumnoId = x.AlumnoId,
+                    CursoId = x.CursoId,
+                    NombreCurso = x.Curso.Nombre,
+                    DescripcionCurso = x.Curso.Descripcion
                 })
-                .OrderBy(x => x.StudentId)
-                .ThenBy(x => x.CourseName)
-                .ToListAsync();
+                .OrderBy(x => x.AlumnoId)
+                .ThenBy(x => x.NombreCurso)
+                .ToListAsync(ct);
 
-            var enrollmentsByStudent = enrollments
-                .GroupBy(x => x.StudentId)
+            var matriculasPorAlumno = matriculas
+                .GroupBy(x => x.AlumnoId)
                 .ToDictionary(x => x.Key, x => x.ToList());
 
-            foreach (var student in students)
+            foreach (var alumno in alumnos)
             {
-                var studentEnrollments = enrollmentsByStudent.GetValueOrDefault(student.Id) ?? new List<EnrollmentProjection>();
-                var currentEnrollment = studentEnrollments.FirstOrDefault();
+                var matriculasAlumno = matriculasPorAlumno.GetValueOrDefault(alumno.Id) ?? new List<MatriculaAlumnoProjection>();
+                var matriculaActual = matriculasAlumno.FirstOrDefault();
 
-                student.CurrentCourseId = currentEnrollment?.CourseId;
-                student.CurrentCourseName = currentEnrollment?.CourseName;
-                student.CurrentCourseDescription = currentEnrollment?.CourseDescription;
-                student.HasActiveEnrollment = currentEnrollment != null;
-                student.IsWithoutCourse = currentEnrollment == null;
+                alumno.CurrentCourseId = matriculaActual?.CursoId;
+                alumno.CurrentCourseName = matriculaActual?.NombreCurso;
+                alumno.CurrentCourseDescription = matriculaActual?.DescripcionCurso;
+                alumno.HasActiveEnrollment = matriculaActual != null;
+                alumno.IsWithoutCourse = matriculaActual == null;
             }
 
-            var courseIds = enrollments.Select(x => x.CourseId).Distinct().ToList();
-            var classes = courseIds.Count == 0
-                ? new List<ClassProjection>()
+            var cursoIds = matriculas.Select(x => x.CursoId).Distinct().ToList();
+            var clases = cursoIds.Count == 0
+                ? new List<ClaseAlumnoProjection>()
                 : await _db.Clases
                     .AsNoTracking()
                     .Where(x =>
-                        courseIds.Contains(x.CursoId) &&
+                        cursoIds.Contains(x.CursoId) &&
                         x.Estado != EstadoClase.Cancelada &&
-                        x.Fecha >= quarter.From &&
-                        x.Fecha <= dataTo)
-                    .Select(x => new ClassProjection
+                        x.Fecha >= trimestre.Desde &&
+                        x.Fecha <= fechaHasta)
+                    .Select(x => new ClaseAlumnoProjection
                     {
                         Id = x.Id,
-                        CourseId = x.CursoId,
-                        Date = x.Fecha
+                        CursoId = x.CursoId,
+                        Fecha = x.Fecha
                     })
-                    .OrderBy(x => x.Date)
+                    .OrderBy(x => x.Fecha)
                     .ThenBy(x => x.Id)
-                    .ToListAsync();
+                    .ToListAsync(ct);
 
-            var classIds = classes.Select(x => x.Id).ToList();
-            var attendanceRows = classIds.Count == 0
-                ? new List<AttendanceProjection>()
+            var claseIds = clases.Select(x => x.Id).ToList();
+            var asistencias = claseIds.Count == 0
+                ? new List<AsistenciaAlumnoProjection>()
                 : await _db.Asistencias
                     .AsNoTracking()
                     .Where(x =>
-                        studentIds.Contains(x.AlumnoId) &&
-                        classIds.Contains(x.ClaseId))
-                    .Select(x => new AttendanceProjection
+                        alumnoIds.Contains(x.AlumnoId) &&
+                        claseIds.Contains(x.ClaseId))
+                    .Select(x => new AsistenciaAlumnoProjection
                     {
-                        StudentId = x.AlumnoId,
-                        ClassId = x.ClaseId,
-                        Status = x.Estado
+                        AlumnoId = x.AlumnoId,
+                        ClaseId = x.ClaseId,
+                        Estado = x.Estado
                     })
-                    .ToListAsync();
+                    .ToListAsync(ct);
 
-            var grades = courseIds.Count == 0
-                ? new List<GradeProjection>()
+            var calificaciones = cursoIds.Count == 0
+                ? new List<CalificacionAlumnoProjection>()
                 : await _db.Calificaciones
                     .AsNoTracking()
                     .Where(x =>
-                        studentIds.Contains(x.AlumnoId) &&
-                        courseIds.Contains(x.CursoId) &&
+                        alumnoIds.Contains(x.AlumnoId) &&
+                        cursoIds.Contains(x.CursoId) &&
                         !x.Archivado &&
-                        x.Fecha >= quarter.From &&
-                        x.Fecha <= dataTo)
-                    .Select(x => new GradeProjection
+                        x.Fecha >= trimestre.Desde &&
+                        x.Fecha <= fechaHasta)
+                    .Select(x => new CalificacionAlumnoProjection
                     {
                         Id = x.Id,
-                        StudentId = x.AlumnoId,
-                        CourseId = x.CursoId,
-                        CourseName = x.Curso.Nombre,
-                        Title = x.Titulo,
-                        Grade = x.Nota,
-                        Date = x.Fecha
+                        AlumnoId = x.AlumnoId,
+                        CursoId = x.CursoId,
+                        NombreCurso = x.Curso.Nombre,
+                        Titulo = x.Titulo,
+                        Nota = x.Nota,
+                        Fecha = x.Fecha
                     })
-                    .ToListAsync();
+                    .ToListAsync(ct);
 
-            var classesByCourse = classes
-                .GroupBy(x => x.CourseId)
+            var clasesPorCurso = clases
+                .GroupBy(x => x.CursoId)
                 .ToDictionary(x => x.Key, x => x.ToList());
 
-            var attendanceByStudent = attendanceRows
-                .GroupBy(x => x.StudentId)
+            var asistenciasPorAlumno = asistencias
+                .GroupBy(x => x.AlumnoId)
                 .ToDictionary(x => x.Key, x => x.ToList());
 
-            var gradesByStudent = grades
-                .GroupBy(x => x.StudentId)
+            var calificacionesPorAlumno = calificaciones
+                .GroupBy(x => x.AlumnoId)
                 .ToDictionary(x => x.Key, x => x.ToList());
 
-            foreach (var student in students)
+            foreach (var alumno in alumnos)
             {
-                var studentEnrollments = enrollmentsByStudent.GetValueOrDefault(student.Id) ?? new List<EnrollmentProjection>();
-                var studentCourseIds = studentEnrollments.Select(x => x.CourseId).ToHashSet();
-                var studentClasses = studentCourseIds
-                    .SelectMany(courseId => classesByCourse.GetValueOrDefault(courseId) ?? new List<ClassProjection>())
-                    .OrderBy(x => x.Date)
+                var matriculasAlumno = matriculasPorAlumno.GetValueOrDefault(alumno.Id) ?? new List<MatriculaAlumnoProjection>();
+                var cursoIdsAlumno = matriculasAlumno.Select(x => x.CursoId).ToHashSet();
+                var clasesAlumno = cursoIdsAlumno
+                    .SelectMany(cursoId => clasesPorCurso.GetValueOrDefault(cursoId) ?? new List<ClaseAlumnoProjection>())
+                    .OrderBy(x => x.Fecha)
                     .ThenBy(x => x.Id)
                     .ToList();
-                var studentAttendance = attendanceByStudent.GetValueOrDefault(student.Id) ?? new List<AttendanceProjection>();
+                var asistenciasAlumno = asistenciasPorAlumno.GetValueOrDefault(alumno.Id) ?? new List<AsistenciaAlumnoProjection>();
 
-                ApplyAttendance(student, studentClasses, studentAttendance);
-                ApplyGrades(student, gradesByStudent.GetValueOrDefault(student.Id) ?? new List<GradeProjection>());
-                ApplyAcademicStatus(student);
+                AplicarAsistencia(alumno, clasesAlumno, asistenciasAlumno);
+                AplicarCalificaciones(alumno, calificacionesPorAlumno.GetValueOrDefault(alumno.Id) ?? new List<CalificacionAlumnoProjection>());
+                AplicarEstadoAcademico(alumno);
             }
         }
 
-        private static void ApplyAttendance(
-            GetAlumnoModel student,
-            List<ClassProjection> classes,
-            List<AttendanceProjection> attendanceRows)
+        private static void AplicarAsistencia(
+            GetAlumnoModel alumno,
+            List<ClaseAlumnoProjection> clases,
+            List<AsistenciaAlumnoProjection> asistencias)
         {
-            student.ConsecutiveAbsences = 0;
+            alumno.ConsecutiveAbsences = 0;
 
-            if (classes.Count == 0)
+            if (clases.Count == 0)
                 return;
 
-            var presentCount = attendanceRows.Count(x => x.Status == EstadoAsistencia.Presente);
-            student.AttendancePercentage = Math.Round((decimal)presentCount * 100 / classes.Count, 2);
-            student.ConsecutiveAbsences = GetMaxConsecutiveAbsences(classes, attendanceRows);
+            var presentes = asistencias.Count(x => x.Estado == EstadoAsistencia.Presente);
+            alumno.AttendancePercentage = Math.Round((decimal)presentes * 100 / clases.Count, 2);
+            alumno.ConsecutiveAbsences = ObtenerMaximoAusenciasConsecutivas(clases, asistencias);
         }
 
-        private static void ApplyGrades(GetAlumnoModel student, List<GradeProjection> grades)
+        private static void AplicarCalificaciones(GetAlumnoModel alumno, List<CalificacionAlumnoProjection> calificaciones)
         {
-            if (grades.Count == 0)
+            if (calificaciones.Count == 0)
                 return;
 
-            student.AverageGrade = Math.Round(grades.Average(x => x.Grade), 2);
+            alumno.AverageGrade = Math.Round(calificaciones.Average(x => x.Nota), 2);
 
-            var latestLowGrade = grades
-                .Where(x => x.Grade < 60)
-                .OrderByDescending(x => x.Date)
+            var ultimaNotaBaja = calificaciones
+                .Where(x => x.Nota < ReglasAcademicas.UmbralNotaBaja)
+                .OrderByDescending(x => x.Fecha)
                 .ThenByDescending(x => x.Id)
                 .FirstOrDefault();
 
-            if (latestLowGrade == null)
+            if (ultimaNotaBaja == null)
                 return;
 
-            student.LatestLowGrade = new GetAlumnoLatestLowGradeModel
+            alumno.LatestLowGrade = new GetAlumnoLatestLowGradeModel
             {
-                Id = latestLowGrade.Id,
-                CourseId = latestLowGrade.CourseId,
-                CourseName = latestLowGrade.CourseName,
-                Title = latestLowGrade.Title,
-                Grade = Math.Round(latestLowGrade.Grade, 2),
-                Date = latestLowGrade.Date
+                Id = ultimaNotaBaja.Id,
+                CourseId = ultimaNotaBaja.CursoId,
+                CourseName = ultimaNotaBaja.NombreCurso,
+                Title = ultimaNotaBaja.Titulo,
+                Grade = Math.Round(ultimaNotaBaja.Nota, 2),
+                Date = ultimaNotaBaja.Fecha
             };
         }
 
-        private static void ApplyAcademicStatus(GetAlumnoModel student)
+        private static void AplicarEstadoAcademico(GetAlumnoModel alumno)
         {
-            var attendanceLow = student.AttendancePercentage.HasValue && student.AttendancePercentage.Value < 70;
-            var averageLow = student.AverageGrade.HasValue && student.AverageGrade.Value < 60;
-            var hasConsecutiveAbsences = (student.ConsecutiveAbsences ?? 0) >= 2;
-            var hasLatestLowGrade = student.LatestLowGrade != null;
+            var asistenciaBaja = alumno.AttendancePercentage.HasValue &&
+                alumno.AttendancePercentage.Value < ReglasAcademicas.UmbralAsistenciaBaja;
+            var promedioBajo = alumno.AverageGrade.HasValue &&
+                alumno.AverageGrade.Value < ReglasAcademicas.UmbralNotaBaja;
+            var tieneAusenciasConsecutivas = (alumno.ConsecutiveAbsences ?? 0) >= ReglasAcademicas.AusenciasConsecutivasCriticas;
+            var tieneUltimaNotaBaja = alumno.LatestLowGrade != null;
 
-            var reasons = new List<string>();
+            var motivos = new List<string>();
 
-            if (student.IsWithoutCourse)
-                reasons.Add("Sin curso activo");
+            if (alumno.IsWithoutCourse)
+                motivos.Add("Sin curso activo");
 
-            if (attendanceLow)
-                reasons.Add($"Asistencia trimestral {student.AttendancePercentage!.Value:0.##}%");
+            if (asistenciaBaja)
+                motivos.Add($"Asistencia trimestral {alumno.AttendancePercentage!.Value:0.##}%");
 
-            if (averageLow)
-                reasons.Add($"Promedio trimestral {student.AverageGrade!.Value:0.##}");
+            if (promedioBajo)
+                motivos.Add($"Promedio trimestral {alumno.AverageGrade!.Value:0.##}");
 
-            if (hasConsecutiveAbsences)
-                reasons.Add($"{student.ConsecutiveAbsences} ausencias consecutivas");
+            if (tieneAusenciasConsecutivas)
+                motivos.Add($"{alumno.ConsecutiveAbsences} ausencias consecutivas");
 
-            if (hasLatestLowGrade)
-                reasons.Add($"Ultima nota baja: {student.LatestLowGrade!.Grade:0.##}");
+            if (tieneUltimaNotaBaja)
+                motivos.Add($"Ultima nota baja: {alumno.LatestLowGrade!.Grade:0.##}");
 
-            student.AcademicReasons = reasons;
+            alumno.AcademicReasons = motivos;
 
-            if (hasConsecutiveAbsences || (attendanceLow && averageLow))
+            if (tieneAusenciasConsecutivas || (asistenciaBaja && promedioBajo))
             {
-                student.AcademicStatusLevel = "critical";
-                student.AcademicStatusLabel = "Requiere intervencion prioritaria";
+                alumno.AcademicStatusLevel = "critical";
+                alumno.AcademicStatusLabel = "Requiere intervencion prioritaria";
                 return;
             }
 
-            if (attendanceLow || averageLow || hasLatestLowGrade || student.IsWithoutCourse)
+            if (asistenciaBaja || promedioBajo || tieneUltimaNotaBaja || alumno.IsWithoutCourse)
             {
-                student.AcademicStatusLevel = "follow-up";
-                student.AcademicStatusLabel = "Requiere seguimiento";
+                alumno.AcademicStatusLevel = "follow-up";
+                alumno.AcademicStatusLabel = "Requiere seguimiento";
                 return;
             }
 
-            student.AcademicStatusLevel = "normal";
-            student.AcademicStatusLabel = "Sin alertas academicas";
+            alumno.AcademicStatusLevel = "normal";
+            alumno.AcademicStatusLabel = "Sin alertas academicas";
         }
 
-        private static int GetMaxConsecutiveAbsences(
-            List<ClassProjection> classes,
-            List<AttendanceProjection> attendanceRows)
+        private static int ObtenerMaximoAusenciasConsecutivas(
+            List<ClaseAlumnoProjection> clases,
+            List<AsistenciaAlumnoProjection> asistencias)
         {
-            var attendanceByClass = attendanceRows
-                .GroupBy(x => x.ClassId)
-                .ToDictionary(x => x.Key, x => x.First().Status);
+            var asistenciaPorClase = asistencias
+                .GroupBy(x => x.ClaseId)
+                .ToDictionary(x => x.Key, x => x.First().Estado);
 
-            var current = 0;
-            var max = 0;
+            var actual = 0;
+            var maximo = 0;
 
-            foreach (var cls in classes.OrderBy(x => x.Date).ThenBy(x => x.Id))
+            foreach (var clase in clases.OrderBy(x => x.Fecha).ThenBy(x => x.Id))
             {
-                if (attendanceByClass.TryGetValue(cls.Id, out var status) && status == EstadoAsistencia.Ausente)
+                if (asistenciaPorClase.TryGetValue(clase.Id, out var estado) && estado == EstadoAsistencia.Ausente)
                 {
-                    current++;
-                    max = Math.Max(max, current);
+                    actual++;
+                    maximo = Math.Max(maximo, actual);
                     continue;
                 }
 
-                if (status == EstadoAsistencia.Presente)
-                    current = 0;
+                if (estado == EstadoAsistencia.Presente)
+                    actual = 0;
             }
 
-            return max;
-        }
-
-        private sealed class EnrollmentProjection
-        {
-            public int StudentId { get; init; }
-            public int CourseId { get; init; }
-            public string CourseName { get; init; } = default!;
-            public string? CourseDescription { get; init; }
-        }
-
-        private sealed class ClassProjection
-        {
-            public int Id { get; init; }
-            public int CourseId { get; init; }
-            public DateOnly Date { get; init; }
-        }
-
-        private sealed class AttendanceProjection
-        {
-            public int StudentId { get; init; }
-            public int ClassId { get; init; }
-            public EstadoAsistencia Status { get; init; }
-        }
-
-        private sealed class GradeProjection
-        {
-            public int Id { get; init; }
-            public int StudentId { get; init; }
-            public int CourseId { get; init; }
-            public string CourseName { get; init; } = default!;
-            public string Title { get; init; } = default!;
-            public decimal Grade { get; init; }
-            public DateOnly Date { get; init; }
+            return maximo;
         }
     }
 }

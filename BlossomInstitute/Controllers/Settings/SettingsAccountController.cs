@@ -1,7 +1,7 @@
-﻿using BlossomInstitute.Application.DataBase.Settings.Command.ChangePassword;
-using BlossomInstitute.Application.DataBase.Settings.Command.DeleteAvatar;
-using BlossomInstitute.Application.DataBase.Settings.Command.UpdateAccount;
-using BlossomInstitute.Application.DataBase.Settings.Command.UpdateAvatar;
+using BlossomInstitute.Application.DataBase.Settings.Commands.ChangePassword;
+using BlossomInstitute.Application.DataBase.Settings.Commands.DeleteAvatar;
+using BlossomInstitute.Application.DataBase.Settings.Commands.UpdateAccount;
+using BlossomInstitute.Application.DataBase.Settings.Commands.UpdateAvatar;
 using BlossomInstitute.Application.DataBase.Settings.Queries.GetMyAccount;
 using BlossomInstitute.Common.Features;
 using FluentValidation;

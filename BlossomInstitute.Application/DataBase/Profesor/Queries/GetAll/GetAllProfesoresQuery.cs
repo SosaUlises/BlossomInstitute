@@ -5,7 +5,7 @@ using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlossomInstitute.Application.DataBase.Profesor.Queries.GetAllProfesores
+namespace BlossomInstitute.Application.DataBase.Profesor.Queries.GetAll
 {
     public class GetAllProfesoresQuery : IGetAllProfesoresQuery
     {
@@ -261,7 +261,7 @@ namespace BlossomInstitute.Application.DataBase.Profesor.Queries.GetAllProfesore
             foreach (var teacher in teachers)
             {
                 var hasRelevantPendingCorrections =
-                    TeacherFollowUpPolicy.HasRelevantPendingCorrections(
+                    PoliticaSeguimientoProfesor.TieneCorreccionesPendientesRelevantes(
                         teacher.PendingCorrectionsCount,
                         teacher.StudentsCount);
 

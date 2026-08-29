@@ -1,4 +1,4 @@
-using BlossomInstitute.Application.Common.Academic;
+using BlossomInstitute.Application.Common.Academico;
 using BlossomInstitute.Application.DataBase.Reportes.Shared;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Calificacion;
@@ -86,9 +86,9 @@ namespace BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteStudentS
             if (!matriculado)
                 return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Alumno no matriculado en el curso");
 
-            var academicPeriod = AcademicQuarterHelper.GetQuarter(year, term);
-            var from = academicPeriod.From;
-            var to = academicPeriod.To;
+            var academicPeriod = PeriodoAcademicoHelper.ObtenerTrimestre(year, term);
+            var from = academicPeriod.Desde;
+            var to = academicPeriod.Hasta;
             var fromUtc = from.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
             var toUtcExclusive = to.AddDays(1).ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
 

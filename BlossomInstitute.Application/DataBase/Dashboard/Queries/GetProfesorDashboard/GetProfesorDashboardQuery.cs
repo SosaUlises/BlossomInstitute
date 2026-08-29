@@ -1,5 +1,5 @@
 using BlossomInstitute.Application.DataBase.Dashboard.Queries.ProfesoresModels;
-using BlossomInstitute.Application.Common.Academic;
+using BlossomInstitute.Application.Common.Academico;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Calificacion;
 using BlossomInstitute.Domain.Entidades.Clase;
@@ -67,7 +67,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetProfesorDas
 
             var ahoraLocal = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, argentinaTimeZone);
             var hoy = DateOnly.FromDateTime(ahoraLocal);
-            var periodoAcademico = AcademicQuarterHelper.GetContext(hoy);
+            var periodoAcademico = PeriodoAcademicoHelper.ObtenerContexto(hoy);
 
             var cursos = await _db.CursoProfesores
                 .AsNoTracking()
@@ -302,8 +302,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetProfesorDas
                     cursoIds.Contains(x.CursoId) &&
                     x.Curso.Estado == EstadoCurso.Activo &&
                     !x.Archivado &&
-                    x.Fecha >= periodoAcademico.From &&
-                    x.Fecha <= periodoAcademico.To)
+                    x.Fecha >= periodoAcademico.Desde &&
+                    x.Fecha <= periodoAcademico.Hasta)
                 .Select(x => new
                 {
                     x.AlumnoId,
@@ -324,8 +324,8 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetProfesorDas
                     cursoIds.Contains(x.CursoId) &&
                     x.Curso.Estado == EstadoCurso.Activo &&
                     x.Estado != EstadoClase.Cancelada &&
-                    x.Fecha >= periodoAcademico.From &&
-                    x.Fecha <= periodoAcademico.To)
+                    x.Fecha >= periodoAcademico.Desde &&
+                    x.Fecha <= periodoAcademico.Hasta)
                 .Select(x => new { x.Id, x.CursoId })
                 .ToListAsync(ct);
 
@@ -409,7 +409,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetProfesorDas
                         AlumnoAvatarUrl = matricula.AlumnoAvatarUrl,
                         CursoId = matricula.CursoId,
                         CursoNombre = matricula.CursoNombre,
-                        PeriodoLabel = periodoAcademico.Label,
+                        PeriodoLabel = periodoAcademico.Etiqueta,
                         Promedio = promedioBajo ? promedio : null,
                         Asistencia = asistenciaBaja ? asistencia : null,
                         CalificacionBajaTitulo = calificacionBaja?.Titulo,

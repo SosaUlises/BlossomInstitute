@@ -1,4 +1,4 @@
-using BlossomInstitute.Application.DataBase.Dashboard.Queries.Models;
+using BlossomInstitute.Application.DataBase.Dashboard.Queries.AlumnosModels;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Clase;
 using BlossomInstitute.Domain.Entidades.Entrega;

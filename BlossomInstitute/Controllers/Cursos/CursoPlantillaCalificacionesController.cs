@@ -1,9 +1,9 @@
-using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Apply;
-using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Archive;
-using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.CreatePlantilla;
-using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Update;
-using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Query.GetAll;
-using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Query.GetById;
+using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Commands.Apply;
+using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Commands.Archive;
+using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Commands.Create;
+using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Commands.Update;
+using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Queries.GetAll;
+using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Queries.GetById;
 using BlossomInstitute.Common.Features;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;

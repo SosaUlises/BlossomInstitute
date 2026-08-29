@@ -19,7 +19,7 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasAlumno
         public async Task<BaseResponseModel> Execute(int cursoId, int tareaId, int alumnoUserId, CancellationToken ct = default)
         {
             if (cursoId <= 0 || tareaId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "ParÃ¡metros invÃ¡lidos");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Parámetros inválidos");
 
             if (alumnoUserId <= 0)
                 return ResponseApiService.Response(StatusCodes.Status401Unauthorized, message: "No autenticado");
@@ -28,7 +28,7 @@ namespace BlossomInstitute.Application.DataBase.Tarea.Queries.GetTareasAlumno
                 .AnyAsync(m => m.CursoId == cursoId && m.AlumnoId == alumnoUserId, ct);
 
             if (!matriculado)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "No estÃ¡s matriculado en este curso");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "No estás matriculado en este curso");
 
             var nowUtc = DateTime.UtcNow;
 

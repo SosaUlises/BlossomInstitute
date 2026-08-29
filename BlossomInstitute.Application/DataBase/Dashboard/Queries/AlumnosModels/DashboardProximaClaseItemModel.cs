@@ -1,6 +1,6 @@
-﻿using BlossomInstitute.Domain.Entidades.Clase;
+using BlossomInstitute.Domain.Entidades.Clase;
 
-namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.Models
+namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.AlumnosModels
 {
     public class DashboardProximaClaseItemModel
     {

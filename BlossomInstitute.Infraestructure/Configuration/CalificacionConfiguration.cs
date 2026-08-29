@@ -1,5 +1,4 @@
 ﻿using BlossomInstitute.Domain.Entidades.Calificaciones;
-using BlossomInstitute.Domain.Entidades.Clase;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -25,7 +24,7 @@ namespace BlossomInstitute.Infraestructure.Configuration
                 .HasMaxLength(500);
 
             entity.Property(x => x.Nota)
-                .HasPrecision(5, 2)
+                .HasPrecision(5, 2) 
                 .IsRequired();
 
             entity.Property(x => x.Fecha)

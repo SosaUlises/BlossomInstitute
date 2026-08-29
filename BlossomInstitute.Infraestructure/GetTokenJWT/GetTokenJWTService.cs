@@ -34,10 +34,12 @@ namespace BlossomInstitute.Infraestructure.GetTokenJWT
 
             if (string.IsNullOrWhiteSpace(jwtAudience))
                 throw new InvalidOperationException("Jwt_Audience no está configurado.");
-
+            
+            // manejador y clave de firma
             var tokenHandler = new JwtSecurityTokenHandler();
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
 
+            // datos dentro del token
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, userId),
@@ -50,6 +52,7 @@ namespace BlossomInstitute.Infraestructure.GetTokenJWT
             foreach (var r in roles.Where(r => !string.IsNullOrWhiteSpace(r)))
                 claims.Add(new Claim(ClaimTypes.Role, r));
 
+            // definicion del token
             var descriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
@@ -59,6 +62,7 @@ namespace BlossomInstitute.Infraestructure.GetTokenJWT
                 Audience = jwtAudience
             };
 
+            // crea y devuelve
             var token = tokenHandler.CreateToken(descriptor);
             return tokenHandler.WriteToken(token);
         }

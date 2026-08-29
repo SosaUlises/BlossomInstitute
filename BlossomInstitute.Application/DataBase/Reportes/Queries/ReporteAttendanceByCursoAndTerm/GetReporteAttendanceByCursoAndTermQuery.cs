@@ -1,4 +1,4 @@
-using BlossomInstitute.Application.Common.Academic;
+using BlossomInstitute.Application.Common.Academico;
 using BlossomInstitute.Application.DataBase.Reportes.Shared;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Clase;
@@ -64,9 +64,9 @@ namespace BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteAttendan
                     return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "No autorizado");
             }
 
-            var academicPeriod = AcademicQuarterHelper.GetQuarter(year, term);
-            var from = academicPeriod.From;
-            var to = academicPeriod.To;
+            var academicPeriod = PeriodoAcademicoHelper.ObtenerTrimestre(year, term);
+            var from = academicPeriod.Desde;
+            var to = academicPeriod.Hasta;
 
             var clasesTerm = await _db.Clases
                 .AsNoTracking()

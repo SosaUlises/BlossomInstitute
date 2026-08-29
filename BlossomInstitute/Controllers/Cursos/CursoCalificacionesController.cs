@@ -26,14 +26,18 @@ namespace BlossomInstitute.Controllers.Cursos
         private bool IsProfesor() => User.IsInRole("Profesor");
 
         [HttpPost]
+        [Authorize(Roles = "Profesor")]
         public async Task<IActionResult> Create(
              [FromRoute] int cursoId,
              [FromRoute] int alumnoId,
-             [FromBody] CreateCalificacionModel model,
+             [FromBody] CreateCalificacionModel? model,
              [FromServices] ICreateCalificacionCommand command,
              [FromServices] IValidator<CreateCalificacionModel> validator,
              CancellationToken ct)
         {
+            if (model == null)
+                return BadRequest(ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "El cuerpo de la solicitud es obligatorio"));
+
             var vr = await validator.ValidateAsync(model, ct);
             if (!vr.IsValid)
                 return BadRequest(ResponseApiService.Response(StatusCodes.Status400BadRequest, vr.Errors));
@@ -43,15 +47,19 @@ namespace BlossomInstitute.Controllers.Cursos
         }
 
         [HttpPut("{calificacionId:int}")]
+        [Authorize(Roles = "Profesor")]
         public async Task<IActionResult> Update(
             [FromRoute] int cursoId,
             [FromRoute] int alumnoId,
             [FromRoute] int calificacionId,
-            [FromBody] UpdateCalificacionModel model,
+            [FromBody] UpdateCalificacionModel? model,
             [FromServices] IUpdateCalificacionCommand command,
             [FromServices] IValidator<UpdateCalificacionModel> validator,
             CancellationToken ct)
         {
+            if (model == null)
+                return BadRequest(ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "El cuerpo de la solicitud es obligatorio"));
+
             var vr = await validator.ValidateAsync(model, ct);
             if (!vr.IsValid)
                 return BadRequest(ResponseApiService.Response(StatusCodes.Status400BadRequest, vr.Errors));
@@ -61,6 +69,7 @@ namespace BlossomInstitute.Controllers.Cursos
         }
 
         [HttpPatch("{calificacionId:int}/archivar")]
+        [Authorize(Roles = "Profesor")]
         public async Task<IActionResult> Archive(
             [FromRoute] int cursoId,
             [FromRoute] int alumnoId,

@@ -60,7 +60,6 @@ C:\Users\ulipv\Source\Repos\blossom-institute-api\BlossomInstitute.Application\b
 C:\Users\ulipv\Source\Repos\blossom-institute-api\BlossomInstitute.Application\bin\Debug\net8.0\LatoFont\Lato-ThinItalic.ttf
 C:\Users\ulipv\Source\Repos\blossom-institute-api\BlossomInstitute.Application\bin\Debug\net8.0\LatoFont\OFL.txt
 C:\Users\ulipv\Source\Repos\blossom-institute-api\BlossomInstitute.Application\bin\Debug\net8.0\BlossomInstitute.Application.deps.json
-C:\Users\ulipv\Source\Repos\blossom-institute-api\BlossomInstitute.Application\bin\Debug\net8.0\BlossomInstitute.Application.runtimeconfig.json
 C:\Users\ulipv\Source\Repos\blossom-institute-api\BlossomInstitute.Application\bin\Debug\net8.0\BlossomInstitute.Application.dll
 C:\Users\ulipv\Source\Repos\blossom-institute-api\BlossomInstitute.Application\bin\Debug\net8.0\BlossomInstitute.Application.pdb
 C:\Users\ulipv\Source\Repos\blossom-institute-api\BlossomInstitute.Application\bin\Debug\net8.0\BlossomInstitute.Common.dll
@@ -77,7 +76,6 @@ C:\Users\ulipv\Source\Repos\blossom-institute-api\BlossomInstitute.Application\o
 C:\Users\ulipv\Source\Repos\blossom-institute-api\BlossomInstitute.Application\obj\Debug\net8.0\BlossomInstitute.Application.dll
 C:\Users\ulipv\Source\Repos\blossom-institute-api\BlossomInstitute.Application\obj\Debug\net8.0\refint\BlossomInstitute.Application.dll
 C:\Users\ulipv\Source\Repos\blossom-institute-api\BlossomInstitute.Application\obj\Debug\net8.0\BlossomInstitute.Application.pdb
-C:\Users\ulipv\Source\Repos\blossom-institute-api\BlossomInstitute.Application\obj\Debug\net8.0\BlossomInstitute.Application.genruntimeconfig.cache
 C:\Users\ulipv\Source\Repos\blossom-institute-api\BlossomInstitute.Application\obj\Debug\net8.0\ref\BlossomInstitute.Application.dll
 C:\Users\Ulises\Source\Repos\blossom-institute-api\BlossomInstitute.Application\bin\Debug\net8.0\LatoFont\Lato-Black.ttf
 C:\Users\Ulises\Source\Repos\blossom-institute-api\BlossomInstitute.Application\bin\Debug\net8.0\LatoFont\Lato-BlackItalic.ttf

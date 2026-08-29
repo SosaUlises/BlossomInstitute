@@ -26,7 +26,7 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Commands.ArchiveCal
             CancellationToken ct)
         {
             if (cursoId <= 0 || alumnoId <= 0 || calificacionId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Parámetros inválidos");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Parametros invalidos");
 
             var profesor = await _userManager.FindByIdAsync(profesorUserId.ToString());
             if (profesor == null)
@@ -48,21 +48,30 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Commands.ArchiveCal
                 .FirstOrDefaultAsync(x =>
                     x.Id == calificacionId &&
                     x.CursoId == cursoId &&
-                    x.AlumnoId == alumnoId &&
-                    !x.Archivado, ct);
+                    x.AlumnoId == alumnoId, ct);
 
             if (calificacion == null)
-                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Calificación no encontrada");
+                return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Calificacion no encontrada");
+
+            if (calificacion.Archivado)
+                return ResponseApiService.Response(StatusCodes.Status200OK, message: "Calificacion ya estaba archivada");
 
             calificacion.Archivado = true;
             calificacion.ArchivadoPorTarea = false;
             calificacion.UpdatedAtUtc = DateTime.UtcNow;
 
-            var ok = await _db.SaveAsync(ct);
-            if (!ok)
-                return ResponseApiService.Response(StatusCodes.Status500InternalServerError, message: "No se pudo archivar la calificación");
+            try
+            {
+                var ok = await _db.SaveAsync(ct);
+                if (!ok)
+                    return ResponseApiService.Response(StatusCodes.Status500InternalServerError, message: "No se pudo archivar la calificacion");
+            }
+            catch (DbUpdateException)
+            {
+                return ResponseApiService.Response(StatusCodes.Status409Conflict, message: "No se pudo archivar la calificacion por conflicto de datos");
+            }
 
-            return ResponseApiService.Response(StatusCodes.Status200OK, message: "Calificación archivada correctamente");
+            return ResponseApiService.Response(StatusCodes.Status200OK, message: "Calificacion archivada correctamente");
         }
     }
 }

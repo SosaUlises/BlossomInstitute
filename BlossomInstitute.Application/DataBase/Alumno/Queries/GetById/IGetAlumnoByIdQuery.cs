@@ -4,6 +4,6 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetById
 {
     public interface IGetAlumnoByIdQuery
     {
-        Task<BaseResponseModel> Execute(int userId);
+        Task<BaseResponseModel> Execute(int userId, CancellationToken ct = default);
     }
 }

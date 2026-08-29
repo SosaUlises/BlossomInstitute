@@ -1,5 +1,5 @@
 using BlossomInstitute.Common.Features;
-using BlossomInstitute.Application.Common.Academic;
+using BlossomInstitute.Application.Common.Academico;
 using BlossomInstitute.Application.DataBase.Curso.Shared;
 using BlossomInstitute.Domain.Entidades.Clase;
 using BlossomInstitute.Domain.Entidades.Curso;
@@ -46,16 +46,16 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAcademicProfile
                 return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Curso no encontrado");
 
             var today = GetArgentinaToday();
-            var periodContext = AcademicQuarterHelper.GetContext(today);
-            var currentFrom = periodContext.From;
-            var currentTo = periodContext.To;
+            var periodContext = PeriodoAcademicoHelper.ObtenerContexto(today);
+            var currentFrom = periodContext.Desde;
+            var currentTo = periodContext.Hasta;
             var period = new CourseAcademicPeriodModel
             {
-                Label = periodContext.Label,
-                From = periodContext.From,
-                To = periodContext.To,
-                Year = periodContext.Year,
-                QuarterNumber = periodContext.QuarterNumber
+                Label = periodContext.Etiqueta,
+                From = periodContext.Desde,
+                To = periodContext.Hasta,
+                Year = periodContext.Anio,
+                QuarterNumber = periodContext.NumeroTrimestre
             };
             var recentFrom = today.AddDays(-30);
             var previousFrom = today.AddDays(-60);
@@ -355,16 +355,16 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAcademicProfile
             var classCountByPeriod = historicalClasses
                 .GroupBy(x =>
                 {
-                    var period = AcademicQuarterHelper.GetCurrent(x.Date);
-                    return new PendingCoursePeriodKey(period.Year, period.Quarter);
+                    var period = PeriodoAcademicoHelper.ObtenerActual(x.Date);
+                    return new PendingCoursePeriodKey(period.Anio, period.Trimestre);
                 })
                 .ToDictionary(x => x.Key, x => x.Count());
             var accumulators = new Dictionary<PendingFollowUpKey, PendingFollowUpAccumulator>();
 
             foreach (var group in historicalGrades.GroupBy(x =>
             {
-                var period = AcademicQuarterHelper.GetCurrent(x.Date);
-                return new PendingFollowUpKey(x.StudentId, period.Year, period.Quarter);
+                var period = PeriodoAcademicoHelper.ObtenerActual(x.Date);
+                return new PendingFollowUpKey(x.StudentId, period.Anio, period.Trimestre);
             }))
             {
                 if (!studentsById.TryGetValue(group.Key.StudentId, out var student))
@@ -374,7 +374,7 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAcademicProfile
                 if (average >= FollowUpGradeThreshold)
                     continue;
 
-                var period = AcademicQuarterHelper.GetCurrent(group.First().Date);
+                var period = PeriodoAcademicoHelper.ObtenerActual(group.First().Date);
                 var accumulator = GetOrCreatePendingFollowUp(accumulators, group.Key, course, student, period);
                 accumulator.AverageValue = average;
                 accumulator.Reasons.Add(average < CriticalGradeThreshold ? "Bajo rendimiento" : "Rendimiento en seguimiento");
@@ -382,8 +382,8 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAcademicProfile
 
             foreach (var group in historicalAttendanceRows.GroupBy(x =>
             {
-                var period = AcademicQuarterHelper.GetCurrent(x.Date);
-                return new PendingFollowUpKey(x.StudentId, period.Year, period.Quarter);
+                var period = PeriodoAcademicoHelper.ObtenerActual(x.Date);
+                return new PendingFollowUpKey(x.StudentId, period.Anio, period.Trimestre);
             }))
             {
                 if (!studentsById.TryGetValue(group.Key.StudentId, out var student))
@@ -398,7 +398,7 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAcademicProfile
                 if (attendance >= FollowUpAttendanceThreshold)
                     continue;
 
-                var period = AcademicQuarterHelper.GetCurrent(group.First().Date);
+                var period = PeriodoAcademicoHelper.ObtenerActual(group.First().Date);
                 var accumulator = GetOrCreatePendingFollowUp(accumulators, group.Key, course, student, period);
                 accumulator.AttendanceValue = attendance;
                 accumulator.Reasons.Add(attendance < CriticalAttendanceThreshold ? "Baja asistencia" : "Asistencia en seguimiento");
@@ -419,7 +419,7 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAcademicProfile
             PendingFollowUpKey key,
             CourseProjection course,
             StudentProjection student,
-            AcademicQuarterPeriod period)
+            PeriodoAcademicoTrimestre period)
         {
             if (accumulators.TryGetValue(key, out var accumulator))
                 return accumulator;
@@ -432,9 +432,9 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetAcademicProfile
                 AvatarUrl = student.AvatarUrl,
                 CourseId = course.Id,
                 CourseName = course.Name,
-                PeriodLabel = period.Label,
-                QuarterNumber = period.Quarter,
-                Year = period.Year
+                PeriodLabel = period.Etiqueta,
+                QuarterNumber = period.Trimestre,
+                Year = period.Anio
             };
             accumulators[key] = accumulator;
 

@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Apply;
+using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Commands.Apply;
 using FluentValidation;
 
 namespace BlossomInstitute.Application.Validator.Calificacion

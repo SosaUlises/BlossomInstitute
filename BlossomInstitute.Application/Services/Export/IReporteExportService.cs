@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteAttendanceByCursoAndTerm;
+using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteAttendanceByCursoAndTerm;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteHomeworkByCursoAndTerm;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteMarksByCursoAndTerm;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteStudentMarksDetail;
@@ -8,37 +8,37 @@ namespace BlossomInstitute.Application.Services.Export
 {
     public interface IReporteExportService
     {
-        byte[] ExportMarksByCourseTermToExcel(
+        byte[] ExportarCalificacionesPorCursoYTrimestreAExcel(
             ReporteMarksByCursoAndTermResumenModel resumen,
             List<ReporteMarksByCursoAndTermItemModel> items);
 
-        byte[] ExportMarksByCourseTermToPdf(
+        byte[] ExportarCalificacionesPorCursoYTrimestreAPdf(
             ReporteMarksByCursoAndTermResumenModel resumen,
             List<ReporteMarksByCursoAndTermItemModel> items);
 
 
 
-        byte[] ExportAttendanceByCourseTermToExcel(
+        byte[] ExportarAsistenciaPorCursoYTrimestreAExcel(
         ReporteAttendanceByCursoAndTermResumenModel resumen,
         List<ReporteAttendanceByCursoAndTermItemModel> items);
 
-        byte[] ExportAttendanceByCourseTermToPdf(
+        byte[] ExportarAsistenciaPorCursoYTrimestreAPdf(
             ReporteAttendanceByCursoAndTermResumenModel resumen,
             List<ReporteAttendanceByCursoAndTermItemModel> items);
 
-        byte[] ExportStudentAssessmentsDetailByCourseTermToPdf(
+        byte[] ExportarDetalleEvaluacionesAlumnoPorCursoYTrimestreAPdf(
              ReporteStudentMarksDetailResponseModel data);
 
-        byte[] ExportHomeworkByCourseTermToExcel(
+        byte[] ExportarTareasPorCursoYTrimestreAExcel(
         ReporteHomeworkByCursoAndTermResumenModel resumen,
         List<ReporteHomeworkByCursoAndTermItemModel> items);
 
-        byte[] ExportHomeworkByCourseTermToPdf(
+        byte[] ExportarTareasPorCursoYTrimestreAPdf(
             ReporteHomeworkByCursoAndTermResumenModel resumen,
             List<ReporteHomeworkByCursoAndTermItemModel> items);
 
 
-        byte[] ExportStudentSummaryByCourseTermToPdf(
+        byte[] ExportarResumenAlumnoPorCursoYTrimestreAPdf(
             ReporteStudentSummaryByCursoAndTermResponseModel data);
     }
 }

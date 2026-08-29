@@ -1,9 +1,4 @@
-﻿using BlossomInstitute.Domain.Entidades.Clase;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BlossomInstitute.Domain.Entidades.Clase;
 
 namespace BlossomInstitute.Application.DataBase.Asistencia.Queries.GetMisAsistencias
 {
@@ -14,7 +9,7 @@ namespace BlossomInstitute.Application.DataBase.Asistencia.Queries.GetMisAsisten
         public int ClaseId { get; set; }
         public string Fecha { get; set; } = default!;
         public EstadoClase EstadoClase { get; set; }
-        public EstadoAsistencia? Estado { get; set; } // null = sin registro
+        public EstadoAsistencia? Estado { get; set; }
         public string? DescripcionClase { get; set; }
     }
 }

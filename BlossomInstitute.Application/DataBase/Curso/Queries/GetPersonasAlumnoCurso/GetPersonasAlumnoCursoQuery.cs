@@ -17,7 +17,7 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetPersonasAlumnoC
         public async Task<BaseResponseModel> Execute(int cursoId, int alumnoUserId, CancellationToken ct = default)
         {
             if (cursoId <= 0)
-                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "CursoId invÃ¡lido");
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "CursoId inválido");
 
             if (alumnoUserId <= 0)
                 return ResponseApiService.Response(StatusCodes.Status401Unauthorized, message: "No autenticado");
@@ -27,7 +27,7 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetPersonasAlumnoC
                 .AnyAsync(m => m.CursoId == cursoId && m.AlumnoId == alumnoUserId, ct);
 
             if (!matriculado)
-                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "No estÃ¡s matriculado en este curso");
+                return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "No estás matriculado en este curso");
 
             var profesores = await _db.CursoProfesores
                 .AsNoTracking()

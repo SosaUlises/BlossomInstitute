@@ -3,18 +3,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlossomInstitute.Infraestructure.Seed
 {
     public class IdentityDataSeed
     {
+        // Seeder principal para iniciar en program
         public static async Task SeedRolesAsync(IHost app)
         {
+            // permite pedir services de dependency injection
             using var scope = app.Services.CreateScope();
 
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<int>>>();

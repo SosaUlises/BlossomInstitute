@@ -1,8 +1,8 @@
-using BlossomInstitute.Application.DataBase.Profesor.Command.ActivarProfesor;
-using BlossomInstitute.Application.DataBase.Profesor.Command.CreateProfesor;
-using BlossomInstitute.Application.DataBase.Profesor.Command.DeleteProfesor;
-using BlossomInstitute.Application.DataBase.Profesor.Command.UpdateProfesor;
-using BlossomInstitute.Application.DataBase.Profesor.Queries.GetAllProfesores;
+using BlossomInstitute.Application.DataBase.Profesor.Commands.ActivarProfesor;
+using BlossomInstitute.Application.DataBase.Profesor.Commands.CreateProfesor;
+using BlossomInstitute.Application.DataBase.Profesor.Commands.DesactivarProfesor;
+using BlossomInstitute.Application.DataBase.Profesor.Commands.UpdateProfesor;
+using BlossomInstitute.Application.DataBase.Profesor.Queries.GetAll;
 using BlossomInstitute.Application.DataBase.Profesor.Queries.GetById;
 using BlossomInstitute.Common.Features;
 using FluentValidation;

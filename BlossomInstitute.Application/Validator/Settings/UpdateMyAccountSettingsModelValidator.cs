@@ -1,4 +1,4 @@
-﻿using BlossomInstitute.Application.DataBase.Settings.Command.UpdateAccount;
+using BlossomInstitute.Application.DataBase.Settings.Commands.UpdateAccount;
 using FluentValidation;
 
 namespace BlossomInstitute.Application.Validator.Settings

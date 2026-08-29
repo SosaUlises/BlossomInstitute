@@ -1,4 +1,4 @@
-using BlossomInstitute.Application.Common.Academic;
+using BlossomInstitute.Application.Common.Academico;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Calificacion;
 using BlossomInstitute.Domain.Entidades.Clase;
@@ -13,9 +13,6 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAcademicSummar
 {
     public class GetAlumnoAcademicSummaryQuery : IGetAlumnoAcademicSummaryQuery
     {
-        private const decimal LowAttendanceThreshold = 70m;
-        private const decimal LowGradeThreshold = 60m;
-
         private readonly IDataBaseService _db;
 
         public GetAlumnoAcademicSummaryQuery(IDataBaseService db)
@@ -23,14 +20,14 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAcademicSummar
             _db = db;
         }
 
-        public async Task<BaseResponseModel> Execute(int studentId, CancellationToken ct)
+        public async Task<BaseResponseModel> Execute(int alumnoId, CancellationToken ct)
         {
-            if (studentId <= 0)
+            if (alumnoId <= 0)
                 return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Alumno invalido");
 
-            var student = await _db.Alumnos
+            var alumno = await _db.Alumnos
                 .AsNoTracking()
-                .Where(x => x.Id == studentId)
+                .Where(x => x.Id == alumnoId)
                 .Select(x => new
                 {
                     x.Id,
@@ -43,122 +40,122 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAcademicSummar
                 })
                 .FirstOrDefaultAsync(ct);
 
-            if (student == null)
+            if (alumno == null)
                 return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Alumno no encontrado");
 
-            var today = DateOnly.FromDateTime(DateTime.Now);
-            var periodContext = AcademicQuarterHelper.GetContext(today);
-            var quarter = periodContext.CurrentQuarter;
-            var dataTo = periodContext.To;
-            var fromUtc = quarter.From.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
-            var toUtcExclusive = dataTo.AddDays(1).ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
+            var hoy = DateOnly.FromDateTime(DateTime.Now);
+            var contextoPeriodo = PeriodoAcademicoHelper.ObtenerContexto(hoy);
+            var trimestre = contextoPeriodo.TrimestreActual;
+            var fechaHasta = contextoPeriodo.Hasta;
+            var desdeUtc = trimestre.Desde.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
+            var hastaUtcExclusivo = fechaHasta.AddDays(1).ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
 
-            var period = new AlumnoAcademicPeriodModel
+            var periodo = new AlumnoAcademicPeriodModel
             {
                 Type = "academic-quarter",
-                Label = quarter.Label,
-                MonthRangeLabel = quarter.MonthRangeLabel,
-                From = periodContext.From,
-                To = periodContext.To,
-                Year = periodContext.Year,
-                Quarter = periodContext.QuarterNumber
+                Label = trimestre.Etiqueta,
+                MonthRangeLabel = trimestre.EtiquetaRangoMeses,
+                From = contextoPeriodo.Desde,
+                To = contextoPeriodo.Hasta,
+                Year = contextoPeriodo.Anio,
+                Quarter = contextoPeriodo.NumeroTrimestre
             };
 
-            var enrollments = await _db.Matriculas
+            var matriculas = await _db.Matriculas
                 .AsNoTracking()
-                .Where(x => x.AlumnoId == studentId)
-                .Select(x => new EnrollmentProjection
+                .Where(x => x.AlumnoId == alumnoId)
+                .Select(x => new MatriculaAlumnoProjection
                 {
-                    CourseId = x.CursoId,
-                    CourseName = x.Curso.Nombre,
-                    CourseDescription = x.Curso.Descripcion,
-                    CourseStatus = x.Curso.Estado
+                    CursoId = x.CursoId,
+                    NombreCurso = x.Curso.Nombre,
+                    DescripcionCurso = x.Curso.Descripcion,
+                    EstadoCurso = x.Curso.Estado
                 })
-                .OrderBy(x => x.CourseStatus == EstadoCurso.Activo ? 0 : 1)
-                .ThenBy(x => x.CourseName)
+                .OrderBy(x => x.EstadoCurso == EstadoCurso.Activo ? 0 : 1)
+                .ThenBy(x => x.NombreCurso)
                 .ToListAsync(ct);
 
-            var courseIds = enrollments.Select(x => x.CourseId).Distinct().ToList();
-            var teacherRows = courseIds.Count == 0
-                ? new List<TeacherProjection>()
+            var cursoIds = matriculas.Select(x => x.CursoId).Distinct().ToList();
+            var profesores = cursoIds.Count == 0
+                ? new List<ProfesorCursoProjection>()
                 : await _db.CursoProfesores
                     .AsNoTracking()
-                    .Where(x => courseIds.Contains(x.CursoId))
-                    .Select(x => new TeacherProjection
+                    .Where(x => cursoIds.Contains(x.CursoId))
+                    .Select(x => new ProfesorCursoProjection
                     {
-                        CourseId = x.CursoId,
-                        FirstName = x.Profesor.Usuario.Nombre,
-                        LastName = x.Profesor.Usuario.Apellido,
+                        CursoId = x.CursoId,
+                        Nombre = x.Profesor.Usuario.Nombre,
+                        Apellido = x.Profesor.Usuario.Apellido,
                         AvatarUrl = x.Profesor.Usuario.AvatarUrl
                     })
-                    .OrderBy(x => x.LastName)
-                    .ThenBy(x => x.FirstName)
+                    .OrderBy(x => x.Apellido)
+                    .ThenBy(x => x.Nombre)
                     .ToListAsync(ct);
 
-            var teachersByCourse = teacherRows
-                .GroupBy(x => x.CourseId)
+            var profesoresPorCurso = profesores
+                .GroupBy(x => x.CursoId)
                 .ToDictionary(
                     x => x.Key,
-                    x => x.Select(t => new TeacherSummaryProjection
+                    x => x.Select(profesor => new ProfesorResumenProjection
                     {
-                        Name = $"{t.FirstName} {t.LastName}".Trim(),
-                        AvatarUrl = t.AvatarUrl
+                        NombreCompleto = $"{profesor.Nombre} {profesor.Apellido}".Trim(),
+                        AvatarUrl = profesor.AvatarUrl
                     }).First());
 
-            var currentEnrollments = enrollments
-                .Where(x => x.CourseStatus == EstadoCurso.Activo)
-                .Select((x, index) => ToEnrollmentModel(x, teachersByCourse, index == 0))
+            var matriculasActuales = matriculas
+                .Where(x => x.EstadoCurso == EstadoCurso.Activo)
+                .Select((x, index) => ConstruirMatriculaModel(x, profesoresPorCurso, index == 0))
                 .ToList();
 
-            var currentCourseIds = currentEnrollments.Select(x => x.CourseId).ToList();
-            var attendanceSummary = new AlumnoAcademicAttendanceSummaryModel();
-            var gradesSummary = new AlumnoAcademicGradesSummaryModel();
-            var homeworkSummary = new AlumnoAcademicHomeworkSummaryModel();
-            DateOnly? latestAbsenceDate = null;
+            var cursoIdsActuales = matriculasActuales.Select(x => x.CourseId).ToList();
+            var resumenAsistencia = new AlumnoAcademicAttendanceSummaryModel();
+            var resumenCalificaciones = new AlumnoAcademicGradesSummaryModel();
+            var resumenTareas = new AlumnoAcademicHomeworkSummaryModel();
+            DateOnly? fechaUltimaAusencia = null;
 
-            if (currentCourseIds.Count > 0)
+            if (cursoIdsActuales.Count > 0)
             {
-                var classes = await _db.Clases
+                var clases = await _db.Clases
                     .AsNoTracking()
                     .Where(x =>
-                        currentCourseIds.Contains(x.CursoId) &&
+                        cursoIdsActuales.Contains(x.CursoId) &&
                         x.Estado != EstadoClase.Cancelada &&
-                        x.Fecha >= quarter.From &&
-                        x.Fecha <= dataTo)
-                    .Select(x => new ClassProjection
+                        x.Fecha >= trimestre.Desde &&
+                        x.Fecha <= fechaHasta)
+                    .Select(x => new ClaseAlumnoProjection
                     {
                         Id = x.Id,
-                        CourseId = x.CursoId,
-                        Date = x.Fecha
+                        CursoId = x.CursoId,
+                        Fecha = x.Fecha
                     })
-                    .OrderBy(x => x.Date)
+                    .OrderBy(x => x.Fecha)
                     .ThenBy(x => x.Id)
                     .ToListAsync(ct);
 
-                var classIds = classes.Select(x => x.Id).ToList();
-                var attendanceRows = classIds.Count == 0
-                    ? new List<AttendanceProjection>()
+                var claseIds = clases.Select(x => x.Id).ToList();
+                var asistencias = claseIds.Count == 0
+                    ? new List<AsistenciaAlumnoProjection>()
                     : await _db.Asistencias
                         .AsNoTracking()
-                        .Where(x => x.AlumnoId == studentId && classIds.Contains(x.ClaseId))
-                        .Select(x => new AttendanceProjection
+                        .Where(x => x.AlumnoId == alumnoId && claseIds.Contains(x.ClaseId))
+                        .Select(x => new AsistenciaAlumnoProjection
                         {
-                            ClassId = x.ClaseId,
-                            Status = x.Estado,
-                            Date = x.Clase.Fecha
+                            ClaseId = x.ClaseId,
+                            Estado = x.Estado,
+                            Fecha = x.Clase.Fecha
                         })
                         .ToListAsync(ct);
 
-                attendanceSummary = BuildAttendanceSummary(classes, attendanceRows, out latestAbsenceDate);
+                resumenAsistencia = ConstruirResumenAsistencia(clases, asistencias, out fechaUltimaAusencia);
 
-                var grades = await _db.Calificaciones
+                var calificaciones = await _db.Calificaciones
                     .AsNoTracking()
                     .Where(x =>
-                        x.AlumnoId == studentId &&
-                        currentCourseIds.Contains(x.CursoId) &&
+                        x.AlumnoId == alumnoId &&
+                        cursoIdsActuales.Contains(x.CursoId) &&
                         !x.Archivado &&
-                        x.Fecha >= quarter.From &&
-                        x.Fecha <= dataTo &&
+                        x.Fecha >= trimestre.Desde &&
+                        x.Fecha <= fechaHasta &&
                         (
                             x.Tipo == TipoCalificacion.Homework ||
                             x.Tipo == TipoCalificacion.Quiz ||
@@ -166,124 +163,124 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAcademicSummar
                             x.Tipo == TipoCalificacion.Participation ||
                             x.Tipo == TipoCalificacion.Behaviour
                         ))
-                    .Select(x => new GradeProjection
+                    .Select(x => new CalificacionAlumnoProjection
                     {
                         Id = x.Id,
-                        CourseId = x.CursoId,
-                        CourseName = x.Curso.Nombre,
-                        Title = x.Titulo,
-                        Type = x.Tipo,
-                        Grade = x.Nota,
-                        Date = x.Fecha
+                        CursoId = x.CursoId,
+                        NombreCurso = x.Curso.Nombre,
+                        Titulo = x.Titulo,
+                        Tipo = x.Tipo,
+                        Nota = x.Nota,
+                        Fecha = x.Fecha
                     })
                     .ToListAsync(ct);
 
-                gradesSummary = BuildGradesSummary(grades);
-                homeworkSummary = await BuildHomeworkSummaryAsync(studentId, currentCourseIds, fromUtc, toUtcExclusive, ct);
+                resumenCalificaciones = ConstruirResumenCalificaciones(calificaciones);
+                resumenTareas = await ConstruirResumenTareasAsync(alumnoId, cursoIdsActuales, desdeUtc, hastaUtcExclusivo, ct);
             }
 
-            var academicStatus = BuildAcademicStatus(attendanceSummary, gradesSummary);
-            var recentSignals = BuildRecentSignals(attendanceSummary, gradesSummary, homeworkSummary, latestAbsenceDate);
-            var pendingFollowUp = courseIds.Count == 0
+            var estadoAcademico = ConstruirEstadoAcademico(resumenAsistencia, resumenCalificaciones);
+            var senalesRecientes = ConstruirSenalesRecientes(resumenAsistencia, resumenCalificaciones, resumenTareas, fechaUltimaAusencia);
+            var seguimientosPendientes = cursoIds.Count == 0
                 ? new List<AlumnoAcademicPendingFollowUpModel>()
-                : await BuildPendingFollowUpAsync(
-                    studentId,
-                    courseIds,
-                    enrollments.ToDictionary(x => x.CourseId, x => x.CourseName),
-                    quarter.From,
-                    periodContext.PreviousQuarter,
+                : await ConstruirSeguimientosPendientesAsync(
+                    alumnoId,
+                    cursoIds,
+                    matriculas.ToDictionary(x => x.CursoId, x => x.NombreCurso),
+                    trimestre.Desde,
+                    contextoPeriodo.TrimestreAnterior,
                     ct);
 
-            var fullName = $"{student.Nombre} {student.Apellido}".Trim();
+            var nombreCompleto = $"{alumno.Nombre} {alumno.Apellido}".Trim();
             var response = new AlumnoAcademicSummaryResponseModel
             {
                 Student = new AlumnoAcademicIdentityModel
                 {
-                    Id = student.Id,
-                    FirstName = student.Nombre,
-                    LastName = student.Apellido,
-                    FullName = fullName,
-                    Email = student.Email,
-                    Dni = student.Dni,
-                    Active = student.Activo,
-                    AvatarUrl = student.AvatarUrl
+                    Id = alumno.Id,
+                    FirstName = alumno.Nombre,
+                    LastName = alumno.Apellido,
+                    FullName = nombreCompleto,
+                    Email = alumno.Email,
+                    Dni = alumno.Dni,
+                    Active = alumno.Activo,
+                    AvatarUrl = alumno.AvatarUrl
                 },
-                Period = period,
-                CurrentCourse = currentEnrollments.FirstOrDefault(),
-                CurrentEnrollments = currentEnrollments,
-                AttendanceSummary = attendanceSummary,
-                GradesSummary = gradesSummary,
-                HomeworkSummary = homeworkSummary,
-                AcademicStatus = academicStatus,
-                PendingFollowUp = pendingFollowUp,
-                RecentSignals = recentSignals
+                Period = periodo,
+                CurrentCourse = matriculasActuales.FirstOrDefault(),
+                CurrentEnrollments = matriculasActuales,
+                AttendanceSummary = resumenAsistencia,
+                GradesSummary = resumenCalificaciones,
+                HomeworkSummary = resumenTareas,
+                AcademicStatus = estadoAcademico,
+                PendingFollowUp = seguimientosPendientes,
+                RecentSignals = senalesRecientes
             };
 
             return ResponseApiService.Response(StatusCodes.Status200OK, response);
         }
 
-        private static AlumnoAcademicEnrollmentModel ToEnrollmentModel(
-            EnrollmentProjection enrollment,
-            Dictionary<int, TeacherSummaryProjection> teachersByCourse,
-            bool isMain)
+        private static AlumnoAcademicEnrollmentModel ConstruirMatriculaModel(
+            MatriculaAlumnoProjection matricula,
+            Dictionary<int, ProfesorResumenProjection> profesoresPorCurso,
+            bool esPrincipal)
         {
-            teachersByCourse.TryGetValue(enrollment.CourseId, out var teacher);
+            profesoresPorCurso.TryGetValue(matricula.CursoId, out var profesor);
 
             return new AlumnoAcademicEnrollmentModel
             {
-                CourseId = enrollment.CourseId,
-                CourseName = enrollment.CourseName,
-                CourseDescription = enrollment.CourseDescription,
-                CourseStatus = enrollment.CourseStatus.ToString(),
-                TeacherName = teacher?.Name,
-                TeacherAvatarUrl = teacher?.AvatarUrl,
-                IsMain = isMain
+                CourseId = matricula.CursoId,
+                CourseName = matricula.NombreCurso,
+                CourseDescription = matricula.DescripcionCurso,
+                CourseStatus = matricula.EstadoCurso.ToString(),
+                TeacherName = profesor?.NombreCompleto,
+                TeacherAvatarUrl = profesor?.AvatarUrl,
+                IsMain = esPrincipal
             };
         }
 
-        private async Task<List<AlumnoAcademicPendingFollowUpModel>> BuildPendingFollowUpAsync(
-            int studentId,
-            List<int> courseIds,
-            Dictionary<int, string> courseNames,
-            DateOnly currentFrom,
-            AcademicQuarterPeriod previousQuarter,
+        private async Task<List<AlumnoAcademicPendingFollowUpModel>> ConstruirSeguimientosPendientesAsync(
+            int alumnoId,
+            List<int> cursoIds,
+            Dictionary<int, string> nombresCurso,
+            DateOnly desdePeriodoActual,
+            PeriodoAcademicoTrimestre trimestreAnterior,
             CancellationToken ct)
         {
-            var historicalClasses = await _db.Clases
+            var clasesHistoricas = await _db.Clases
                 .AsNoTracking()
                 .Where(x =>
-                    courseIds.Contains(x.CursoId) &&
+                    cursoIds.Contains(x.CursoId) &&
                     x.Estado != EstadoClase.Cancelada &&
-                    x.Fecha < currentFrom)
-                .Select(x => new ClassProjection
+                    x.Fecha < desdePeriodoActual)
+                .Select(x => new ClaseAlumnoProjection
                 {
                     Id = x.Id,
-                    CourseId = x.CursoId,
-                    Date = x.Fecha
+                    CursoId = x.CursoId,
+                    Fecha = x.Fecha
                 })
                 .ToListAsync(ct);
 
-            var historicalClassIds = historicalClasses.Select(x => x.Id).ToList();
-            var historicalAttendanceRows = historicalClassIds.Count == 0
-                ? new List<AttendanceProjection>()
+            var claseHistoricaIds = clasesHistoricas.Select(x => x.Id).ToList();
+            var asistenciasHistoricas = claseHistoricaIds.Count == 0
+                ? new List<AsistenciaAlumnoProjection>()
                 : await _db.Asistencias
                     .AsNoTracking()
-                    .Where(x => x.AlumnoId == studentId && historicalClassIds.Contains(x.ClaseId))
-                    .Select(x => new AttendanceProjection
+                    .Where(x => x.AlumnoId == alumnoId && claseHistoricaIds.Contains(x.ClaseId))
+                    .Select(x => new AsistenciaAlumnoProjection
                     {
-                        ClassId = x.ClaseId,
-                        Date = x.Clase.Fecha,
-                        Status = x.Estado
+                        ClaseId = x.ClaseId,
+                        Fecha = x.Clase.Fecha,
+                        Estado = x.Estado
                     })
                     .ToListAsync(ct);
 
-            var historicalGrades = await _db.Calificaciones
+            var calificacionesHistoricas = await _db.Calificaciones
                 .AsNoTracking()
                 .Where(x =>
-                    x.AlumnoId == studentId &&
-                    courseIds.Contains(x.CursoId) &&
+                    x.AlumnoId == alumnoId &&
+                    cursoIds.Contains(x.CursoId) &&
                     !x.Archivado &&
-                    x.Fecha < currentFrom &&
+                    x.Fecha < desdePeriodoActual &&
                     (
                         x.Tipo == TipoCalificacion.Homework ||
                         x.Tipo == TipoCalificacion.Quiz ||
@@ -291,86 +288,86 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAcademicSummar
                         x.Tipo == TipoCalificacion.Participation ||
                         x.Tipo == TipoCalificacion.Behaviour
                     ))
-                .Select(x => new GradeProjection
+                .Select(x => new CalificacionAlumnoProjection
                 {
                     Id = x.Id,
-                    CourseId = x.CursoId,
-                    CourseName = x.Curso.Nombre,
-                    Title = x.Titulo,
-                    Type = x.Tipo,
-                    Grade = x.Nota,
-                    Date = x.Fecha
+                    CursoId = x.CursoId,
+                    NombreCurso = x.Curso.Nombre,
+                    Titulo = x.Titulo,
+                    Tipo = x.Tipo,
+                    Nota = x.Nota,
+                    Fecha = x.Fecha
                 })
                 .ToListAsync(ct);
 
-            return BuildPendingFollowUp(
-                courseNames,
-                historicalClasses,
-                historicalAttendanceRows,
-                historicalGrades,
-                previousQuarter);
+            return ConstruirSeguimientosPendientes(
+                nombresCurso,
+                clasesHistoricas,
+                asistenciasHistoricas,
+                calificacionesHistoricas,
+                trimestreAnterior);
         }
 
-        private static List<AlumnoAcademicPendingFollowUpModel> BuildPendingFollowUp(
-            Dictionary<int, string> courseNames,
-            List<ClassProjection> historicalClasses,
-            List<AttendanceProjection> historicalAttendanceRows,
-            List<GradeProjection> historicalGrades,
-            AcademicQuarterPeriod previousQuarter)
+        private static List<AlumnoAcademicPendingFollowUpModel> ConstruirSeguimientosPendientes(
+            Dictionary<int, string> nombresCurso,
+            List<ClaseAlumnoProjection> clasesHistoricas,
+            List<AsistenciaAlumnoProjection> asistenciasHistoricas,
+            List<CalificacionAlumnoProjection> calificacionesHistoricas,
+            PeriodoAcademicoTrimestre trimestreAnterior)
         {
-            var classById = historicalClasses.ToDictionary(x => x.Id);
-            var classCountByPeriod = historicalClasses
+            var clasePorId = clasesHistoricas.ToDictionary(x => x.Id);
+            var cantidadClasesPorPeriodo = clasesHistoricas
                 .GroupBy(x =>
                 {
-                    var period = AcademicQuarterHelper.GetCurrent(x.Date);
-                    return new PendingFollowUpKey(x.CourseId, period.Year, period.Quarter);
+                    var periodo = PeriodoAcademicoHelper.ObtenerActual(x.Fecha);
+                    return new SeguimientoPendienteKey(x.CursoId, periodo.Anio, periodo.Trimestre);
                 })
                 .ToDictionary(x => x.Key, x => x.Count());
-            var accumulators = new Dictionary<PendingFollowUpKey, PendingFollowUpAccumulator>();
+            var acumuladores = new Dictionary<SeguimientoPendienteKey, SeguimientoPendienteAcumulador>();
 
-            foreach (var group in historicalGrades.GroupBy(x =>
+            foreach (var grupo in calificacionesHistoricas.GroupBy(x =>
             {
-                var period = AcademicQuarterHelper.GetCurrent(x.Date);
-                return new PendingFollowUpKey(x.CourseId, period.Year, period.Quarter);
+                var periodo = PeriodoAcademicoHelper.ObtenerActual(x.Fecha);
+                return new SeguimientoPendienteKey(x.CursoId, periodo.Anio, periodo.Trimestre);
             }))
             {
-                var average = Math.Round(group.Average(x => x.Grade), 2);
-                if (average >= 75m)
+                var promedio = Math.Round(grupo.Average(x => x.Nota), 2);
+                if (promedio >= ReglasAcademicas.UmbralPromedioSeguimiento)
                     continue;
 
-                var period = AcademicQuarterHelper.GetCurrent(group.First().Date);
-                var courseName = courseNames.GetValueOrDefault(group.Key.CourseId) ?? group.First().CourseName;
-                var accumulator = GetOrCreatePendingFollowUp(accumulators, group.Key, courseName, period, previousQuarter);
-                accumulator.AverageValue = average;
-                accumulator.Reasons.Add(average < LowGradeThreshold ? "Promedio bajo" : "Promedio en seguimiento");
+                var periodo = PeriodoAcademicoHelper.ObtenerActual(grupo.First().Fecha);
+                var nombreCurso = nombresCurso.GetValueOrDefault(grupo.Key.CursoId) ?? grupo.First().NombreCurso;
+                var acumulador = ObtenerOCrearSeguimientoPendiente(acumuladores, grupo.Key, nombreCurso, periodo, trimestreAnterior);
+                acumulador.Promedio = promedio;
+                acumulador.Motivos.Add(promedio < ReglasAcademicas.UmbralNotaBaja ? "Promedio bajo" : "Promedio en seguimiento");
             }
 
-            foreach (var group in historicalAttendanceRows
-                .Where(x => classById.ContainsKey(x.ClassId))
+            foreach (var grupo in asistenciasHistoricas
+                .Where(x => clasePorId.ContainsKey(x.ClaseId))
                 .GroupBy(x =>
                 {
-                    var cls = classById[x.ClassId];
-                    var period = AcademicQuarterHelper.GetCurrent(x.Date);
-                    return new PendingFollowUpKey(cls.CourseId, period.Year, period.Quarter);
+                    var clase = clasePorId[x.ClaseId];
+                    var periodo = PeriodoAcademicoHelper.ObtenerActual(x.Fecha);
+                    return new SeguimientoPendienteKey(clase.CursoId, periodo.Anio, periodo.Trimestre);
                 }))
             {
-                var key = group.Key;
-                var classCount = classCountByPeriod.GetValueOrDefault(key);
-                if (classCount <= 0)
+                var key = grupo.Key;
+                var cantidadClases = cantidadClasesPorPeriodo.GetValueOrDefault(key);
+                if (cantidadClases <= 0)
                     continue;
 
-                var attendance = Math.Round(group.Count(x => x.Status == EstadoAsistencia.Presente) * 100m / classCount, 2);
-                if (attendance >= 85m)
+                var asistencia = Math.Round(grupo.Count(x => x.Estado == EstadoAsistencia.Presente) * 100m / cantidadClases, 2);
+                if (asistencia >= ReglasAcademicas.UmbralAsistenciaSeguimiento)
                     continue;
 
-                var period = AcademicQuarterHelper.GetCurrent(group.First().Date);
-                var courseName = courseNames.GetValueOrDefault(key.CourseId) ?? string.Empty;
-                var accumulator = GetOrCreatePendingFollowUp(accumulators, key, courseName, period, previousQuarter);
-                accumulator.AttendanceValue = attendance;
-                accumulator.Reasons.Add(attendance < LowAttendanceThreshold ? "Baja asistencia" : "Asistencia en seguimiento");
+                var periodo = PeriodoAcademicoHelper.ObtenerActual(grupo.First().Fecha);
+                var nombreCurso = nombresCurso.GetValueOrDefault(key.CursoId) ?? string.Empty;
+                var acumulador = ObtenerOCrearSeguimientoPendiente(acumuladores, key, nombreCurso, periodo, trimestreAnterior);
+                acumulador.Asistencia = asistencia;
+                acumulador.Motivos.Add(asistencia < ReglasAcademicas.UmbralAsistenciaBaja ? "Baja asistencia" : "Asistencia en seguimiento");
             }
 
-            return accumulators.Values
+            return acumuladores.Values
                 .Select(x => x.ToModel())
                 .OrderByDescending(x => x.Level == "critical")
                 .ThenByDescending(x => x.IsPreviousQuarter)
@@ -380,43 +377,43 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAcademicSummar
                 .ToList();
         }
 
-        private static PendingFollowUpAccumulator GetOrCreatePendingFollowUp(
-            Dictionary<PendingFollowUpKey, PendingFollowUpAccumulator> accumulators,
-            PendingFollowUpKey key,
-            string courseName,
-            AcademicQuarterPeriod period,
-            AcademicQuarterPeriod previousQuarter)
+        private static SeguimientoPendienteAcumulador ObtenerOCrearSeguimientoPendiente(
+            Dictionary<SeguimientoPendienteKey, SeguimientoPendienteAcumulador> acumuladores,
+            SeguimientoPendienteKey key,
+            string nombreCurso,
+            PeriodoAcademicoTrimestre periodo,
+            PeriodoAcademicoTrimestre trimestreAnterior)
         {
-            if (accumulators.TryGetValue(key, out var accumulator))
-                return accumulator;
+            if (acumuladores.TryGetValue(key, out var acumulador))
+                return acumulador;
 
-            accumulator = new PendingFollowUpAccumulator
+            acumulador = new SeguimientoPendienteAcumulador
             {
-                CourseId = key.CourseId,
-                CourseName = courseName,
-                PeriodLabel = period.Label,
-                QuarterNumber = period.Quarter,
-                Year = period.Year,
-                IsPreviousQuarter = period.Year == previousQuarter.Year &&
-                    period.Quarter == previousQuarter.Quarter
+                CursoId = key.CursoId,
+                NombreCurso = nombreCurso,
+                EtiquetaPeriodo = periodo.Etiqueta,
+                NumeroTrimestre = periodo.Trimestre,
+                Anio = periodo.Anio,
+                EsTrimestreAnterior = periodo.Anio == trimestreAnterior.Anio &&
+                    periodo.Trimestre == trimestreAnterior.Trimestre
             };
-            accumulators[key] = accumulator;
+            acumuladores[key] = acumulador;
 
-            return accumulator;
+            return acumulador;
         }
 
-        private static AlumnoAcademicAttendanceSummaryModel BuildAttendanceSummary(
-            List<ClassProjection> classes,
-            List<AttendanceProjection> attendanceRows,
-            out DateOnly? latestAbsenceDate)
+        private static AlumnoAcademicAttendanceSummaryModel ConstruirResumenAsistencia(
+            List<ClaseAlumnoProjection> clases,
+            List<AsistenciaAlumnoProjection> asistencias,
+            out DateOnly? fechaUltimaAusencia)
         {
-            latestAbsenceDate = attendanceRows
-                .Where(x => x.Status == EstadoAsistencia.Ausente)
-                .OrderByDescending(x => x.Date)
-                .Select(x => (DateOnly?)x.Date)
+            fechaUltimaAusencia = asistencias
+                .Where(x => x.Estado == EstadoAsistencia.Ausente)
+                .OrderByDescending(x => x.Fecha)
+                .Select(x => (DateOnly?)x.Fecha)
                 .FirstOrDefault();
 
-            if (classes.Count == 0)
+            if (clases.Count == 0)
             {
                 return new AlumnoAcademicAttendanceSummaryModel
                 {
@@ -427,52 +424,52 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAcademicSummar
                 };
             }
 
-            var presentCount = attendanceRows.Count(x => x.Status == EstadoAsistencia.Presente);
-            var absentCount = attendanceRows.Count(x => x.Status == EstadoAsistencia.Ausente);
-            var percentage = Math.Round((decimal)presentCount * 100 / classes.Count, 2);
-            var maxConsecutiveAbsences = GetMaxConsecutiveAbsences(classes, attendanceRows);
+            var presentes = asistencias.Count(x => x.Estado == EstadoAsistencia.Presente);
+            var ausentes = asistencias.Count(x => x.Estado == EstadoAsistencia.Ausente);
+            var porcentaje = Math.Round((decimal)presentes * 100 / clases.Count, 2);
+            var maximoAusenciasConsecutivas = ObtenerMaximoAusenciasConsecutivas(clases, asistencias);
 
             return new AlumnoAcademicAttendanceSummaryModel
             {
-                AttendancePercentage = percentage,
-                PresentCount = presentCount,
-                AbsentCount = absentCount,
-                TotalClasses = classes.Count,
-                ConsecutiveAbsences = maxConsecutiveAbsences,
-                IsLowAttendance = percentage < LowAttendanceThreshold
+                AttendancePercentage = porcentaje,
+                PresentCount = presentes,
+                AbsentCount = ausentes,
+                TotalClasses = clases.Count,
+                ConsecutiveAbsences = maximoAusenciasConsecutivas,
+                IsLowAttendance = porcentaje < ReglasAcademicas.UmbralAsistenciaBaja
             };
         }
 
-        private static int GetMaxConsecutiveAbsences(
-            List<ClassProjection> classes,
-            List<AttendanceProjection> attendanceRows)
+        private static int ObtenerMaximoAusenciasConsecutivas(
+            List<ClaseAlumnoProjection> clases,
+            List<AsistenciaAlumnoProjection> asistencias)
         {
-            var attendanceByClass = attendanceRows
-                .GroupBy(x => x.ClassId)
-                .ToDictionary(x => x.Key, x => x.First().Status);
+            var asistenciaPorClase = asistencias
+                .GroupBy(x => x.ClaseId)
+                .ToDictionary(x => x.Key, x => x.First().Estado);
 
-            var current = 0;
-            var max = 0;
+            var actual = 0;
+            var maximo = 0;
 
-            foreach (var cls in classes.OrderBy(x => x.Date).ThenBy(x => x.Id))
+            foreach (var clase in clases.OrderBy(x => x.Fecha).ThenBy(x => x.Id))
             {
-                if (attendanceByClass.TryGetValue(cls.Id, out var status) && status == EstadoAsistencia.Ausente)
+                if (asistenciaPorClase.TryGetValue(clase.Id, out var estado) && estado == EstadoAsistencia.Ausente)
                 {
-                    current++;
-                    max = Math.Max(max, current);
+                    actual++;
+                    maximo = Math.Max(maximo, actual);
                     continue;
                 }
 
-                if (status == EstadoAsistencia.Presente)
-                    current = 0;
+                if (estado == EstadoAsistencia.Presente)
+                    actual = 0;
             }
 
-            return max;
+            return maximo;
         }
 
-        private static AlumnoAcademicGradesSummaryModel BuildGradesSummary(List<GradeProjection> grades)
+        private static AlumnoAcademicGradesSummaryModel ConstruirResumenCalificaciones(List<CalificacionAlumnoProjection> calificaciones)
         {
-            if (grades.Count == 0)
+            if (calificaciones.Count == 0)
             {
                 return new AlumnoAcademicGradesSummaryModel
                 {
@@ -480,52 +477,52 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAcademicSummar
                 };
             }
 
-            var manualGrades = grades
-                .Where(x => x.Type != TipoCalificacion.Homework)
+            var calificacionesManuales = calificaciones
+                .Where(x => x.Tipo != TipoCalificacion.Homework)
                 .ToList();
 
-            var latestLowGrade = grades
-                .Where(x => x.Grade < LowGradeThreshold)
-                .OrderByDescending(x => x.Date)
+            var ultimaNotaBaja = calificaciones
+                .Where(x => x.Nota < ReglasAcademicas.UmbralNotaBaja)
+                .OrderByDescending(x => x.Fecha)
                 .ThenByDescending(x => x.Id)
                 .FirstOrDefault();
 
-            var latestGrade = grades
-                .OrderByDescending(x => x.Date)
+            var ultimaNota = calificaciones
+                .OrderByDescending(x => x.Fecha)
                 .ThenByDescending(x => x.Id)
                 .First();
 
             return new AlumnoAcademicGradesSummaryModel
             {
-                AverageGrade = Math.Round(grades.Average(x => x.Grade), 2),
-                ManualAverageGrade = manualGrades.Count > 0
-                    ? Math.Round(manualGrades.Average(x => x.Grade), 2)
+                AverageGrade = Math.Round(calificaciones.Average(x => x.Nota), 2),
+                ManualAverageGrade = calificacionesManuales.Count > 0
+                    ? Math.Round(calificacionesManuales.Average(x => x.Nota), 2)
                     : null,
-                LowGradesCount = grades.Count(x => x.Grade < LowGradeThreshold),
-                LatestLowGrade = latestLowGrade == null ? null : ToGradeSignalModel(latestLowGrade),
-                LatestGrade = ToGradeSignalModel(latestGrade)
+                LowGradesCount = calificaciones.Count(x => x.Nota < ReglasAcademicas.UmbralNotaBaja),
+                LatestLowGrade = ultimaNotaBaja == null ? null : ConvertirCalificacionSenalModel(ultimaNotaBaja),
+                LatestGrade = ConvertirCalificacionSenalModel(ultimaNota)
             };
         }
 
-        private async Task<AlumnoAcademicHomeworkSummaryModel> BuildHomeworkSummaryAsync(
-            int studentId,
-            List<int> currentCourseIds,
-            DateTime fromUtc,
-            DateTime toUtcExclusive,
+        private async Task<AlumnoAcademicHomeworkSummaryModel> ConstruirResumenTareasAsync(
+            int alumnoId,
+            List<int> cursoIdsActuales,
+            DateTime desdeUtc,
+            DateTime hastaUtcExclusivo,
             CancellationToken ct)
         {
-            var taskIds = await _db.Tareas
+            var tareaIds = await _db.Tareas
                 .AsNoTracking()
                 .Where(x =>
-                    currentCourseIds.Contains(x.CursoId) &&
+                    cursoIdsActuales.Contains(x.CursoId) &&
                     x.Estado == EstadoTarea.Publicada &&
                     x.FechaEntregaUtc.HasValue &&
-                    x.FechaEntregaUtc.Value >= fromUtc &&
-                    x.FechaEntregaUtc.Value < toUtcExclusive)
+                    x.FechaEntregaUtc.Value >= desdeUtc &&
+                    x.FechaEntregaUtc.Value < hastaUtcExclusivo)
                 .Select(x => x.Id)
                 .ToListAsync(ct);
 
-            if (taskIds.Count == 0)
+            if (tareaIds.Count == 0)
             {
                 return new AlumnoAcademicHomeworkSummaryModel
                 {
@@ -536,9 +533,9 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAcademicSummar
                 };
             }
 
-            var deliveries = await _db.Entregas
+            var entregas = await _db.Entregas
                 .AsNoTracking()
-                .Where(x => x.AlumnoId == studentId && taskIds.Contains(x.TareaId))
+                .Where(x => x.AlumnoId == alumnoId && tareaIds.Contains(x.TareaId))
                 .Select(x => new
                 {
                     x.Id,
@@ -546,66 +543,66 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAcademicSummar
                 })
                 .ToListAsync(ct);
 
-            var deliveryIds = deliveries.Select(x => x.Id).ToList();
-            var feedbacks = deliveryIds.Count == 0
-                ? new List<FeedbackProjection>()
+            var entregaIds = entregas.Select(x => x.Id).ToList();
+            var correcciones = entregaIds.Count == 0
+                ? new List<CorreccionEntregaProjection>()
                 : await _db.EntregaFeedbacks
                     .AsNoTracking()
-                    .Where(x => deliveryIds.Contains(x.EntregaId) && x.EsVigente)
-                    .Select(x => new FeedbackProjection
+                    .Where(x => entregaIds.Contains(x.EntregaId) && x.EsVigente)
+                    .Select(x => new CorreccionEntregaProjection
                     {
-                        DeliveryId = x.EntregaId,
-                        Status = x.Estado
+                        EntregaId = x.EntregaId,
+                        Estado = x.Estado
                     })
                     .ToListAsync(ct);
 
             return new AlumnoAcademicHomeworkSummaryModel
             {
-                PendingSubmissions = taskIds.Count - deliveries.Select(x => x.TareaId).Distinct().Count(),
-                PendingCorrections = deliveries.Count - feedbacks.Select(x => x.DeliveryId).Distinct().Count(),
-                ApprovedCount = feedbacks.Count(x => x.Status == EstadoCorreccion.Aprobado),
-                NeedsRevisionCount = feedbacks.Count(x => x.Status == EstadoCorreccion.Rehacer)
+                PendingSubmissions = tareaIds.Count - entregas.Select(x => x.TareaId).Distinct().Count(),
+                PendingCorrections = entregas.Count - correcciones.Select(x => x.EntregaId).Distinct().Count(),
+                ApprovedCount = correcciones.Count(x => x.Estado == EstadoCorreccion.Aprobado),
+                NeedsRevisionCount = correcciones.Count(x => x.Estado == EstadoCorreccion.Rehacer)
             };
         }
 
-        private static AlumnoAcademicStatusModel BuildAcademicStatus(
-            AlumnoAcademicAttendanceSummaryModel attendance,
-            AlumnoAcademicGradesSummaryModel grades)
+        private static AlumnoAcademicStatusModel ConstruirEstadoAcademico(
+            AlumnoAcademicAttendanceSummaryModel asistencia,
+            AlumnoAcademicGradesSummaryModel calificaciones)
         {
-            var attendanceLow = attendance.AttendancePercentage.HasValue &&
-                attendance.AttendancePercentage.Value < LowAttendanceThreshold;
-            var averageLow = grades.AverageGrade.HasValue &&
-                grades.AverageGrade.Value < LowGradeThreshold;
-            var consecutiveAbsences = attendance.ConsecutiveAbsences ?? 0;
+            var asistenciaBaja = asistencia.AttendancePercentage.HasValue &&
+                asistencia.AttendancePercentage.Value < ReglasAcademicas.UmbralAsistenciaBaja;
+            var promedioBajo = calificaciones.AverageGrade.HasValue &&
+                calificaciones.AverageGrade.Value < ReglasAcademicas.UmbralNotaBaja;
+            var ausenciasConsecutivas = asistencia.ConsecutiveAbsences ?? 0;
 
-            var reasons = new List<string>();
+            var motivos = new List<string>();
 
-            if (attendanceLow)
-                reasons.Add($"Asistencia trimestral {attendance.AttendancePercentage:0.##}%");
+            if (asistenciaBaja)
+                motivos.Add($"Asistencia trimestral {asistencia.AttendancePercentage:0.##}%");
 
-            if (averageLow)
-                reasons.Add($"Promedio trimestral {grades.AverageGrade:0.##}");
+            if (promedioBajo)
+                motivos.Add($"Promedio trimestral {calificaciones.AverageGrade:0.##}");
 
-            if (consecutiveAbsences >= 2)
-                reasons.Add($"{consecutiveAbsences} ausencias consecutivas");
+            if (ausenciasConsecutivas >= ReglasAcademicas.AusenciasConsecutivasCriticas)
+                motivos.Add($"{ausenciasConsecutivas} ausencias consecutivas");
 
-            if ((attendanceLow && averageLow) || consecutiveAbsences >= 2)
+            if ((asistenciaBaja && promedioBajo) || ausenciasConsecutivas >= ReglasAcademicas.AusenciasConsecutivasCriticas)
             {
                 return new AlumnoAcademicStatusModel
                 {
                     Level = "critical",
                     Label = "Requiere intervencion prioritaria",
-                    Reasons = reasons
+                    Reasons = motivos
                 };
             }
 
-            if (attendanceLow || averageLow)
+            if (asistenciaBaja || promedioBajo)
             {
                 return new AlumnoAcademicStatusModel
                 {
                     Level = "follow-up",
                     Label = "Requiere seguimiento",
-                    Reasons = reasons
+                    Reasons = motivos
                 };
             }
 
@@ -613,190 +610,85 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetAcademicSummar
             {
                 Level = "normal",
                 Label = "Sin alertas academicas",
-                Reasons = reasons
+                Reasons = motivos
             };
         }
 
-        private static List<AlumnoAcademicSignalModel> BuildRecentSignals(
-            AlumnoAcademicAttendanceSummaryModel attendance,
-            AlumnoAcademicGradesSummaryModel grades,
-            AlumnoAcademicHomeworkSummaryModel homework,
-            DateOnly? latestAbsenceDate)
+        private static List<AlumnoAcademicSignalModel> ConstruirSenalesRecientes(
+            AlumnoAcademicAttendanceSummaryModel asistencia,
+            AlumnoAcademicGradesSummaryModel calificaciones,
+            AlumnoAcademicHomeworkSummaryModel tareas,
+            DateOnly? fechaUltimaAusencia)
         {
-            var signals = new List<AlumnoAcademicSignalModel>();
+            var senales = new List<AlumnoAcademicSignalModel>();
 
-            if (grades.LatestLowGrade != null)
+            if (calificaciones.LatestLowGrade != null)
             {
-                signals.Add(new AlumnoAcademicSignalModel
+                senales.Add(new AlumnoAcademicSignalModel
                 {
                     Type = "low-grade",
                     Title = "Nota baja",
-                    Description = $"{grades.LatestLowGrade.Title}: {grades.LatestLowGrade.Grade:0.##}",
-                    Severity = grades.LatestLowGrade.Grade < 50 ? "critical" : "attention",
-                    Date = grades.LatestLowGrade.Date
+                    Description = $"{calificaciones.LatestLowGrade.Title}: {calificaciones.LatestLowGrade.Grade:0.##}",
+                    Severity = calificaciones.LatestLowGrade.Grade < ReglasAcademicas.UmbralNotaCritica ? "critical" : "attention",
+                    Date = calificaciones.LatestLowGrade.Date
                 });
             }
 
-            if (attendance.AttendancePercentage.HasValue &&
-                attendance.AttendancePercentage.Value < LowAttendanceThreshold)
+            if (asistencia.AttendancePercentage.HasValue &&
+                asistencia.AttendancePercentage.Value < ReglasAcademicas.UmbralAsistenciaBaja)
             {
-                signals.Add(new AlumnoAcademicSignalModel
+                senales.Add(new AlumnoAcademicSignalModel
                 {
                     Type = "low-attendance",
                     Title = "Baja asistencia",
-                    Description = $"Asistencia trimestral {attendance.AttendancePercentage:0.##}%",
-                    Severity = attendance.AttendancePercentage.Value < 60 ? "critical" : "attention",
-                    Date = latestAbsenceDate
+                    Description = $"Asistencia trimestral {asistencia.AttendancePercentage:0.##}%",
+                    Severity = asistencia.AttendancePercentage.Value < ReglasAcademicas.UmbralAsistenciaCritica ? "critical" : "attention",
+                    Date = fechaUltimaAusencia
                 });
             }
 
-            if ((attendance.ConsecutiveAbsences ?? 0) >= 2)
+            if ((asistencia.ConsecutiveAbsences ?? 0) >= ReglasAcademicas.AusenciasConsecutivasCriticas)
             {
-                signals.Add(new AlumnoAcademicSignalModel
+                senales.Add(new AlumnoAcademicSignalModel
                 {
                     Type = "consecutive-absences",
                     Title = "Ausencias consecutivas",
-                    Description = $"{attendance.ConsecutiveAbsences} ausencias consecutivas registradas",
+                    Description = $"{asistencia.ConsecutiveAbsences} ausencias consecutivas registradas",
                     Severity = "critical",
-                    Date = latestAbsenceDate
+                    Date = fechaUltimaAusencia
                 });
             }
 
-            if ((homework.PendingSubmissions ?? 0) > 0)
+            if ((tareas.PendingSubmissions ?? 0) > 0)
             {
-                signals.Add(new AlumnoAcademicSignalModel
+                senales.Add(new AlumnoAcademicSignalModel
                 {
                     Type = "missing-homework",
                     Title = "Entregas pendientes",
-                    Description = $"{homework.PendingSubmissions} tarea(s) sin entregar en el trimestre",
+                    Description = $"{tareas.PendingSubmissions} tarea(s) sin entregar en el trimestre",
                     Severity = "attention"
                 });
             }
 
-            return signals
+            return senales
                 .OrderByDescending(x => x.Severity == "critical")
                 .ThenByDescending(x => x.Date)
                 .Take(6)
                 .ToList();
         }
 
-        private static AlumnoAcademicGradeSignalModel ToGradeSignalModel(GradeProjection grade)
+        private static AlumnoAcademicGradeSignalModel ConvertirCalificacionSenalModel(CalificacionAlumnoProjection calificacion)
         {
             return new AlumnoAcademicGradeSignalModel
             {
-                Id = grade.Id,
-                CourseId = grade.CourseId,
-                CourseName = grade.CourseName,
-                Title = grade.Title,
-                Type = grade.Type.ToString(),
-                Grade = Math.Round(grade.Grade, 2),
-                Date = grade.Date
+                Id = calificacion.Id,
+                CourseId = calificacion.CursoId,
+                CourseName = calificacion.NombreCurso,
+                Title = calificacion.Titulo,
+                Type = calificacion.Tipo.ToString(),
+                Grade = Math.Round(calificacion.Nota, 2),
+                Date = calificacion.Fecha
             };
-        }
-
-        private sealed class EnrollmentProjection
-        {
-            public int CourseId { get; init; }
-            public string CourseName { get; init; } = default!;
-            public string? CourseDescription { get; init; }
-            public EstadoCurso CourseStatus { get; init; }
-        }
-
-        private sealed class TeacherProjection
-        {
-            public int CourseId { get; init; }
-            public string FirstName { get; init; } = default!;
-            public string LastName { get; init; } = default!;
-            public string? AvatarUrl { get; init; }
-        }
-
-        private sealed class TeacherSummaryProjection
-        {
-            public string Name { get; init; } = default!;
-            public string? AvatarUrl { get; init; }
-        }
-
-        private sealed class ClassProjection
-        {
-            public int Id { get; init; }
-            public int CourseId { get; init; }
-            public DateOnly Date { get; init; }
-        }
-
-        private sealed class AttendanceProjection
-        {
-            public int ClassId { get; init; }
-            public DateOnly Date { get; init; }
-            public EstadoAsistencia Status { get; init; }
-        }
-
-        private sealed class GradeProjection
-        {
-            public int Id { get; init; }
-            public int CourseId { get; init; }
-            public string CourseName { get; init; } = default!;
-            public string Title { get; init; } = default!;
-            public TipoCalificacion Type { get; init; }
-            public decimal Grade { get; init; }
-            public DateOnly Date { get; init; }
-        }
-
-        private sealed class FeedbackProjection
-        {
-            public int DeliveryId { get; init; }
-            public EstadoCorreccion Status { get; init; }
-        }
-
-        private readonly record struct PendingFollowUpKey(
-            int CourseId,
-            int Year,
-            int QuarterNumber);
-
-        private sealed class PendingFollowUpAccumulator
-        {
-            public int CourseId { get; init; }
-            public string CourseName { get; init; } = default!;
-            public string PeriodLabel { get; init; } = default!;
-            public int QuarterNumber { get; init; }
-            public int Year { get; init; }
-            public decimal? AverageValue { get; set; }
-            public decimal? AttendanceValue { get; set; }
-            public bool IsPreviousQuarter { get; init; }
-            public List<string> Reasons { get; } = new();
-
-            public AlumnoAcademicPendingFollowUpModel ToModel()
-            {
-                var isCritical =
-                    (AverageValue.HasValue && AverageValue.Value < LowGradeThreshold) ||
-                    (AttendanceValue.HasValue && AttendanceValue.Value < LowAttendanceThreshold);
-                var level = isCritical ? "critical" : "follow-up";
-                var reason = string.Join(" y ", Reasons.Distinct());
-                var mainReason = Reasons.Distinct().FirstOrDefault() ?? "Seguimiento pendiente";
-                var valueDetail = AverageValue.HasValue
-                    ? $"Promedio {AverageValue:0.##}"
-                    : AttendanceValue.HasValue
-                        ? $"Asistencia {AttendanceValue:0.##}%"
-                        : mainReason;
-
-                return new AlumnoAcademicPendingFollowUpModel
-                {
-                    CourseId = CourseId,
-                    CourseName = CourseName,
-                    PeriodLabel = PeriodLabel,
-                    QuarterNumber = QuarterNumber,
-                    Year = Year,
-                    Level = level,
-                    Title = IsPreviousQuarter
-                        ? "Seguimiento pendiente del trimestre anterior"
-                        : $"{(isCritical ? "Critico" : "Seguimiento")} en {PeriodLabel}",
-                    Reason = reason,
-                    AverageValue = AverageValue,
-                    AttendanceValue = AttendanceValue,
-                    Description = $"{valueDetail} en {PeriodLabel}",
-                    Status = "pending",
-                    IsPreviousQuarter = IsPreviousQuarter
-                };
-            }
         }
     }
 }

@@ -16,8 +16,13 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetById
             _userManager = userManager;
         }
 
-        public async Task<BaseResponseModel> Execute(int userId)
+        public async Task<BaseResponseModel> Execute(int userId, CancellationToken ct = default)
         {
+            if (userId <= 0)
+                return ResponseApiService.Response(StatusCodes.Status400BadRequest, message: "Id invalido");
+
+            ct.ThrowIfCancellationRequested();
+
             var user = await _userManager.FindByIdAsync(userId.ToString());
 
             if (user == null)
@@ -42,7 +47,9 @@ namespace BlossomInstitute.Application.DataBase.Alumno.Queries.GetById
                 Apellido = user.Apellido ?? string.Empty,
                 Dni = user.Dni,
                 Telefono = user.PhoneNumber ?? string.Empty,
-                Activo = user.Activo
+                Activo = user.Activo,
+                IsActive = user.Activo,
+                AvatarUrl = user.AvatarUrl
             };
 
             return ResponseApiService.Response(

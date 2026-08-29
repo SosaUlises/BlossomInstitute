@@ -1,13 +1,12 @@
-﻿using BlossomInstitute.Application.Configuration;
-using BlossomInstitute.Application.DataBase.Alumno.Command.ActivarAlumno;
-using BlossomInstitute.Application.DataBase.Alumno.Command.CreateAlumno;
-using BlossomInstitute.Application.DataBase.Alumno.Command.DesactivarAlumno;
-using BlossomInstitute.Application.DataBase.Alumno.Command.UpdateAlumno;
+using BlossomInstitute.Application.DataBase.Alumno.Commands.ActivarAlumno;
+using BlossomInstitute.Application.DataBase.Alumno.Commands.CreateAlumno;
+using BlossomInstitute.Application.DataBase.Alumno.Commands.DesactivarAlumno;
+using BlossomInstitute.Application.DataBase.Alumno.Commands.UpdateAlumno;
 using BlossomInstitute.Application.DataBase.Alumno.Queries.GetAll;
 using BlossomInstitute.Application.DataBase.Alumno.Queries.GetAsignableByCurso;
 using BlossomInstitute.Application.DataBase.Alumno.Queries.GetAcademicSummary;
 using BlossomInstitute.Application.DataBase.Alumno.Queries.GetById;
-using BlossomInstitute.Application.DataBase.Asistencia.Command.TomarAsistencia;
+using BlossomInstitute.Application.DataBase.Asistencia.Commands.TomarAsistencia;
 using BlossomInstitute.Application.DataBase.Asistencia.Queries.GetAsistenciasByAlumno;
 using BlossomInstitute.Application.DataBase.Asistencia.Queries.GetAsistenciasByClase;
 using BlossomInstitute.Application.DataBase.Asistencia.Queries.GetMisAsistencias;
@@ -17,9 +16,8 @@ using BlossomInstitute.Application.DataBase.Calificacion.Commands.UpdateCalifica
 using BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalificacionById;
 using BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalificacionesByAlumno;
 using BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalificacionesByCurso;
-using BlossomInstitute.Application.DataBase.Clase.Command;
+using BlossomInstitute.Application.DataBase.Clase.Commands;
 using BlossomInstitute.Application.DataBase.Clase.Queries.GetClasesByCurso;
-using BlossomInstitute.Application.DataBase.CloudinaryService.Commands.UploadFile;
 using BlossomInstitute.Application.DataBase.Curso.Commands.ActivarCurso;
 using BlossomInstitute.Application.DataBase.Curso.Commands.ArchivarCurso;
 using BlossomInstitute.Application.DataBase.Curso.Commands.AsignarAlumnos;
@@ -48,20 +46,20 @@ using BlossomInstitute.Application.DataBase.Entregas.Queries.Alumno.GetMisEntreg
 using BlossomInstitute.Application.DataBase.Entregas.Queries.GetEntregasByTarea;
 using BlossomInstitute.Application.DataBase.Entregas.Queries.GetEntregasDetail;
 using BlossomInstitute.Application.DataBase.Entregas.Queries.GetFeedbacksByEntrega;
-using BlossomInstitute.Application.DataBase.Login.Command;
-using BlossomInstitute.Application.DataBase.Password.Command.ForgotPassword;
-using BlossomInstitute.Application.DataBase.Password.Command.ResetPassword;
-using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Apply;
-using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Archive;
-using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.CreatePlantilla;
-using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Command.Update;
-using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Query.GetAll;
-using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Query.GetById;
-using BlossomInstitute.Application.DataBase.Profesor.Command.ActivarProfesor;
-using BlossomInstitute.Application.DataBase.Profesor.Command.CreateProfesor;
-using BlossomInstitute.Application.DataBase.Profesor.Command.DeleteProfesor;
-using BlossomInstitute.Application.DataBase.Profesor.Command.UpdateProfesor;
-using BlossomInstitute.Application.DataBase.Profesor.Queries.GetAllProfesores;
+using BlossomInstitute.Application.DataBase.Login.Commands;
+using BlossomInstitute.Application.DataBase.Password.Commands.ForgotPassword;
+using BlossomInstitute.Application.DataBase.Password.Commands.ResetPassword;
+using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Commands.Apply;
+using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Commands.Archive;
+using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Commands.Create;
+using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Commands.Update;
+using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Queries.GetAll;
+using BlossomInstitute.Application.DataBase.PlantillaCalificacion.Queries.GetById;
+using BlossomInstitute.Application.DataBase.Profesor.Commands.ActivarProfesor;
+using BlossomInstitute.Application.DataBase.Profesor.Commands.CreateProfesor;
+using BlossomInstitute.Application.DataBase.Profesor.Commands.DesactivarProfesor;
+using BlossomInstitute.Application.DataBase.Profesor.Commands.UpdateProfesor;
+using BlossomInstitute.Application.DataBase.Profesor.Queries.GetAll;
 using BlossomInstitute.Application.DataBase.Profesor.Queries.GetAcademicSummary;
 using BlossomInstitute.Application.DataBase.Profesor.Queries.GetById;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteAsistenciaByClase;
@@ -71,10 +69,10 @@ using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteHomeworkByCu
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteMarksByCursoAndTerm;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteStudentMarksDetail;
 using BlossomInstitute.Application.DataBase.Reportes.Queries.ReporteStudentSummaryByCursoAndTerm;
-using BlossomInstitute.Application.DataBase.Settings.Command.ChangePassword;
-using BlossomInstitute.Application.DataBase.Settings.Command.DeleteAvatar;
-using BlossomInstitute.Application.DataBase.Settings.Command.UpdateAccount;
-using BlossomInstitute.Application.DataBase.Settings.Command.UpdateAvatar;
+using BlossomInstitute.Application.DataBase.Settings.Commands.ChangePassword;
+using BlossomInstitute.Application.DataBase.Settings.Commands.DeleteAvatar;
+using BlossomInstitute.Application.DataBase.Settings.Commands.UpdateAccount;
+using BlossomInstitute.Application.DataBase.Settings.Commands.UpdateAvatar;
 using BlossomInstitute.Application.DataBase.Settings.Queries.GetMyAccount;
 using BlossomInstitute.Application.DataBase.Tarea.Commands.ArchivarTarea;
 using BlossomInstitute.Application.DataBase.Tarea.Commands.CreateTarea;
@@ -102,8 +100,6 @@ namespace BlossomInstitute.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(MapperProfile).Assembly);
-
             // Login
             services.AddTransient<ILoginCommand, LoginCommand>();
 
@@ -221,10 +217,6 @@ namespace BlossomInstitute.Application
             services.AddTransient<IChangeMyPasswordCommand, ChangeMyPasswordCommand>();
             services.AddTransient<IUpdateMyAvatarCommand, UpdateMyAvatarCommand>();
             services.AddTransient<IDeleteMyAvatarCommand, DeleteMyAvatarCommand>();
-
-            // Cloudinary
-            services.AddTransient<IFileStorageService, CloudinaryFileStorageService>();
-
 
             // Validators
             services.AddScoped<IValidator<LoginModel>, LoginValidator>();

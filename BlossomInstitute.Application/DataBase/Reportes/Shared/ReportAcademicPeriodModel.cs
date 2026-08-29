@@ -1,4 +1,4 @@
-using BlossomInstitute.Application.Common.Academic;
+using BlossomInstitute.Application.Common.Academico;
 
 namespace BlossomInstitute.Application.DataBase.Reportes.Shared
 {
@@ -10,15 +10,15 @@ namespace BlossomInstitute.Application.DataBase.Reportes.Shared
         public DateOnly From { get; set; }
         public DateOnly To { get; set; }
 
-        public static ReportAcademicPeriodModel FromQuarter(AcademicQuarterPeriod period)
+        public static ReportAcademicPeriodModel FromQuarter(PeriodoAcademicoTrimestre period)
         {
             return new ReportAcademicPeriodModel
             {
-                Year = period.Year,
-                Quarter = period.Quarter,
-                Label = period.Label,
-                From = period.From,
-                To = period.To
+                Year = period.Anio,
+                Quarter = period.Trimestre,
+                Label = period.Etiqueta,
+                From = period.Desde,
+                To = period.Hasta
             };
         }
     }
