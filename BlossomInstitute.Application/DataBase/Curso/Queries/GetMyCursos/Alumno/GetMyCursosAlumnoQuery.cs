@@ -50,22 +50,69 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetMyCursos.Alumno
                 q = q.Where(c => (int)c.Estado == estado.Value);
             }
 
+            var hoy = DateOnly.FromDateTime(DateTime.Now);
+            var ahoraLocal = DateTime.Now;
             var total = await q.CountAsync();
 
-            var items = await q
+            var cursos = await q
                 .OrderByDescending(c => c.Anio)
                 .ThenBy(c => c.Nombre)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .Select(c => new CursoResumenModel
+                .Select(c => new
                 {
-                    Id = c.Id,
-                    Nombre = c.Nombre,
-                    Anio = c.Anio,
-                    Estado = c.Estado,
-                    CantidadHorarios = c.Horarios.Count
+                    c.Id,
+                    c.Nombre,
+                    c.Anio,
+                    c.Descripcion,
+                    c.ThemeIcon,
+                    c.Estado,
+                    CantidadHorarios = c.Horarios.Count,
+                    CantidadAlumnos = c.Matriculas.Count,
+                    Horarios = c.Horarios
+                        .Select(h => new
+                        {
+                            h.Dia,
+                            h.HoraInicio,
+                            h.HoraFin
+                        })
+                        .ToList()
                 })
                 .ToListAsync();
+
+            var items = cursos
+                .Select(c =>
+                {
+                    var proximaClase = c.Horarios
+                        .Select(h => new
+                        {
+                            h.Dia,
+                            h.HoraInicio,
+                            h.HoraFin,
+                            Fecha = ObtenerProximaFecha(h.Dia, hoy, h.HoraInicio, ahoraLocal)
+                        })
+                        .OrderBy(x => x.Fecha)
+                        .ThenBy(x => x.HoraInicio)
+                        .FirstOrDefault();
+
+                    return new CursoResumenModel
+                    {
+                        Id = c.Id,
+                        Nombre = c.Nombre,
+                        Anio = c.Anio,
+                        Descripcion = c.Descripcion,
+                        ThemeIcon = c.ThemeIcon,
+                        Estado = c.Estado,
+                        CantidadHorarios = c.CantidadHorarios,
+                        CantidadAlumnos = c.CantidadAlumnos,
+                        CantidadCompaneros = Math.Max(0, c.CantidadAlumnos - 1),
+                        ProximaClaseFecha = proximaClase?.Fecha,
+                        ProximaClaseDia = proximaClase?.Dia,
+                        ProximaClaseHoraInicio = proximaClase?.HoraInicio.ToString("HH:mm"),
+                        ProximaClaseHoraFin = proximaClase?.HoraFin.ToString("HH:mm")
+                    };
+                })
+                .ToList();
 
             return ResponseApiService.Response(StatusCodes.Status200OK, new
             {
@@ -74,6 +121,21 @@ namespace BlossomInstitute.Application.DataBase.Curso.Queries.GetMyCursos.Alumno
                 total,
                 items
             });
+        }
+
+        private static DateOnly ObtenerProximaFecha(
+            DayOfWeek diaClase,
+            DateOnly hoy,
+            TimeOnly horaInicio,
+            DateTime ahoraLocal)
+        {
+            var diasHasta = ((int)diaClase - (int)hoy.DayOfWeek + 7) % 7;
+            var fecha = hoy.AddDays(diasHasta);
+
+            if (diasHasta == 0 && horaInicio <= TimeOnly.FromDateTime(ahoraLocal))
+                fecha = fecha.AddDays(7);
+
+            return fecha;
         }
     }
 }
