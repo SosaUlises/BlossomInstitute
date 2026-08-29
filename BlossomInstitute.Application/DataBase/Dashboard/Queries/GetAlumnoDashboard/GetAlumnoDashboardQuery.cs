@@ -1,4 +1,6 @@
+using BlossomInstitute.Application.Common.Academico;
 using BlossomInstitute.Application.DataBase.Dashboard.Queries.AlumnosModels;
+using BlossomInstitute.Domain.Entidades.Calificacion;
 using BlossomInstitute.Common.Features;
 using BlossomInstitute.Domain.Entidades.Clase;
 using BlossomInstitute.Domain.Entidades.Entrega;
@@ -53,6 +55,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAlumnoDashb
                 return ResponseApiService.Response(StatusCodes.Status404NotFound, message: "Alumno no encontrado");
 
             var hoy = DateOnly.FromDateTime(DateTime.Now);
+            var periodoAcademico = PeriodoAcademicoHelper.ObtenerContexto(hoy);
             var ahoraLocal = DateTime.Now;
             var ahoraUtc = DateTime.UtcNow;
 
@@ -264,6 +267,12 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAlumnoDashb
                     cursoIds.Contains(x.CursoId) &&
                     !x.Archivado);
 
+            var calificacionesAcademicasActualesQuery = calificacionesBaseQuery
+                .Where(x =>
+                    x.Fecha >= periodoAcademico.Desde &&
+                    x.Fecha <= periodoAcademico.Hasta &&
+                    (x.Tipo == TipoCalificacion.Quiz || x.Tipo == TipoCalificacion.Test));
+
             var ultimasCalificaciones = await calificacionesBaseQuery
                 .OrderByDescending(x => x.Fecha)
                 .ThenByDescending(x => x.Id)
@@ -280,7 +289,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAlumnoDashb
                 })
                 .ToListAsync(ct);
 
-            var promedioGeneral = await calificacionesBaseQuery
+            var promedioGeneral = await calificacionesAcademicasActualesQuery
                 .Select(x => (decimal?)x.Nota)
                 .AverageAsync(ct);
 
@@ -314,7 +323,7 @@ namespace BlossomInstitute.Application.DataBase.Dashboard.Queries.GetAlumnoDashb
                 })
                 .ToListAsync(ct);
 
-            var promedioPorCurso = await calificacionesBaseQuery
+            var promedioPorCurso = await calificacionesAcademicasActualesQuery
                 .GroupBy(x => x.CursoId)
                 .Select(g => new
                 {

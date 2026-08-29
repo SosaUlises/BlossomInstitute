@@ -35,4 +35,18 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Queries.Model
         public decimal PuntajeMaximo { get; set; }
         public decimal? Porcentaje { get; set; }
     }
+
+    public class CalificacionAcademicSummaryModel
+    {
+        public decimal? AverageGrade { get; set; }
+        public int AcademicGradesCount { get; set; }
+        public int QuizCount { get; set; }
+        public int TestCount { get; set; }
+        public int Year { get; set; }
+        public int Quarter { get; set; }
+        public string PeriodLabel { get; set; } = "";
+        public string PeriodRangeLabel { get; set; } = "";
+        public DateOnly From { get; set; }
+        public DateOnly To { get; set; }
+    }
 }

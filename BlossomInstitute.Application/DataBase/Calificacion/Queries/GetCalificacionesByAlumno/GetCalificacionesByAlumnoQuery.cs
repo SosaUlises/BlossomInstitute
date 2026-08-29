@@ -1,5 +1,7 @@
+using BlossomInstitute.Application.Common.Academico;
 using BlossomInstitute.Application.DataBase.Calificacion.Queries.Model;
 using BlossomInstitute.Common.Features;
+using BlossomInstitute.Domain.Entidades.Calificacion;
 using BlossomInstitute.Domain.Entidades.Calificaciones;
 using BlossomInstitute.Domain.Model;
 using Microsoft.AspNetCore.Http;
@@ -32,6 +34,8 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalifica
             if (pageNumber <= 0) pageNumber = 1;
             if (pageSize <= 0) pageSize = 10;
             if (pageSize > 100) pageSize = 100;
+
+            var periodoAcademico = PeriodoAcademicoHelper.ObtenerContexto(DateOnly.FromDateTime(DateTime.Now));
 
             if (!isAdmin && !isProfesor && alumnoId != userId)
                 return ResponseApiService.Response(StatusCodes.Status403Forbidden, message: "No autorizado");
@@ -81,6 +85,7 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalifica
                             pageNumber,
                             pageSize,
                             total = 0,
+                            summary = BuildAcademicSummary(periodoAcademico, null),
                             items = new List<CalificacionListItemModel>()
                         });
                     }
@@ -95,6 +100,21 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalifica
             }
 
             var total = await q.CountAsync(ct);
+
+            var academicSummaryData = await q
+                .Where(x =>
+                    x.Fecha >= periodoAcademico.Desde &&
+                    x.Fecha <= periodoAcademico.Hasta &&
+                    (x.Tipo == TipoCalificacion.Quiz || x.Tipo == TipoCalificacion.Test))
+                .GroupBy(_ => 1)
+                .Select(g => new AcademicSummaryProjection
+                {
+                    AverageGrade = g.Average(x => (decimal?)x.Nota),
+                    AcademicGradesCount = g.Count(),
+                    QuizCount = g.Count(x => x.Tipo == TipoCalificacion.Quiz),
+                    TestCount = g.Count(x => x.Tipo == TipoCalificacion.Test)
+                })
+                .FirstOrDefaultAsync(ct);
 
             var items = await q
                 .OrderByDescending(x => x.Fecha)
@@ -135,12 +155,42 @@ namespace BlossomInstitute.Application.DataBase.Calificacion.Queries.GetCalifica
                 .ToListAsync(ct);
 
             return ResponseApiService.Response(StatusCodes.Status200OK, new
+                {
+                    pageNumber,
+                    pageSize,
+                    total,
+                    summary = BuildAcademicSummary(periodoAcademico, academicSummaryData),
+                    items
+                });
+        }
+
+        private static CalificacionAcademicSummaryModel BuildAcademicSummary(
+            ContextoPeriodoAcademico periodo,
+            AcademicSummaryProjection? data)
+        {
+            return new CalificacionAcademicSummaryModel
             {
-                pageNumber,
-                pageSize,
-                total,
-                items
-            });
+                AverageGrade = data?.AverageGrade.HasValue == true
+                    ? Math.Round(data.AverageGrade.Value, 2)
+                    : null,
+                AcademicGradesCount = data?.AcademicGradesCount ?? 0,
+                QuizCount = data?.QuizCount ?? 0,
+                TestCount = data?.TestCount ?? 0,
+                Year = periodo.Anio,
+                Quarter = periodo.NumeroTrimestre,
+                PeriodLabel = periodo.Etiqueta,
+                PeriodRangeLabel = periodo.TrimestreActual.EtiquetaRangoMeses,
+                From = periodo.Desde,
+                To = periodo.Hasta
+            };
+        }
+
+        private sealed class AcademicSummaryProjection
+        {
+            public decimal? AverageGrade { get; init; }
+            public int AcademicGradesCount { get; init; }
+            public int QuizCount { get; init; }
+            public int TestCount { get; init; }
         }
     }
 }
